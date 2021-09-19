@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
+using IdentityGuard.Api.Tests.TestUtility.TestContexts;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,8 +13,11 @@ namespace IdentityGuard.Api.Tests.TestUtility.Fakes
 {
     public class FunctionContextFake:FunctionContext
     {
-        public FunctionContextFake()
+        private readonly TestContext _context;
+
+        public FunctionContextFake(TestContext context)
         {
+            _context = context;
             var services = new ServiceCollection();
 
             services.AddFunctionsWorkerCore();
@@ -35,11 +40,13 @@ namespace IdentityGuard.Api.Tests.TestUtility.Fakes
     {
         private readonly FunctionContext _functionContext;
         private readonly string _method;
+        private readonly TestContext _context;
 
-        public HttpRequestDataFake(FunctionContext functionContext, string method) : base(functionContext)
+        public HttpRequestDataFake(FunctionContext functionContext, HttpMethod method, TestContext context) : base(functionContext)
         {
             _functionContext = functionContext;
-            _method = method;
+            _method = method.ToString();
+            _context = context;
         }
 
         public override HttpResponseData CreateResponse()
@@ -51,7 +58,7 @@ namespace IdentityGuard.Api.Tests.TestUtility.Fakes
         public override HttpHeadersCollection Headers { get; } = new HttpHeadersCollection();
         public override IReadOnlyCollection<IHttpCookie> Cookies { get; } = new List<IHttpCookie>();
         public override Uri Url { get; }
-        public override IEnumerable<ClaimsIdentity> Identities { get; }
+        public override IEnumerable<ClaimsIdentity> Identities => new[] {_context.Identity.AuthenticatedUser};
         public override string Method => _method;
 
     }

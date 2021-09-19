@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
 using IdentityGuard.Api.Configuration;
 using IdentityGuard.Api.Functions;
+using IdentityGuard.Api.Tests.TestUtility.Extensions;
+using IdentityGuard.Api.Tests.TestUtility.Fakes;
 using IdentityGuard.Api.Tests.TestUtility.TestContexts;
+using IdentityGuard.Core.Services;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,11 +59,14 @@ namespace IdentityGuard.Api.Tests.TestUtility
 
             services.AddTransient<AuthorizationFunction>();
             services.AddTransient<HealthFunction>();
+            services.AddTransient<DirectoryFunctions>();
         }
 
         private static void ConfigureFakes(IServiceCollection services)
         {
             services.AddSingleton<TestContext>();
+            services.ReplaceTransient<CosmosClient, CosmosClientFake>();
+            services.ReplaceTransient<ICosmosLinqQueryFactory, CosmosLinqQueryFactoryFake>();
         }
 
         public T Get<T>()

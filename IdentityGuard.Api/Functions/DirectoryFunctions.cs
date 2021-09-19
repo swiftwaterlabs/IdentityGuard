@@ -19,76 +19,76 @@ namespace IdentityGuard.Api.Functions
         }
 
         [Function("directory-get")]
-        public Task<HttpResponseData> Get(
+        public async Task<HttpResponseData> Get(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "directory")]
             HttpRequestData req,
             FunctionContext executionContext)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponseAsync();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponse();
 
-            var data = _directoryManager.Get();
+            var data = await _directoryManager.Get();
 
-            return req.OkResponseAsync(data);
+            return await req.OkResponseAsync(data);
         }
 
         [Function("directory-getbyid")]
-        public Task<HttpResponseData> GetById(
+        public async Task<HttpResponseData> GetById(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "directory/{id}")]
             HttpRequestData req,
             FunctionContext executionContext,
             string id)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponseAsync();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponse();
 
-            var data = _directoryManager.GetById(id);
+            var data = await _directoryManager.GetById(id);
 
-            return req.OkResponseAsync(data);
+            return await req.OkResponseAsync(data);
         }
 
         [Function("directory-post")]
-        public Task<HttpResponseData> Post(
+        public async Task<HttpResponseData> Post(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "directory/")]
             HttpRequestData req,
             FunctionContext executionContext)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponseAsync();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponse();
 
-            var data = _directoryManager.Add(req.GetBody<Directory>());
+            var data = await _directoryManager.Add(req.GetBody<Directory>());
 
-            return req.OkResponseAsync(data);
+            return await req.OkResponseAsync(data);
         }
 
         [Function("directory-put")]
-        public Task<HttpResponseData> Put(
+        public async Task<HttpResponseData> Put(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "directory/{id}")]
             HttpRequestData req,
             FunctionContext executionContext,
             string id)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponseAsync();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponse();
 
-            var data = _directoryManager.Update(id, req.GetBody<Directory>());
+            var data = await _directoryManager.Update(id, req.GetBody<Directory>());
 
-            return req.OkResponseAsync(data);
+            return await req.OkResponseAsync(data);
         }
 
         [Function("directory-delete")]
-        public Task<HttpResponseData> Delete(
+        public async Task<HttpResponseData> Delete(
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "directory/{id}")]
             HttpRequestData req,
             FunctionContext executionContext,
             string id)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponseAsync();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponse();
 
-            var data = _directoryManager.Delete(id);
+            await _directoryManager.Delete(id);
 
-            return req.OkResponseAsync(data);
+            return await req.OkResponseAsync();
         }
     }
 }
