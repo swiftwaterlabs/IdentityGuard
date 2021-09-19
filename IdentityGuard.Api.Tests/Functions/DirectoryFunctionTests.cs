@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -106,7 +107,7 @@ namespace IdentityGuard.Api.Tests.Functions
 
             var function = builder.Get<DirectoryFunctions>();
 
-            var result = await function.Delete(builder.GetRequest(), builder.Context(), directory1.Id);
+            var result = await function.Delete(builder.DeleteRequest(), builder.Context(), directory1.Id);
 
             Assert.Equal(HttpStatusCode.Forbidden, result.StatusCode);
         }
@@ -121,10 +122,91 @@ namespace IdentityGuard.Api.Tests.Functions
 
             var function = builder.Get<DirectoryFunctions>();
 
-            var result = await function.Delete(builder.GetRequest(), builder.Context(), directory1.Id);
+            var result = await function.Delete(builder.DeleteRequest(), builder.Context(), directory1.Id);
 
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
             Assert.Empty(builder.Context.Data.Directories);
+        }
+
+        [Fact]
+        public async Task Post_UnauthorizedUser_ReturnsForbidden()
+        {
+            var builder = new TestBuilder();
+
+            var function = builder.Get<DirectoryFunctions>();
+
+            var directory = GetDirectory();
+
+            var result = await function.Post(builder.PostRequest(directory), builder.Context());
+
+            Assert.Equal(HttpStatusCode.Forbidden, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task Post_AuthorizedUser_SavesData()
+        {
+            var builder = new TestBuilder();
+            builder.WithAuthenticatedUser("the-use",ApplicationRoles.DirectoryAdmin);
+
+            var function = builder.Get<DirectoryFunctions>();
+
+            var directory = GetDirectory();
+
+            var result = await function.Post(builder.PostRequest(directory), builder.Context());
+
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+            AssertDirectoryData(directory,builder.Context.Data.Directories.First().Value);
+        }
+
+        [Fact]
+        public async Task Put_UnauthorizedUser_ReturnsForbidden()
+        {
+            var builder = new TestBuilder();
+
+            var existing = builder.WithDirectory(name: "existing-directory");
+
+            var function = builder.Get<DirectoryFunctions>();
+
+            var directory = GetDirectory();
+
+            var result = await function.Put(builder.PostRequest(directory), builder.Context(),existing.Id);
+
+            Assert.Equal(HttpStatusCode.Forbidden, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task Put_AuthorizedUser_SavesData()
+        {
+            var builder = new TestBuilder();
+            builder.WithAuthenticatedUser("the-use", ApplicationRoles.DirectoryAdmin);
+
+            var existing = builder.WithDirectory(name: "existing-directory");
+
+            var function = builder.Get<DirectoryFunctions>();
+
+            var directory = GetDirectory();
+            directory.Id = existing.Id;
+
+            var result = await function.Put(builder.PutRequest(directory), builder.Context(),existing.Id);
+
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+            AssertDirectoryData(directory, builder.Context.Data.Directories.First().Value);
+        }
+
+        private Directory GetDirectory()
+        {
+            return new Directory
+            {
+                Id = Guid.NewGuid().ToString(),
+                TenantId = Guid.NewGuid().ToString(),
+                Name = "my name",
+                Domain = "my-domain",
+                GraphUrl = "the-url",
+                PortalUrl = "portal-url",
+                ClientType = DirectoryClientType.Application,
+                ClientId = Guid.NewGuid().ToString(),
+                IsDefault = true
+            };
         }
 
         private void AssertDirectoryData(Directory actual, DirectoryData expected)
