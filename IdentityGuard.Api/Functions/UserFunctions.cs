@@ -16,6 +16,7 @@ namespace IdentityGuard.Api.Functions
             HttpRequestData req,
             FunctionContext executionContext)
         {
+            
             var claims = req.Identities?
                 .SelectMany(i => i?.Claims ?? new List<Claim>())
                 .Select(c => new KeyValuePair<string, string>(c?.Type, c?.Value))
