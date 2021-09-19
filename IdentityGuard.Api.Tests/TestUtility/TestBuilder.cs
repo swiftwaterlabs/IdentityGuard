@@ -2,6 +2,7 @@
 using IdentityGuard.Api.Configuration;
 using IdentityGuard.Api.Functions;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -24,6 +25,12 @@ namespace IdentityGuard.Api.Tests.TestUtility
         {
             services.AddFunctionsWorkerCore();
             services.AddFunctionsWorkerDefaults();
+
+            var configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection()
+                .Build();
+
+            services.AddSingleton<IConfiguration>(configuration);
 
             var properties = new Dictionary<object, object>();
             var context = new HostBuilderContext(properties);

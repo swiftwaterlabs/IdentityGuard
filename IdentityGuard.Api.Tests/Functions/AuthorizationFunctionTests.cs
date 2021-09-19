@@ -24,6 +24,8 @@ namespace IdentityGuard.Api.Tests.Functions
             var result = await function.Get(builder.GetRequest(), builder.Context(), action);
 
             Assert.Equal(HttpStatusCode.OK,result.StatusCode);
+            Assert.Equal(isAuthorized,result.Value<bool>());
+            
         }
     }
 }
