@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker.Http;
+using Newtonsoft.Json;
 
 namespace IdentityGuard.Api.Extensions
 {
@@ -22,6 +24,19 @@ namespace IdentityGuard.Api.Extensions
             await response.WriteAsJsonAsync(data);
 
             return response;
+        }
+
+        public static T GetBody<T>(this HttpRequestData request)
+        {
+            if (request.Body == null) return default(T);
+
+            request.Body.Position = 0;
+            using var reader = new StreamReader(request.Body);
+            var bodyAsString = reader.ReadToEnd();
+
+            var result = JsonConvert.DeserializeObject<T>(bodyAsString);
+
+            return result;
         }
     }
 }

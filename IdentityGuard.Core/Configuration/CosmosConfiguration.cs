@@ -12,7 +12,7 @@
 
     public class CosmosContainers
     {
-        public const string Directories = "Directory";
+        public  string Directories = "Directories";
     }
 
 

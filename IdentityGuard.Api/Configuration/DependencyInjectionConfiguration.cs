@@ -4,6 +4,8 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using IdentityGuard.Core.Configuration;
 using IdentityGuard.Core.Managers;
+using IdentityGuard.Core.Mappers;
+using IdentityGuard.Core.Repositories;
 using IdentityGuard.Core.Services;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +22,11 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<AboutManager>();
             services.AddTransient<ApplicationHealthManager>();
             services.AddTransient<AuthorizationManager>();
+            services.AddTransient<DirectoryManager>();
+
+            services.AddTransient<DirectoryMapper>();
+
+            services.AddTransient<DirectoryRepository>();
 
             services.AddTransient<EnvironmentService>();
 
