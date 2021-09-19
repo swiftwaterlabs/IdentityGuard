@@ -5,11 +5,22 @@ using System.Net;
 using System.Security.Claims;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityGuard.Api.Tests.TestUtility.Fakes
 {
     public class FunctionContextFake:FunctionContext
     {
+        public FunctionContextFake()
+        {
+            var services = new ServiceCollection();
+
+            services.AddFunctionsWorkerCore();
+            services.AddFunctionsWorkerDefaults();
+
+            InstanceServices = services.BuildServiceProvider();
+
+        }
         public override string InvocationId => Guid.NewGuid().ToString();
         public override string FunctionId => Guid.NewGuid().ToString();
         public override TraceContext TraceContext { get; }

@@ -22,6 +22,9 @@ namespace IdentityGuard.Api.Tests.TestUtility
 
         private static void Configure(IServiceCollection services)
         {
+            services.AddFunctionsWorkerCore();
+            services.AddFunctionsWorkerDefaults();
+
             var properties = new Dictionary<object, object>();
             var context = new HostBuilderContext(properties);
             DependencyInjectionConfiguration.Configure(context, services);
