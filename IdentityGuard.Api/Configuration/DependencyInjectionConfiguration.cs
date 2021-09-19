@@ -32,9 +32,9 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient(provider =>
             {
                 var configuration = provider.GetService<IConfiguration>();
-                var endpoint = configuration["KeyVault:BaseUri"];
+                var endpoint = configuration[ConfigurationNames.KeyVault.BaseUri];
                 var endpointUrl = new Uri(endpoint);
-                var managedIdentityClientId = configuration["KeyVault:ManagedIdentityClientId"];
+                var managedIdentityClientId = configuration[ConfigurationNames.KeyVault.ManagedIdentityClient];
 
                 var credentials = GetCredential(managedIdentityClientId);
 
@@ -56,9 +56,9 @@ namespace IdentityGuard.Api.Configuration
             {
                 var secretClient = provider.GetService<SecretClient>();
                 var configuration = provider.GetService<IConfiguration>();
-                var endpoint = configuration["Cosmos:BaseUri"];
+                var endpoint = configuration[ConfigurationNames.Cosmos.BaseUri];
 
-                var secret = secretClient.GetSecret("cosmos-primary-key");
+                var secret = secretClient.GetSecret(SecretNames.CosmosPrimaryKey);
                 var key = secret.Value.Value;
 
                 var client = GetCosmosClient(endpoint, key);
