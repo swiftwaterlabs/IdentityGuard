@@ -30,6 +30,16 @@ namespace IdentityGuard.Api.Extensions
             return response;
         }
 
+        public static HttpResponseData NotFoundResponse(this HttpRequestData request)
+        {
+            return request.CreateResponse(HttpStatusCode.NotFound);
+        }
+
+        public static Task<HttpResponseData> NotFoundResponseAsync(this HttpRequestData request)
+        {
+            return Task.FromResult(request.CreateResponse(HttpStatusCode.NotFound));
+        }
+
         public static T GetBody<T>(this HttpRequestData request)
         {
             if (request.Body == null) return default(T);
