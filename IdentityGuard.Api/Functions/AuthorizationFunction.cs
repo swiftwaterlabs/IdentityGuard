@@ -1,11 +1,8 @@
-using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using IdentityGuard.Api.Extensions;
 using IdentityGuard.Core.Managers;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
 
 namespace IdentityGuard.Api.Functions
 {
