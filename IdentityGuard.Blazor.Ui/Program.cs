@@ -1,12 +1,7 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
+using BlazorApplicationInsights;
+using IdentityGuard.Blazor.Ui.Configuration;
 
 namespace IdentityGuard.Blazor.Ui
 {
@@ -16,13 +11,16 @@ namespace IdentityGuard.Blazor.Ui
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-            builder.Services.AddMsalAuthentication(options =>
+            builder.Services.AddBlazorApplicationInsights(async applicationInsights =>
             {
-                builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+                var instrumentationKey = builder.Configuration[ConfigurationNames.ApplicationInsightsInstrumentationKey];
+                await applicationInsights.SetInstrumentationKey(instrumentationKey);
+                await applicationInsights.LoadAppInsights();
             });
+
+            DependencyInjectionConfiguration.Register(builder.Services, builder.Configuration, builder.HostEnvironment.BaseAddress);
+            AuthenticationConfiguration.Register(builder.Services, builder.Configuration);
+
 
             await builder.Build().RunAsync();
         }
