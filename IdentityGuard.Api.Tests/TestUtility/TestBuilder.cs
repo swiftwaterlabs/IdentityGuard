@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using IdentityGuard.Api.Configuration;
 using IdentityGuard.Api.Functions;
+using IdentityGuard.Api.Tests.TestUtility.TestContexts;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,34 +24,50 @@ namespace IdentityGuard.Api.Tests.TestUtility
 
         private static void Configure(IServiceCollection services)
         {
-            services.AddFunctionsWorkerCore();
-            services.AddFunctionsWorkerDefaults();
+            ConfigureApplicationConfiguration(services);
+            ConfigureApplication(services);
+            ConfigureFunctions(services);
+            ConfigureFakes(services);
 
+            _serviceProvider = services.BuildServiceProvider();
+        }
+
+        private static void ConfigureApplication(IServiceCollection services)
+        {
+            var properties = new Dictionary<object, object>();
+            var context = new HostBuilderContext(properties);
+            DependencyInjectionConfiguration.Configure(context, services);
+        }
+
+        private static void ConfigureApplicationConfiguration(IServiceCollection services)
+        {
             var configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection()
                 .Build();
 
             services.AddSingleton<IConfiguration>(configuration);
-
-            var properties = new Dictionary<object, object>();
-            var context = new HostBuilderContext(properties);
-            DependencyInjectionConfiguration.Configure(context, services);
-
-            ConfigureFunctions(services);
-
-            _serviceProvider = services.BuildServiceProvider();
         }
 
         private static void ConfigureFunctions(IServiceCollection services)
         {
+            services.AddFunctionsWorkerCore();
+            services.AddFunctionsWorkerDefaults();
+
             services.AddTransient<AuthorizationFunction>();
             services.AddTransient<HealthFunction>();
+        }
+
+        private static void ConfigureFakes(IServiceCollection services)
+        {
+            services.AddSingleton<TestContext>();
         }
 
         public T Get<T>()
         {
             return _serviceProvider.GetService<T>();
         }
+
+        public TestContext Context => _serviceProvider.GetService<TestContext>();
 
     }
 }
