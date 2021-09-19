@@ -21,6 +21,8 @@ namespace IdentityGuard.Blazor.Ui.Configuration
 
             //Register Services
             services.AddTransient<Services.IAuthorizationService, AuthorizationService>();
+            services.AddTransient<Services.IUserService, UserService>();
+
             services.AddGraphClient(configuration[ConfigurationNames.ApiScope]);
 
         }
