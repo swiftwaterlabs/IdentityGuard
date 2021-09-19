@@ -42,10 +42,13 @@ namespace IdentityGuard.Core.Managers
             return item;
         }
 
-        public Task<Directory> Update(string id, Directory toUpdate)
+        public async Task<Directory> Update(string id, Directory toUpdate)
         {
+            var existing = await GetById(id);
+            if (string.IsNullOrEmpty(existing?.Id)) return null;
+
             toUpdate.Id = id;
-            var item = _directoryRepository.Save(toUpdate);
+            var item = await _directoryRepository.Save(toUpdate);
 
             return item;
         }

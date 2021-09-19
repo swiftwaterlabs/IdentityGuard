@@ -193,6 +193,21 @@ namespace IdentityGuard.Api.Tests.Functions
             AssertDirectoryData(directory, builder.Context.Data.Directories.First().Value);
         }
 
+        [Fact]
+        public async Task Put_InvalidIdAuthorizedUser_ReturnsNotFound()
+        {
+            var builder = new TestBuilder();
+            builder.WithAuthenticatedUser("the-use", ApplicationRoles.DirectoryAdmin);
+
+            var function = builder.Get<DirectoryFunctions>();
+
+            var directory = GetDirectory();
+
+            var result = await function.Put(builder.PutRequest(directory), builder.Context(), directory.Id);
+
+            Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
+        }
+
         private Directory GetDirectory()
         {
             return new Directory
