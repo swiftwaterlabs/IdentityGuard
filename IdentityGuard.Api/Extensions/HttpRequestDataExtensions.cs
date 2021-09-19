@@ -6,14 +6,14 @@ namespace IdentityGuard.Api.Extensions
 {
     public static class HttpRequestDataExtensions
     {
-        public static HttpResponseData UnauthorizedResponse(this HttpRequestData request)
+        public static Task<HttpResponseData> UnauthorizedResponseAsync(this HttpRequestData request)
         {
-            return request.CreateResponse(HttpStatusCode.Forbidden);
+            return Task.FromResult(request.CreateResponse(HttpStatusCode.Forbidden));
         }
 
-        public static HttpResponseData OkResponse(this HttpRequestData request)
+        public static Task<HttpResponseData> OkResponseAsync(this HttpRequestData request)
         {
-            return request.CreateResponse(HttpStatusCode.OK);
+            return Task.FromResult(request.CreateResponse(HttpStatusCode.OK));
         }
 
         public static async Task<HttpResponseData> OkResponseAsync<T>(this HttpRequestData request, T data)

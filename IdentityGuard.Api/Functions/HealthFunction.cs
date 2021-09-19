@@ -22,39 +22,34 @@ namespace IdentityGuard.Api.Functions
             _applicationHealthManager = applicationHealthManager;
         }
         [Function("health-probe")]
-        public HttpResponseData Probe([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health/probe")] HttpRequestData req,
+        public Task<HttpResponseData> Probe([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health/probe")] HttpRequestData req,
             FunctionContext executionContext)
         {
-            var response = req.OkResponse();
-
-            return response;
+            return req.OkResponseAsync();
         }
 
         [Function("health-about")]
-        public async Task<HttpResponseData> About(
+        public Task<HttpResponseData> About(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health/about")]
             HttpRequestData req,
             FunctionContext executionContext)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ViewApplicationInfo, req.Identities)) return req.UnauthorizedResponse();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ViewApplicationInfo, req.Identities)) return req.UnauthorizedResponseAsync();
 
             var data = _aboutManager.Get();
 
-            var result = await req.OkResponseAsync(data);
+            return req.OkResponseAsync(data);
 
-            return result;
         }
 
         [Function("health-status")]
-        public async Task<HttpResponseData> Status([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health/status")] HttpRequestData req,
+        public Task<HttpResponseData> Status([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health/status")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var data = _applicationHealthManager.Get();
 
-            var result = await req.OkResponseAsync(data);
-
-            return result;
+            return req.OkResponseAsync(data);
         }
     }
 }
