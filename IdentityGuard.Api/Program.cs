@@ -1,7 +1,5 @@
-using Microsoft.Azure.Functions.Worker.Configuration;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
+using IdentityGuard.Api.Configuration;
 
 namespace IdentityGuard.Api
 {
@@ -11,6 +9,7 @@ namespace IdentityGuard.Api
         {
             var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults()
+                .ConfigureServices(DependencyInjectionConfiguration.Configure)
                 .Build();
 
             host.Run();
