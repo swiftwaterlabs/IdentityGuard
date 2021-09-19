@@ -3,6 +3,7 @@ using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using IdentityGuard.Core.Configuration;
+using IdentityGuard.Core.Factories;
 using IdentityGuard.Core.Managers;
 using IdentityGuard.Core.Mappers;
 using IdentityGuard.Core.Repositories;
@@ -18,16 +19,22 @@ namespace IdentityGuard.Api.Configuration
     {
         public static void Configure(HostBuilderContext context, IServiceCollection services)
         {
-            
+            // Factories
+            services.AddTransient<IGraphClientFactory, GraphClientFactory>();
+
+            // Managers
             services.AddTransient<AboutManager>();
             services.AddTransient<ApplicationHealthManager>();
             services.AddTransient<AuthorizationManager>();
             services.AddTransient<DirectoryManager>();
 
+            // Mappers
             services.AddTransient<DirectoryMapper>();
 
+            // Repositories
             services.AddTransient<DirectoryRepository>();
 
+            // Services
             services.AddTransient<EnvironmentService>();
 
             ConfigureKeyVault(services);
