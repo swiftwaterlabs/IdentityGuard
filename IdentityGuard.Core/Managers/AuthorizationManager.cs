@@ -3,20 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using IdentityGuard.Core.Extensions;
 using IdentityGuard.Shared.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace IdentityGuard.Core.Managers
 {
     public class AuthorizationManager
     {
+        private readonly IConfiguration _configuration;
+
         private Dictionary<string, List<string>> _authorizedRoles = new Dictionary<string, List<string>>(StringComparer.InvariantCultureIgnoreCase)
         {
             {AuthorizedActions.ViewApplicationInfo,new List<string>() },
             {AuthorizedActions.ManageDirectories,new List<string>{ ApplicationRoles.DirectoryAdmin} }
         };
 
+        public AuthorizationManager(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public bool IsAuthorized(string action, IEnumerable<ClaimsIdentity> identities)
         {
+            if (_configuration.IsDevelopment()) return true;
+
             if (string.IsNullOrWhiteSpace(action)) return false;
 
             var hasAction =_authorizedRoles.TryGetValue(action.Trim(), out List<string> roles);

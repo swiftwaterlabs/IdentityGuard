@@ -27,6 +27,7 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<ApplicationHealthManager>();
             services.AddTransient<AuthorizationManager>();
             services.AddTransient<DirectoryManager>();
+            services.AddTransient<UserManager>();
 
             // Mappers
             services.AddTransient<DirectoryMapper>();
