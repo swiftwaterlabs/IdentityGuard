@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Actions", "Actions", "{04C5
 		.github\workflows\ci-build.yml = .github\workflows\ci-build.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityGuard.Blazor.Ui", "IdentityGuard.Blazor.Ui\IdentityGuard.Blazor.Ui.csproj", "{7C5BD808-E0E2-4C95-A802-B7212E737E4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityGuard.Blazor.Ui", "IdentityGuard.Blazor.Ui\IdentityGuard.Blazor.Ui.csproj", "{7C5BD808-E0E2-4C95-A802-B7212E737E4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

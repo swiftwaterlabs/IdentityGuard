@@ -7,20 +7,28 @@
 
 <AuthorizeView>
     <Authorized>
-        <MudAvatar Color="Color.Primary" Edge="Edge.End">
-            @context.User.Identity.Name.Substring(0,1)
-        </MudAvatar>
+        <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
+            <ActivatorContent>
+                <MudAvatar>@context.User.Identity.Name.Substring(0, 1)</MudAvatar>
+            </ActivatorContent>
+            <ChildContent>
+                <PersonCard Class="mt-n2" />
+                <MudDivider Class="mb-2" />
+                <MudListItem Text="Logout" Icon="@Icons.Material.Outlined.Logout" Href="authentication/logout" />
+            </ChildContent>
+        </MudMenu>
     </Authorized>
     <NotAuthorized>
-        <MudButton></MudButton>
-        <MudButton Link="authentication/login"
-                   Variant="Variant.Text"
-                   EndIcon="@Icons.Material.Filled.Login"
-                   Color="Color.Secondary"
-                   Edge="Edge.End">
-            Log In
-        </MudButton>
-        
+        <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
+            <ActivatorContent>
+                <MudAvatar>?</MudAvatar>
+            </ActivatorContent>
+            <ChildContent>
+                <MudListItem Text="Log In" Icon="@Icons.Material.Outlined.Login" Href="authentication/login" />
+            </ChildContent>
+        </MudMenu>
+
+
     </NotAuthorized>
 </AuthorizeView>
 
