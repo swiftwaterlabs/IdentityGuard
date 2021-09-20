@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using System.Threading.Tasks;
 using BlazorApplicationInsights;
 using IdentityGuard.Blazor.Ui.Configuration;
+using MudBlazor.Services;
 
 namespace IdentityGuard.Blazor.Ui
 {
@@ -17,6 +18,7 @@ namespace IdentityGuard.Blazor.Ui
                 await applicationInsights.SetInstrumentationKey(instrumentationKey);
                 await applicationInsights.LoadAppInsights();
             });
+            builder.Services.AddMudServices();
 
             DependencyInjectionConfiguration.Register(builder.Services, builder.Configuration, builder.HostEnvironment.BaseAddress);
             AuthenticationConfiguration.Register(builder.Services, builder.Configuration);
