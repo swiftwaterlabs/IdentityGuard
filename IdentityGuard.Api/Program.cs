@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using IdentityGuard.Api.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace IdentityGuard.Api
 {
@@ -10,6 +11,11 @@ namespace IdentityGuard.Api
             var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults()
                 .ConfigureServices(DependencyInjectionConfiguration.Configure)
+                .ConfigureAppConfiguration((context, builder) =>
+                {
+                    builder.AddEnvironmentVariables();
+                })
+                
                 .Build();
 
             host.Run();
