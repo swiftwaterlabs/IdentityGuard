@@ -2,7 +2,7 @@
 {
     public static class CosmosConfiguration
     {
-        public const string DatabaseId = "IdentityGuard";
+        public const string DatabaseId = "identityguard";
 
         public const string DefaultPartitionKey = "Default";
 
