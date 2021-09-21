@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using IdentityGuard.Api.Functions;
 using IdentityGuard.Api.Tests.TestUtility;
 using IdentityGuard.Api.Tests.TestUtility.Extensions;
+using IdentityGuard.Core.Models;
 using IdentityGuard.Core.Models.Data;
 using IdentityGuard.Shared.Models;
 using Xunit;
