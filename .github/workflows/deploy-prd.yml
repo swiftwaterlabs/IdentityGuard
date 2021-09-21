@@ -1,6 +1,6 @@
 name: deploy-prd
 env:
-  PUBLISH_DIR: identityguard.blazor.ui/bin/Release/net5.0/publish/wwwroot
+  PUBLISH_DIR: /home/runner/work/IdentityGuard/IdentityGuard/IdentityGuard.Blazor.Ui/bin/Release/net5.0/wwwroot
 
 on:
   workflow_dispatch:
