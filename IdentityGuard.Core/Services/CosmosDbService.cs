@@ -10,17 +10,19 @@ namespace IdentityGuard.Core.Services
     public class CosmosDbService
     {
         private readonly CosmosClient _client;
+        private readonly string _defaultDatabaseId;
         private readonly ICosmosLinqQueryFactory _cosmosLinqQueryFactory;
 
         public CosmosDbService(CosmosClient cosmosClient, string defaultDatabaseId, ICosmosLinqQueryFactory cosmosLinqQueryFactory)
         {
             _client = cosmosClient;
+            _defaultDatabaseId = defaultDatabaseId;
             _cosmosLinqQueryFactory = cosmosLinqQueryFactory;
         }
 
         public IQueryable<T> Query<T>(string collectionId, string databaseId = null)
         {
-            var result = _client.GetContainer(databaseId, collectionId)
+            var result = _client.GetContainer(databaseId ?? _defaultDatabaseId, collectionId)
                 .GetItemLinqQueryable<T>(allowSynchronousQueryExecution: true);
 
             return result;
@@ -30,7 +32,7 @@ namespace IdentityGuard.Core.Services
         {
             try
             {
-                var result = await _client.GetContainer(databaseId, containerId)
+                var result = await _client.GetContainer(databaseId ?? _defaultDatabaseId, containerId)
                     .ReadItemAsync<T>(id, new PartitionKey(partitionKey));
 
                 return result.Resource;
@@ -46,7 +48,7 @@ namespace IdentityGuard.Core.Services
 
         public async Task<T> Save<T>(T toSave, string collectionId, string databaseId = null)
         {
-            var result = await _client.GetContainer(databaseId, collectionId)
+            var result = await _client.GetContainer(databaseId ?? _defaultDatabaseId, collectionId)
                 .UpsertItemAsync(toSave);
 
             return result.Resource;
@@ -54,7 +56,7 @@ namespace IdentityGuard.Core.Services
 
         public async Task Save<T>(IEnumerable<T> toSave, string collectionId, Func<T, string> getPartitionKey, string databaseId = null)
         {
-            var container = _client.GetContainer(databaseId, collectionId);
+            var container = _client.GetContainer(databaseId ?? _defaultDatabaseId, collectionId);
 
             var upsertTasks = toSave
                 .Select(item => container.UpsertItemAsync(item, new PartitionKey(getPartitionKey(item))));
@@ -64,7 +66,7 @@ namespace IdentityGuard.Core.Services
 
         public async Task<T> Delete<T>(string id, string containerId, string partitionKey, string databaseId = null)
         {
-            var result = await _client.GetContainer(databaseId, containerId)
+            var result = await _client.GetContainer(databaseId ?? _defaultDatabaseId, containerId)
                 .DeleteItemAsync<T>(id, new PartitionKey(partitionKey));
 
             return result.Resource;

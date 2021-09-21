@@ -4,13 +4,31 @@
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
+
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity.Name!
-        <button class="nav-link btn btn-link" @onclick="BeginLogout">Log out</button>
+        <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
+            <ActivatorContent>
+                <MudAvatar>@context.User.Identity.Name.Substring(0, 1)</MudAvatar>
+            </ActivatorContent>
+            <ChildContent>
+                <PersonCard Class="mt-n2" />
+                <MudDivider Class="mb-2" />
+                <MudListItem Text="Logout" Icon="@Icons.Material.Outlined.Logout" Href="authentication/logout" />
+            </ChildContent>
+        </MudMenu>
     </Authorized>
     <NotAuthorized>
-        <a href="authentication/login">Log in</a>
+        <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
+            <ActivatorContent>
+                <MudAvatar>?</MudAvatar>
+            </ActivatorContent>
+            <ChildContent>
+                <MudListItem Text="Log In" Icon="@Icons.Material.Outlined.Login" Href="authentication/login" />
+            </ChildContent>
+        </MudMenu>
+
+
     </NotAuthorized>
 </AuthorizeView>
 

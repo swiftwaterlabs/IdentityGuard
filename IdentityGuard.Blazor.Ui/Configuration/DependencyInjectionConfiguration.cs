@@ -13,7 +13,6 @@ namespace IdentityGuard.Blazor.Ui.Configuration
         public static void Register(IServiceCollection services, IConfiguration configuration, string baseAddress)
         {
             services.AddAuthorizationCore();
-
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
             RegisterApiHttpClient(services, configuration);
 

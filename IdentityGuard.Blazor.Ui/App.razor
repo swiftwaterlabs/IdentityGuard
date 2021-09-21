@@ -20,4 +20,17 @@
             </LayoutView>
         </NotFound>
     </Router>
+    <MudThemeProvider Theme="Theme" />
+    <MudDialogProvider />
+    <MudSnackbarProvider />
 </CascadingAuthenticationState>
+
+<ApplicationInsightsComponent />
+
+
+@code
+{
+
+    public MudTheme Theme = new Themes.EnterpriseTheme();
+
+}
