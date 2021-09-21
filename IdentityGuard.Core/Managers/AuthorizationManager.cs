@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using IdentityGuard.Core.Extensions;
+using IdentityGuard.Core.Models;
 using IdentityGuard.Shared.Models;
 using Microsoft.Extensions.Configuration;
 
