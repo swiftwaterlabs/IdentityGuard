@@ -30,4 +30,4 @@ jobs:
     - name: Upload Static Site
       uses: azure/CLI@v1
       with:
-        inlineScript: az storage blob upload-batch --account-name idguardwebprd --authmode key -d '$web' -s ${{ env.PUBLISH_DIR }}
+        inlineScript: az storage blob upload-batch --account-name idguardwebprd --auth-mode key -d '$web' -s ${{ env.PUBLISH_DIR }}
