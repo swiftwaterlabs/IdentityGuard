@@ -1,4 +1,4 @@
-name: deploy-blazorui-prd
+name: deploy-prd
 env:
   PUBLISH_DIR: identityguard.blazor.ui/bin/Release/net5.0/publish/wwwroot
 
@@ -22,15 +22,12 @@ jobs:
     - name: Publish app
       run: dotnet publish -c Release
 
-    - name: Set base href in index
-      uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
+    - name: Service Principal Login
+      uses: azure/login@v1
       with:
-        html_path: ${{ env.PUBLISH_DIR }}/index.html
-        base_href: /
-      
-    - name: Publish to Github Pages
-      uses: peaceiris/actions-gh-pages@v3
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Upload Static Site
+      uses: azure/CLI@v1
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ${{ env.PUBLISH_DIR }}
-        publish_branch: release/blazor-ui
+        inlineScript: az storage blob upload-batch --account-name idguardwebprd --authmode key -d '$web' -s ${{ env.PUBLISH_DIR }}
