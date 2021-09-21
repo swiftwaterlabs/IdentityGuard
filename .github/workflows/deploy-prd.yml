@@ -44,6 +44,14 @@ jobs:
         keyname2: 'Url'
         valuetoset: 'https://idguard-api-prd.azurewebsites.net'
 
+    - name: Set API Scope
+      uses: benday-inc/set-property-value-in-appsettings@v1.1
+      with:
+        pathtosettingsfile: '${{ env.UI_PUBLISH_DIR }}/appsettings.json'
+        keyname1: 'Api'
+        keyname2: 'Scope'
+        valuetoset: 'api://idguard-api-prd/user_impersonation'
+
     - name: Service Principal Login
       uses: azure/login@v1
       with:
