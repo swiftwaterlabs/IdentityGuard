@@ -22,6 +22,30 @@ jobs:
     - name: Publish app
       run: dotnet publish -c Release
 
+    - name: Set Azure AD Client Id
+      uses: benday-inc/set-property-value-in-appsettings@v1.1
+      with:
+        pathtosettingsfile: '${{ env.PUBLISH_DIR }}/appsettings.json'
+        keyname1: 'AzureAd'
+        keyname2: 'ClientId'
+        valuetoset: '31ade555-67bd-4747-9f26-f85d2f5f4213'
+
+    - name: Set Application Insights Instrumentation Key
+      uses: benday-inc/set-property-value-in-appsettings@v1.1
+      with:
+        pathtosettingsfile: '${{ env.PUBLISH_DIR }}/appsettings.json'
+        keyname1: 'ApplicationInsights'
+        keyname2: 'InstrumentationKey'
+        valuetoset: '25286e37-2f97-4829-862f-9ed479fda949'
+
+    - name: Set API Url
+      uses: benday-inc/set-property-value-in-appsettings@v1.1
+      with:
+        pathtosettingsfile: '${{ env.PUBLISH_DIR }}/appsettings.json'
+        keyname1: 'Api'
+        keyname2: 'Url'
+        valuetoset: 'https://idguard-api-prd.azurewebsites.net'
+
     - name: Service Principal Login
       uses: azure/login@v1
       with:
