@@ -9,7 +9,7 @@ namespace IdentityGuard.Blazor.Ui.Shared
     public partial class NavMenu
     {
         [Inject]
-        public IAuthorizationService AuthorizationService { get; set; }
+        public Services.IAuthorizationService AuthorizationService { get; set; }
 
         [Inject]
         public AuthenticationStateProvider AuthenticationStateService { get; set; }

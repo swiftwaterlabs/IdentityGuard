@@ -4,7 +4,6 @@ using IdentityGuard.Blazor.Ui.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using IAuthorizationService = Microsoft.AspNetCore.Authorization.IAuthorizationService;
 
 namespace IdentityGuard.Blazor.Ui.Configuration
 {
