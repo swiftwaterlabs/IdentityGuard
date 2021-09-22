@@ -62,7 +62,13 @@ namespace IdentityGuard.Api.Tests.TestUtility.Fakes
         public override HttpHeadersCollection Headers { get; } = new HttpHeadersCollection();
         public override IReadOnlyCollection<IHttpCookie> Cookies { get; } = new List<IHttpCookie>();
         public override Uri Url { get; }
-        public override IEnumerable<ClaimsIdentity> Identities => new[] {_context.Identity.AuthenticatedUser};
+        public override IEnumerable<ClaimsIdentity> Identities {
+            get {
+                IReadOnlyList<ClaimsIdentity> identities = new List<ClaimsIdentity> { _context.Identity.AuthenticatedUser };
+
+                return identities;
+            }
+        }
         public override string Method => _method;
 
         public void SetBody<T>(T body)

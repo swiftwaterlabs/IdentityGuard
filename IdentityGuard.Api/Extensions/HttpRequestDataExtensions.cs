@@ -14,6 +14,9 @@ namespace IdentityGuard.Api.Extensions
     {
         public static IEnumerable<ClaimsIdentity> GetRequestingUser(this HttpRequestData request)
         {
+            if (request.Identities is IReadOnlyList<ClaimsIdentity>)
+                return request.Identities;
+
             if (request.Identities.GetEnumerator().Current != null) 
                 return request.Identities.ToList();
 
