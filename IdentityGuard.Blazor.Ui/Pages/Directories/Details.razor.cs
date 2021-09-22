@@ -1,7 +1,9 @@
 ﻿using IdentityGuard.Blazor.Ui.Services;
 using IdentityGuard.Shared.Models;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace IdentityGuard.Blazor.Ui.Pages.Directories
@@ -17,6 +19,9 @@ namespace IdentityGuard.Blazor.Ui.Pages.Directories
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
+        [CascadingParameter]
+        public List<BreadcrumbItem> BreadCrumbs { get; set; }
+
         public bool IsNew { get; set; }
 
         public bool IsLoading { get; set; }
@@ -25,12 +30,15 @@ namespace IdentityGuard.Blazor.Ui.Pages.Directories
 
         public Directory Data { get; set; }
 
-        protected override Task OnParametersSetAsync()
+        protected override async Task OnParametersSetAsync()
         {
             IsNew = string.Equals("new", Id, StringComparison.InvariantCultureIgnoreCase);
             IsEditing = IsNew;
 
-            return LoadData();
+            BreadCrumbs.Clear();
+            BreadCrumbs.Add(new BreadcrumbItem("Directories", Paths.Directories));
+
+            await LoadData();
         }
 
         private async Task LoadData()

@@ -23,6 +23,8 @@ namespace IdentityGuard.Blazor.Ui.Shared
 
         public bool IsDrawerOpen = false;
 
+        public List<BreadcrumbItem> BreadCrumbs = new();
+
         protected override async Task OnInitializedAsync()
         {
             var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -58,11 +60,5 @@ namespace IdentityGuard.Blazor.Ui.Shared
             IsDrawerOpen = !IsDrawerOpen;
             NavMenu?.RefreshMenu();
         }
-
-        private List<BreadcrumbItem> _items = new List<BreadcrumbItem>
-        {
-            //new BreadcrumbItem("Personal", href: "#"),
-            //new BreadcrumbItem("Dashboard", href: "#"),
-        };
     }
 }

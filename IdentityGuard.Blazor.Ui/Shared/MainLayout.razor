@@ -24,11 +24,14 @@
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
             <MudToolBar DisableGutters="true">
                 <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@((e) => DrawerToggle())" Class="ml-3" />
-                <MudBreadcrumbs Items="_items"></MudBreadcrumbs>
+                <MudBreadcrumbs Items="BreadCrumbs"></MudBreadcrumbs>
             </MudToolBar>
         </MudHidden>
         <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
-            @Body
+            <CascadingValue Value="BreadCrumbs">
+                @Body
+            </CascadingValue>
+           
         </MudContainer>
     </MudMainContent>
 </MudLayout>
