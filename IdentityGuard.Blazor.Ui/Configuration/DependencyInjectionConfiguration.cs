@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using IdentityGuard.Blazor.Ui.Models;
 using IdentityGuard.Blazor.Ui.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,9 @@ namespace IdentityGuard.Blazor.Ui.Configuration
             services.AddAuthorizationCore();
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
             RegisterApiHttpClient(services, configuration);
+
+            //Register Models
+            services.AddSingleton<AppState>();
 
             //Register Managers
 

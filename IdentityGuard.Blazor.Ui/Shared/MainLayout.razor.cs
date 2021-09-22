@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using IdentityGuard.Blazor.Ui.Themes;
 using MudBlazor.ThemeManager;
 using MudBlazor;
+using IdentityGuard.Blazor.Ui.Models;
 
 namespace IdentityGuard.Blazor.Ui.Shared
 {
-    public partial class MainLayout
+    public partial class MainLayout:IDisposable
     {
         [Inject]
         AuthenticationStateProvider AuthenticationStateProvider { get; set; }
@@ -19,19 +20,27 @@ namespace IdentityGuard.Blazor.Ui.Shared
         [Inject]
         NavigationManager Navigation { get; set; }
 
+        [Inject]
+        AppState AppState { get; set; }
+
         public NavMenu NavMenu { get; set; }
 
         public bool IsDrawerOpen = false;
 
-        public List<BreadcrumbItem> BreadCrumbs = new();
-
         protected override async Task OnInitializedAsync()
         {
+            AppState.OnChange += StateHasChanged;
+
             var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
             RequireAuthenticatedUser(state.User);
 
             StateHasChanged();
+        }
+
+        public void Dispose()
+        {
+            AppState.OnChange -= StateHasChanged;
         }
 
         private void RequireAuthenticatedUser(ClaimsPrincipal user)

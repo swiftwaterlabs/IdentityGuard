@@ -1,4 +1,5 @@
-﻿using IdentityGuard.Blazor.Ui.Services;
+﻿using IdentityGuard.Blazor.Ui.Models;
+using IdentityGuard.Blazor.Ui.Services;
 using IdentityGuard.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -17,8 +18,8 @@ namespace IdentityGuard.Blazor.Ui.Pages.Directories
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        [CascadingParameter]
-        public List<BreadcrumbItem> BreadCrumbs { get; set; }
+        [Inject]
+        public AppState AppState { get; set; }
 
 
         public List<Directory> Data { get; set; } = new List<Directory>();
@@ -27,8 +28,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.Directories
 
         protected override Task OnInitializedAsync()
         {
-            BreadCrumbs.Clear();
-            BreadCrumbs.Add(new BreadcrumbItem("Directories", Paths.Directories));
+            AppState.SetBreadcrumbs(new BreadcrumbItem("Directories", Paths.Directories));
 
             return RefreshData();
         }
