@@ -35,7 +35,7 @@ namespace IdentityGuard.Api.Functions
             FunctionContext executionContext)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ViewApplicationInfo, req.Identities)) return req.UnauthorizedResponseAsync();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ViewApplicationInfo, req.GetRequestingUser())) return req.UnauthorizedResponseAsync();
 
             var data = _aboutManager.Get();
 

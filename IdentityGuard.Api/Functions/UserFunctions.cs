@@ -22,10 +22,9 @@ namespace IdentityGuard.Api.Functions
         public Task<HttpResponseData> About(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/claims")]
             HttpRequestData req,
-            FunctionContext executionContext,
-            ClaimsPrincipal claimsPrincipal)
+            FunctionContext executionContext)
         {
-            var result = _userManager.GetClaims(claimsPrincipal.Identities);
+            var result = _userManager.GetClaims(req.GetRequestingUser());
 
             return req.OkResponseAsync(result);
 

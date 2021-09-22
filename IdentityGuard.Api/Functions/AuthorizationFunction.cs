@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 using IdentityGuard.Api.Extensions;
 using IdentityGuard.Core.Managers;
@@ -19,8 +21,8 @@ namespace IdentityGuard.Api.Functions
         public Task<HttpResponseData> Get([HttpTrigger(AuthorizationLevel.Anonymous, "get",Route = "authorization/{action}")] HttpRequestData req,
             FunctionContext executionContext,
             string action)
-        {
-            var data = _authorizationManager.IsAuthorized(action, req.Identities);
+        {           
+            var data = _authorizationManager.IsAuthorized(action, req.GetRequestingUser());
 
             return req.OkResponseAsync(data);
         }

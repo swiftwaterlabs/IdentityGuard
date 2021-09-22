@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker.Http;
 using Newtonsoft.Json;
@@ -8,6 +12,40 @@ namespace IdentityGuard.Api.Extensions
 {
     public static class HttpRequestDataExtensions
     {
+        public static IEnumerable<ClaimsIdentity> GetRequestingUser(this HttpRequestData request)
+        {
+            if (request.Headers.Contains(HttpRequestHeader.Authorization.ToString()))
+            {
+                var identities = request.Headers.GetValues(HttpRequestHeader.Authorization.ToString())
+                   .Select(GetIdentityFromHeader)
+                   .Where(u => u != null)
+                   .ToList();
+
+                if (identities.Any()) return identities;
+            }
+
+            return request.Identities;
+        }
+
+        private static ClaimsIdentity GetIdentityFromHeader(string authorizationHeader)
+        {
+            if (string.IsNullOrEmpty(authorizationHeader)) return null;
+
+            var stream = authorizationHeader
+              .Split(" ")
+              .Last();
+
+            if (string.IsNullOrEmpty(stream)) return null;
+
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(stream);
+            var securityToken = jsonToken as JwtSecurityToken;
+
+            if (securityToken == null) return null;
+
+            return new ClaimsIdentity(securityToken.Claims);
+        }
+
         public static HttpResponseData UnauthorizedResponse(this HttpRequestData request)
         {
             return request.CreateResponse(HttpStatusCode.Forbidden);

@@ -25,7 +25,7 @@ namespace IdentityGuard.Api.Functions
             FunctionContext executionContext)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponse();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
             var data = await _directoryManager.Get();
 
@@ -40,7 +40,7 @@ namespace IdentityGuard.Api.Functions
             string id)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponse();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
             var data = await _directoryManager.GetById(id);
 
@@ -56,7 +56,7 @@ namespace IdentityGuard.Api.Functions
             FunctionContext executionContext)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponse();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
             var data = await _directoryManager.Add(req.GetBody<Directory>());
 
@@ -71,7 +71,7 @@ namespace IdentityGuard.Api.Functions
             string id)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponse();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
             var data = await _directoryManager.Update(id, req.GetBody<Directory>());
 
@@ -88,7 +88,7 @@ namespace IdentityGuard.Api.Functions
             string id)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.Identities)) return req.UnauthorizedResponse();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageDirectories, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
             await _directoryManager.Delete(id);
 
