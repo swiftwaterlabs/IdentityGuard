@@ -1,4 +1,6 @@
-﻿<PersonCard Style="background-color: var(--mud-palette-drawer-background);color: var(--mud-palette-drawer-text);" />
+﻿@using IdentityGuard.Blazor.Ui.Pages
+ 
+<PersonCard Style="background-color: var(--mud-palette-drawer-background);color: var(--mud-palette-drawer-text);" />
 <MudDivider Class="mb-4" />
 <MudNavMenu>
     <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Main</MudText>
@@ -7,11 +9,11 @@
     @if (CanPerformAdminActions)
     {
         <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Admin</MudText>
-        <MudNavLink Href="/directory" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Domain">Directories</MudNavLink>
+        <MudNavLink Href="@Paths.Directories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Domain">Directories</MudNavLink>
     }
 
     <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Access Reviews</MudText>
-    <MudNavLink Href="/user/accessreview" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.VerifiedUser">Users</MudNavLink>
+    <MudNavLink Href="@Paths.UserAccessReviews" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.VerifiedUser">Users</MudNavLink>
     <MudNavLink Href="/group/accessreview" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Groups">Groups</MudNavLink>
     <MudNavLink Href="/application/accessreview" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.SupervisedUserCircle">Applications</MudNavLink>
 

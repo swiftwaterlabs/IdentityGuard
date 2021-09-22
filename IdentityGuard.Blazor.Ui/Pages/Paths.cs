@@ -9,5 +9,7 @@ namespace IdentityGuard.Blazor.Ui.Pages
     {
         public const string Home ="/";
         public const string Directories ="directory/";
+        public const string AccessReviews ="accessreview/";
+        public const string UserAccessReviews ="accessreview/user";
     }
 }
