@@ -44,7 +44,7 @@ namespace IdentityGuard.Core.Managers
         private static bool HasRole(ClaimsIdentity identity, List<string> roles)
         {
             var userRoles = identity.Claims
-                .Where(c => c.Type == identity.RoleClaimType)
+                .Where(c => c.Type == identity.RoleClaimType || string.Equals(c.Type,"roles"))
                 .Select(c => c.Value);
 
             var userIsInRole = userRoles

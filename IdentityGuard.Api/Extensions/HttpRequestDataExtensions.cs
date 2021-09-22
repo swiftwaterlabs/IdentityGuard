@@ -40,7 +40,7 @@ namespace IdentityGuard.Api.Extensions
             var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadToken(stream);
             var securityToken = jsonToken as JwtSecurityToken;
-
+            
             if (securityToken == null) return null;
 
             return new ClaimsIdentity(securityToken.Claims);
