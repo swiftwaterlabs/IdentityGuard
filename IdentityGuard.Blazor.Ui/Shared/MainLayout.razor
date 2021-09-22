@@ -1,6 +1,4 @@
-﻿@using IdentityGuard.Blazor.Ui.Themes
-@using MudBlazor.ThemeManager
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 <MudLayout>
     <MudAppBar Elevation="_themeManager.AppBarElevation">
@@ -19,8 +17,8 @@
         <MudSpacer />
         <LoginDisplay/>
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="_themeManager.DrawerElevation" ClipMode="_themeManager.DrawerClipMode">
-        <NavMenu />
+    <MudDrawer @bind-Open="IsDrawerOpen" Elevation="_themeManager.DrawerElevation" ClipMode="_themeManager.DrawerClipMode">
+        <NavMenu @ref="NavMenu"/>
     </MudDrawer>
     <MudMainContent>
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
@@ -37,32 +35,6 @@
 
 
 @code { 
-    private ThemeManagerTheme _themeManager = new ThemeManagerTheme
-    {
-        Theme = new EnterpriseTheme(),
-        DrawerClipMode = DrawerClipMode.Always,
-        FontFamily = "Montserrat",
-        DefaultBorderRadius = 6,
-        AppBarElevation = 1,
-        DrawerElevation = 1
-    };
-
-    public bool _drawerOpen = false;
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-
-    protected override void OnInitialized()
-    {
-        StateHasChanged();
-    }
-
-    private List<BreadcrumbItem> _items = new List<BreadcrumbItem>
-    {
-        //new BreadcrumbItem("Personal", href: "#"),
-        //new BreadcrumbItem("Dashboard", href: "#"),
-    };
+    
 
 }

@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityGuard.Blazor.Ui.Themes;
+using MudBlazor.ThemeManager;
+using MudBlazor;
 
 namespace IdentityGuard.Blazor.Ui.Shared
 {
@@ -16,11 +19,17 @@ namespace IdentityGuard.Blazor.Ui.Shared
         [Inject]
         NavigationManager Navigation { get; set; }
 
+        public NavMenu NavMenu { get; set; }
+
+        public bool IsDrawerOpen = false;
+
         protected override async Task OnInitializedAsync()
         {
             var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
             RequireAuthenticatedUser(state.User);
+
+            StateHasChanged();
         }
 
         private void RequireAuthenticatedUser(ClaimsPrincipal user)
@@ -33,5 +42,27 @@ namespace IdentityGuard.Blazor.Ui.Shared
                 Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
             }
         }
+
+        private readonly ThemeManagerTheme _themeManager = new()
+        {
+            Theme = new EnterpriseTheme(),
+            DrawerClipMode = DrawerClipMode.Always,
+            FontFamily = "Montserrat",
+            DefaultBorderRadius = 6,
+            AppBarElevation = 1,
+            DrawerElevation = 1
+        };
+
+        void DrawerToggle()
+        {
+            IsDrawerOpen = !IsDrawerOpen;
+            NavMenu?.RefreshMenu();
+        }
+
+        private List<BreadcrumbItem> _items = new List<BreadcrumbItem>
+        {
+            //new BreadcrumbItem("Personal", href: "#"),
+            //new BreadcrumbItem("Dashboard", href: "#"),
+        };
     }
 }

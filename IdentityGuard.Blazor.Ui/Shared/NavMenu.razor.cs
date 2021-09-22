@@ -16,20 +16,31 @@ namespace IdentityGuard.Blazor.Ui.Shared
 
         public bool CanPerformAdminActions = false;
 
-        protected override async Task OnParametersSetAsync()
+        private bool IsConfiguredForAuthenticatedUser = false;
+
+        protected override Task OnParametersSetAsync()
         {
+            return RefreshMenu();
+        }
+
+        
+        public async Task RefreshMenu()
+        {
+            if (IsConfiguredForAuthenticatedUser) return;
+
             var state = await AuthenticationStateService.GetAuthenticationStateAsync();
 
             if (!state.User.Identity.IsAuthenticated)
             {
                 CanPerformAdminActions = false;
-                StateHasChanged();
             }
             else
             {
                 CanPerformAdminActions = await AuthorizationService.IsAuthorized(AuthorizedActions.ManageDirectories);
-                StateHasChanged();
+                IsConfiguredForAuthenticatedUser = true;
             }
+
+            StateHasChanged();
         }
     }
 }
