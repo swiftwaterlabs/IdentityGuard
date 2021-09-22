@@ -22,8 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityGuard.Api.Tests", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Actions", "Actions", "{04C5AD0C-BDA9-4EC0-BD6C-FDDB01BF5CA6}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\blazor-deploy-prd.yml = .github\workflows\blazor-deploy-prd.yml
 		.github\workflows\ci-build.yml = .github\workflows\ci-build.yml
+		.github\workflows\deploy-dev.yml = .github\workflows\deploy-dev.yml
+		.github\workflows\deploy-prd.yml = .github\workflows\deploy-prd.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityGuard.Blazor.Ui", "IdentityGuard.Blazor.Ui\IdentityGuard.Blazor.Ui.csproj", "{7C5BD808-E0E2-4C95-A802-B7212E737E4C}"
