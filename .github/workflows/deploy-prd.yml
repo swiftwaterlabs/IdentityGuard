@@ -2,6 +2,11 @@ name: deploy-prd
 env:
   UI_PUBLISH_DIR: IdentityGuard.Blazor.Ui/bin/Release/net5.0/publish/wwwroot
   API_PUBLISH_DIR: IdentityGuard.Api/bin/Release/net5.0/publish
+  APP_INSIGHTS_ID: 25286e37-2f97-4829-862f-9ed479fda949
+  UI_CLIENT_ID: 31ade555-67bd-4747-9f26-f85d2f5f4213
+  API_URL: https://idguard-api-prd.azurewebsites.net
+  API_SCOPE: api://idguard-api-prd/user_impersonation
+  UI_BLOB_NAME: idguardwebprd
 
 on:
   workflow_dispatch:
@@ -27,7 +32,7 @@ jobs:
         pathtosettingsfile: '${{ env.UI_PUBLISH_DIR }}/appsettings.json'
         keyname1: 'AzureAd'
         keyname2: 'ClientId'
-        valuetoset: '31ade555-67bd-4747-9f26-f85d2f5f4213'
+        valuetoset: '${{ env.UI_CLIENT_ID }}'
 
     - name: Set Application Insights Instrumentation Key
       uses: benday-inc/set-property-value-in-appsettings@v1.1
@@ -35,7 +40,7 @@ jobs:
         pathtosettingsfile: '${{ env.UI_PUBLISH_DIR }}/appsettings.json'
         keyname1: 'ApplicationInsights'
         keyname2: 'InstrumentationKey'
-        valuetoset: '25286e37-2f97-4829-862f-9ed479fda949'
+        valuetoset: '${{ env.APP_INSIGHTS_ID }}'
 
     - name: Set API Url
       uses: benday-inc/set-property-value-in-appsettings@v1.1
@@ -43,7 +48,7 @@ jobs:
         pathtosettingsfile: '${{ env.UI_PUBLISH_DIR }}/appsettings.json'
         keyname1: 'Api'
         keyname2: 'Url'
-        valuetoset: 'https://idguard-api-prd.azurewebsites.net'
+        valuetoset: '${{ env.API_URL }}'
 
     - name: Set API Scope
       uses: benday-inc/set-property-value-in-appsettings@v1.1
@@ -51,7 +56,7 @@ jobs:
         pathtosettingsfile: '${{ env.UI_PUBLISH_DIR }}/appsettings.json'
         keyname1: 'Api'
         keyname2: 'Scope'
-        valuetoset: 'api://idguard-api-prd/user_impersonation'
+        valuetoset: '${{ env.API_SCOPE }}'
 
     - name: Service Principal Login
       uses: azure/login@v1
@@ -61,7 +66,7 @@ jobs:
     - name: Upload Static Site
       uses: azure/CLI@v1
       with:
-        inlineScript: az storage blob upload-batch --account-name idguardwebprd --auth-mode key -d '$web' -s ${{ env.UI_PUBLISH_DIR }}
+        inlineScript: az storage blob upload-batch --account-name '${{ env.UI_BLOB_NAME }}' --auth-mode key -d '$web' -s ${{ env.UI_PUBLISH_DIR }}
 
     - name: Deploy Azure Function
       uses: Azure/functions-action@v1
