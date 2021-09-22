@@ -14,17 +14,18 @@ namespace IdentityGuard.Api.Extensions
     {
         public static IEnumerable<ClaimsIdentity> GetRequestingUser(this HttpRequestData request)
         {
-            if (request.Headers.Contains(HttpRequestHeader.Authorization.ToString()))
-            {
-                var identities = request.Headers.GetValues(HttpRequestHeader.Authorization.ToString())
+            if (request.Identities.GetEnumerator().Current != null) 
+                return request.Identities.ToList();
+
+            if (!request.Headers.Contains(HttpRequestHeader.Authorization.ToString())) 
+                return new List<ClaimsIdentity>();
+
+            var identities = request.Headers.GetValues(HttpRequestHeader.Authorization.ToString())
                    .Select(GetIdentityFromHeader)
                    .Where(u => u != null)
                    .ToList();
 
-                if (identities.Any()) return identities;
-            }
-
-            return request.Identities;
+            return identities;
         }
 
         private static ClaimsIdentity GetIdentityFromHeader(string authorizationHeader)
