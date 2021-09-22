@@ -7,9 +7,12 @@
     @if (CanPerformAdminActions)
     {
         <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Admin</MudText>
-        <MudNavLink Href="/directories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Domain">Directories</MudNavLink>
+        <MudNavLink Href="/directory" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Domain">Directories</MudNavLink>
     }
 
     <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Access Reviews</MudText>
-    <MudNavLink Href="/users/accessreview" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.SupervisedUserCircle">Users</MudNavLink>
+    <MudNavLink Href="/user/accessreview" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.VerifiedUser">Users</MudNavLink>
+    <MudNavLink Href="/group/accessreview" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Groups">Groups</MudNavLink>
+    <MudNavLink Href="/application/accessreview" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.SupervisedUserCircle">Applications</MudNavLink>
+
 </MudNavMenu>

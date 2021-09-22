@@ -34,7 +34,7 @@ namespace IdentityGuard.Core.Repositories
         public async Task<Directory> GetById(string id)
         {
             var data = await _cosmosDbService.Get<DirectoryData>(id,
-                CosmosConfiguration.DatabaseId,
+                CosmosConfiguration.Containers.Directories,
                 CosmosConfiguration.DefaultPartitionKey);
 
             var result = _directoryMapper.Map(data);

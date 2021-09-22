@@ -1,0 +1,10 @@
+﻿@if (IsLoading)
+{
+    <div class="parent">
+        <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
+    </div>
+}
+else
+{
+    @ChildContent
+}

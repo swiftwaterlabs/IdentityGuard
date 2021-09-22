@@ -1,0 +1,94 @@
+﻿@page "/directory/{Id}"
+@namespace IdentityGuard.Blazor.Ui.Pages.Directories
+
+<MudContainer Class="mt-16">
+    <Loadable IsLoading="IsLoading">
+            <MudCard>
+                <MudCardHeader>
+                    <MudText Typo="Typo.h5">@Data.Name</MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    @if (IsEditing)
+                    {
+                        <MudGrid>
+                            <MudItem xs="12" md="12">
+                                <MudTextField @bind-Value="@Data.Name" Label="Name" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="@Data.Domain" Label="Domain" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="@Data.TenantId" Label="Tenant" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="@Data.GraphUrl" Label="Graph Url" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="@Data.PortalUrl" Label="Portal Url" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudRadioGroup @bind-SelectedOption="@Data.ClientType">
+                                    <MudRadio Option="@(IdentityGuard.Shared.Models.DirectoryClientType.Application)">Application</MudRadio>
+                                    <MudRadio Option="@(IdentityGuard.Shared.Models.DirectoryClientType.ManagedIdentity)">Managed Identity</MudRadio>
+                                </MudRadioGroup>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="@Data.ClientId" Label="Client Id" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudCheckBox @bind-Checked="@Data.IsDefault" Label="Is Default" Variant="Variant.Outlined" />
+                            </MudItem>
+                        </MudGrid>
+                    }
+                    else
+                    {
+                <MudList>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Domain</MudText>
+                        <MudText Typo="Typo.body2">@Data.Domain</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Tenant</MudText>
+                        <MudText Typo="Typo.body2">@Data.TenantId</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Graph Url</MudText>
+                        <MudText Typo="Typo.body2">@Data.GraphUrl</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Portal Url</MudText>
+                        <MudText Typo="Typo.body2">@Data.PortalUrl</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Client Type</MudText>
+                        <MudText Typo="Typo.body2">@Data.ClientType</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Client Id</MudText>
+                        <MudText Typo="Typo.body2">@Data.ClientId</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Is Default</MudText>
+                        <MudText Typo="Typo.body2">@Data.IsDefault ? "Yes": "No"</MudText>
+                    </MudListItem>
+                </MudList>
+                        
+                    }
+                </MudCardContent>
+                <MudCardActions>
+                    @if (IsEditing)
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Save">Save</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Cancel" Class="ml-4">Cancel</MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Edit">Edit</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Back" Class="ml-4">Back</MudButton>
+                    }
+                </MudCardActions>
+            </MudCard>
+    </Loadable>
+    
+
+</MudContainer>

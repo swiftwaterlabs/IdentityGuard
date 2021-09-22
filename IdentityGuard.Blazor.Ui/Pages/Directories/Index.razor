@@ -1,0 +1,28 @@
+﻿@page "/directory"
+@namespace IdentityGuard.Blazor.Ui.Pages.Directories
+
+<MudContainer Class="mt-16">
+    <MudText Typo="Typo.h3" Color="Color.Primary">Directories</MudText>
+
+    <Loadable IsLoading="IsLoading">
+        <MudContainer>
+            <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="add" OnClick="ShowNew" Class="mb-2">Onboard Directory</MudButton>
+        </MudContainer>
+        <MudContainer>
+            <MudTable Items="@Data">
+                <HeaderContent>
+                    <MudTh></MudTh>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Domain</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>
+                        <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit" aria-label="edit" OnClick="@(()=>ShowEdit(context.Id))" />
+                    </MudTd>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Domain">@context.Domain</MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudContainer>
+    </Loadable>
+</MudContainer>

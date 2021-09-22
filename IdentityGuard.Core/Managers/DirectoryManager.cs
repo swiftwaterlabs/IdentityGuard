@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using IdentityGuard.Core.Repositories;
 using IdentityGuard.Shared.Models;
@@ -37,6 +38,7 @@ namespace IdentityGuard.Core.Managers
 
         public Task<Directory> Add(Directory toAdd)
         {
+            toAdd.Id = Guid.NewGuid().ToString();
             var item = _directoryRepository.Save(toAdd);
 
             return item;
