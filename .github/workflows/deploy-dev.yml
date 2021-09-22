@@ -1,13 +1,13 @@
-name: deploy-prd
+name: deploy-dev
 env:
   UI_PUBLISH_DIR: IdentityGuard.Blazor.Ui/bin/Release/net5.0/publish/wwwroot
   API_PUBLISH_DIR: IdentityGuard.Api/bin/Release/net5.0/publish
-  APP_INSIGHTS_ID: 25286e37-2f97-4829-862f-9ed479fda949
-  UI_CLIENT_ID: 31ade555-67bd-4747-9f26-f85d2f5f4213
-  UI_FUNCTION_NAME: idguard-api-prd
-  API_URL: https://idguard-api-prd.azurewebsites.net
-  API_SCOPE: api://idguard-api-prd/user_impersonation
-  UI_BLOB_NAME: idguardwebprd
+  APP_INSIGHTS_ID: 634293c6-af51-45c9-855f-5a750154bc42
+  UI_CLIENT_ID: 0ee06578-fefa-45a5-a01f-39c4e971cfed
+  UI_FUNCTION_NAME: idguard-api-dev
+  API_URL: https://idguard-api-dev.azurewebsites.net
+  API_SCOPE: api://idguard-api-dev/user_impersonation
+  UI_BLOB_NAME: idguardwebdev
 
 on:
   workflow_dispatch:
