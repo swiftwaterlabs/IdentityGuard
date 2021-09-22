@@ -156,7 +156,7 @@ namespace IdentityGuard.Api.Tests.Functions
             var result = await function.Post(builder.PostRequest(directory), builder.Context());
 
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-            AssertDirectoryData(directory,builder.Context.Data.Directories.First().Value);
+            AssertDirectoryData(directory,builder.Context.Data.Directories.First().Value, false);
         }
 
         [Fact]
@@ -225,9 +225,13 @@ namespace IdentityGuard.Api.Tests.Functions
             };
         }
 
-        private void AssertDirectoryData(Directory actual, DirectoryData expected)
+        private void AssertDirectoryData(Directory actual, DirectoryData expected, bool validateId = true)
         {
-            Assert.Equal(expected.Id, actual.Id);
+            if(validateId)
+            {
+                Assert.Equal(expected.Id, actual.Id);
+            }
+           
             Assert.Equal(expected.TenantId, actual.TenantId);
             Assert.Equal(expected.Name, actual.Name);
             Assert.Equal(expected.Domain, actual.Domain);
