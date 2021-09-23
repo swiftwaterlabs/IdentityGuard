@@ -99,16 +99,21 @@ namespace IdentityGuard.Core.Managers
             var user = await _userService.Get(directory, userId);
             if (user?.Id == null) return null;
 
-            var ownedObjects = await _userService.GetOwnedObjects(directory, userId);
-            var memberObjects = await _userService.GetMemberOf(directory, userId);
-            var roleAssignments = await _userService.GetApplicationRoles(directory, userId);
+            var ownedObjectsTask = _userService.GetOwnedObjects(directory, userId);
+            var memberObjectsTask = _userService.GetMemberOf(directory, userId);
+            var roleAssignmentsTask = _userService.GetApplicationRoles(directory, userId);
+
+            await Task.WhenAll(ownedObjectsTask, memberObjectsTask, roleAssignmentsTask);
+
+            var ownedObjects = await ownedObjectsTask;
+            var memberObjects = await memberObjectsTask;
+            var roleAssignments = await roleAssignmentsTask;
 
             await ApplyRoleNames(directory, roleAssignments);
 
             return new UserAccess
             {
-                UserId = user.Id,
-                UserDisplayName = user.DisplayName,
+                User = user,
                 DirectoryId = directory.Id,
                 DirectoryName = directory.Domain,
                 OwnedObjects = ownedObjects,
@@ -144,6 +149,7 @@ namespace IdentityGuard.Core.Managers
             var servicePrincipalTasks = servicePrincipalIds
                 .Select(s => _servicePrincipalService.Get(directory, s));
             var servicePrincipals = await Task.WhenAll(servicePrincipalTasks);
+
             return servicePrincipals;
         }
     }

@@ -6,8 +6,7 @@ namespace IdentityGuard.Shared.Models
     {
         public string DirectoryId { get; set; }
         public string DirectoryName { get; set; }
-        public string UserId { get; set; }
-        public string UserDisplayName { get; set; }
+        public User User { get; set; }
 
         public List<DirectoryObject> OwnedObjects { get; set; }
         public List<DirectoryObject> GroupMembership {get;set;}

@@ -38,11 +38,22 @@ namespace IdentityGuard.Core.Mappers
                     ManagementUrl = directory.PortalUrl
                 };
             }
+            if (toMap is Microsoft.Graph.DirectoryRole directoryRole)
+            {
+                return new Shared.Models.DirectoryObject
+                {
+                    Id = directoryRole.Id,
+                    DisplayName = directoryRole.DisplayName,
+                    Type = "Directory Role",
+                    ManagementUrl = directory.PortalUrl
+                };
+            }
 
             return new Shared.Models.DirectoryObject
             {
                 Id = toMap.Id,
-                Type = toMap.ODataType
+                Type = toMap.ODataType,
+                ManagementUrl = directory.PortalUrl
             };
             
         }

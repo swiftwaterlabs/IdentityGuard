@@ -78,7 +78,7 @@ namespace IdentityGuard.Api.Functions
 
             var data = await _userManager.GetAccess(directoryId, id);
 
-            if (string.IsNullOrEmpty(data?.UserId)) return req.NotFoundResponse();
+            if (string.IsNullOrEmpty(data?.User?.Id)) return req.NotFoundResponse();
 
             return await req.OkResponseAsync(data);
         }
