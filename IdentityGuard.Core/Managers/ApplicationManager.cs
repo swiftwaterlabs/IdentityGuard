@@ -71,5 +71,18 @@ namespace IdentityGuard.Core.Managers
 
             return uniqueResults;
         }
+    
+        public async Task<ApplicationAccess> GetAccess(string directoryId, string id)
+        {
+            var directory = await _directoryManager.GetById(directoryId);
+            var application = await Get(directoryId, id);
+
+            return new ApplicationAccess
+            {
+                DirectoryId = directory.Id,
+                DirectoryName = directory.Domain,
+                Application = application
+            };
+        }
     }
 }

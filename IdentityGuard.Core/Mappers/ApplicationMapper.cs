@@ -9,6 +9,9 @@ namespace IdentityGuard.Core.Mappers
         {
             if (toMap == null) return null;
 
+            var passwordSecrets = toMap.PasswordCredentials?.Select(Map)?.ToList() ?? new List<Shared.Models.ApplicationSecret>();
+            var keySecrets = toMap.KeyCredentials?.Select(Map).ToList() ?? new List<Shared.Models.ApplicationSecret>();
+
             return new Shared.Models.Application
             {
                 Id = toMap.Id,
@@ -17,7 +20,8 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryName = directory.Domain,
                 AppId = toMap.AppId,
                 Roles = toMap.AppRoles?.Select(Map)?.ToDictionary(r=>r.Id) ?? new Dictionary<string,Shared.Models.Role>(),
-                ManagementUrl = directory.PortalUrl
+                ManagementUrl = directory.PortalUrl,
+                Secrets = passwordSecrets.Union(keySecrets).ToList()
             };
         }
 
@@ -30,6 +34,32 @@ namespace IdentityGuard.Core.Mappers
                 DisplayName = toMap.DisplayName,
                 Name = toMap.Value,
                 Description = toMap.Description
+            };
+        }
+
+        private Shared.Models.ApplicationSecret Map(Microsoft.Graph.PasswordCredential toMap)
+        {
+            if (toMap == null) return null;
+
+            return new Shared.Models.ApplicationSecret
+            {
+                Id = toMap.KeyId.ToString(),
+                DisplayName = toMap.DisplayName,
+                Type = "Password",
+                ExpiresAt = toMap.EndDateTime.GetValueOrDefault().DateTime
+            };
+        }
+
+        private Shared.Models.ApplicationSecret Map(Microsoft.Graph.KeyCredential toMap)
+        {
+            if (toMap == null) return null;
+
+            return new Shared.Models.ApplicationSecret
+            {
+                Id = toMap.KeyId.ToString(),
+                DisplayName = toMap.DisplayName,
+                Type = "Certificate",
+                ExpiresAt = toMap.EndDateTime.GetValueOrDefault().DateTime
             };
         }
     }

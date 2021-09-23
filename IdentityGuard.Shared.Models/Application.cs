@@ -18,6 +18,8 @@ namespace IdentityGuard.Shared.Models
         public string ManagementUrl { get; set; }
 
         public ServicePrincipal ServicePrincipal { get; set; }
+
+        public List<ApplicationSecret> Secrets { get; set; }
     }
 
     
