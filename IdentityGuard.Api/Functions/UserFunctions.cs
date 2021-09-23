@@ -33,6 +33,24 @@ namespace IdentityGuard.Api.Functions
 
         }
 
+        [Function("user-getbyid")]
+        public async Task<HttpResponseData> GetById(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/{directoryId}/{id}")]
+            HttpRequestData req,
+            FunctionContext executionContext,
+            string directoryId,
+            string id)
+        {
+
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageUserAccessReviews, req.GetRequestingUser())) return req.UnauthorizedResponse();
+
+            var data = await _userManager.Get(directoryId,id);
+
+            if (string.IsNullOrEmpty(data?.Id)) return req.NotFoundResponse();
+
+            return await req.OkResponseAsync(data);
+        }
+
         [Function("user-search")]
         public async Task<HttpResponseData> Search(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user/search/{userType}")]
@@ -43,6 +61,24 @@ namespace IdentityGuard.Api.Functions
             if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageUserAccessReviews, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
             var data = await _userManager.Search(userType, req.GetBody<List<string>>());
+
+            return await req.OkResponseAsync(data);
+        }
+
+        [Function("useraccess-getbyid")]
+        public async Task<HttpResponseData> GetAccessById(
+           [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/{directoryId}/{id}/access")]
+            HttpRequestData req,
+            FunctionContext executionContext,
+            string directoryId,
+            string id)
+        {
+
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageUserAccessReviews, req.GetRequestingUser())) return req.UnauthorizedResponse();
+
+            var data = await _userManager.GetAccess(directoryId, id);
+
+            if (string.IsNullOrEmpty(data?.UserId)) return req.NotFoundResponse();
 
             return await req.OkResponseAsync(data);
         }

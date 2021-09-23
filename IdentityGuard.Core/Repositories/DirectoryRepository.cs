@@ -33,11 +33,14 @@ namespace IdentityGuard.Core.Repositories
 
         public async Task<Directory> GetById(string id)
         {
-            var data = await _cosmosDbService.Get<DirectoryData>(id,
-                CosmosConfiguration.Containers.Directories,
-                CosmosConfiguration.DefaultPartitionKey);
+            var query = _cosmosDbService
+               .Query<DirectoryData>(CosmosConfiguration.Containers.Directories)
+               .Where(d => d.Id == id || d.TenantId == id || d.Domain == id);
 
-            var result = _directoryMapper.Map(data);
+            var data = await _cosmosDbService.ExecuteRead(query, _directoryMapper.Map);
+
+            var result = data.FirstOrDefault();
+
             return result;
         }
 

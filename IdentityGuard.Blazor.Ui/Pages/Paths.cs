@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace IdentityGuard.Blazor.Ui.Pages
+﻿namespace IdentityGuard.Blazor.Ui.Pages
 {
     public static class Paths
     {
@@ -11,5 +6,7 @@ namespace IdentityGuard.Blazor.Ui.Pages
         public const string Directories ="directory/";
         public const string AccessReviews ="accessreview/";
         public const string UserAccessReviews ="accessreview/user";
+        public const string GroupAccessReviews ="accessreview/group";
+        public const string ApplicationAccessReviews ="accessreview/application";
     }
 }

@@ -13,14 +13,17 @@ namespace IdentityGuard.Core.Managers
     {
         private readonly IConfiguration _configuration;
         private readonly UserService _userService;
+        private readonly ServicePrincipalService _servicePrincipalService;
         private readonly DirectoryManager _directoryManager;
 
         public UserManager(IConfiguration configuration, 
             UserService userService, 
+            ServicePrincipalService servicePrincipalService,
             DirectoryManager directoryManager)
         {
             _configuration = configuration;
             _userService = userService;
+            _servicePrincipalService = servicePrincipalService;
             _directoryManager = directoryManager;
         }
 
@@ -36,6 +39,14 @@ namespace IdentityGuard.Core.Managers
             var result = claims ?? new List<KeyValuePair<string, string>>();
 
             return result;
+        }
+
+        public async Task<Shared.Models.User> Get(string directoryId, string id)
+        {
+            var directory = await _directoryManager.GetById(directoryId);
+            var user = await _userService.Get(directory, id);
+
+            return user;
         }
 
         public async Task<List<Shared.Models.User>> Search(string userType, List<string> names)
@@ -80,6 +91,60 @@ namespace IdentityGuard.Core.Managers
                 .ToList();
 
             return uniqueResults;
+        }
+
+        public async Task<UserAccess> GetAccess(string directoryId, string userId)
+        {
+            var directory = await _directoryManager.GetById(directoryId);
+            var user = await _userService.Get(directory, userId);
+            if (user?.Id == null) return null;
+
+            var ownedObjects = await _userService.GetOwnedObjects(directory, userId);
+            var memberObjects = await _userService.GetMemberOf(directory, userId);
+            var roleAssignments = await _userService.GetApplicationRoles(directory, userId);
+
+            await ApplyRoleNames(directory, roleAssignments);
+
+            return new UserAccess
+            {
+                UserId = user.Id,
+                UserDisplayName = user.DisplayName,
+                DirectoryId = directory.Id,
+                DirectoryName = directory.Domain,
+                OwnedObjects = ownedObjects,
+                GroupMembership = memberObjects,
+                RoleMemberships = roleAssignments
+            };
+        }
+
+        private async Task ApplyRoleNames(Directory directory, List<ApplicationRole> roleAssignments)
+        {
+            var servicePrincipals = await GetServicePrincipalsAssignedTo(directory, roleAssignments);
+            var servicePrincipalsById = servicePrincipals.ToDictionary(s => s.Id);
+
+            foreach (var item in roleAssignments)
+            {
+                if(servicePrincipalsById.TryGetValue(item.AssignedTo.Id, out ServicePrincipal servicePrincipal))
+                {
+                    if(servicePrincipal.Roles.TryGetValue(item.Role.Id,out Role role))
+                    {
+                        item.Role.DisplayName = role.DisplayName;
+                    }
+                    
+                }
+            }
+        }
+
+        private async Task<ServicePrincipal[]> GetServicePrincipalsAssignedTo(Directory directory, List<ApplicationRole> roleAssignments)
+        {
+            var servicePrincipalIds = roleAssignments
+                .Select(r => r.AssignedTo.Id)
+                .Distinct();
+
+            var servicePrincipalTasks = servicePrincipalIds
+                .Select(s => _servicePrincipalService.Get(directory, s));
+            var servicePrincipals = await Task.WhenAll(servicePrincipalTasks);
+            return servicePrincipals;
         }
     }
 }
