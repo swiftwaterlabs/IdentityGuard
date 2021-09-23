@@ -2,6 +2,7 @@
 using IdentityGuard.Core.Mappers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +29,24 @@ namespace IdentityGuard.Core.Services
                 .Request()
                 .GetAsync();
 
+            var result = _servicePrincipalMapper.Map(directory, data);
+
+            return result;
+        }
+
+        public async Task<Shared.Models.ServicePrincipal> GetByAppId(Shared.Models.Directory directory, string appId, bool includeOwners = false)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var results = await client
+                .ServicePrincipals
+                .Request()
+                .Filter($"appId eq '{appId}'")
+                .GetAsync();
+
+            if (!results.Any()) return null;
+
+            var data = results.First();
             var result = _servicePrincipalMapper.Map(directory, data);
 
             return result;
