@@ -52,6 +52,7 @@ namespace IdentityGuard.Core.Mappers
             return new Shared.Models.DirectoryObject
             {
                 Id = toMap.Id,
+                DisplayName = "Unkown",
                 Type = toMap.ODataType,
                 ManagementUrl = directory.PortalUrl
             };

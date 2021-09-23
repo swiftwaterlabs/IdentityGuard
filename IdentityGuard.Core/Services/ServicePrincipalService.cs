@@ -19,7 +19,7 @@ namespace IdentityGuard.Core.Services
             _servicePrincipalMapper = servicePrincipalMapper;
         }
 
-        public async Task<Shared.Models.ServicePrincipal> Get(Shared.Models.Directory directory, string id)
+        public async Task<Shared.Models.ServicePrincipal> Get(Shared.Models.Directory directory, string id, bool includeOwners = false)
         {
             var client = await _graphClientFactory.CreateAsync(directory);
 

@@ -12,7 +12,7 @@
                 Role = new Shared.Models.Role
                 {
                     Id = toMap.AppRoleId.ToString(),
-                    DisplayName = "",
+                    DisplayName = "Unknown",
                 },
                 AssignmentType = toMap.PrincipalType,
                 AssignedBy = new Shared.Models.DirectoryObject

@@ -19,6 +19,7 @@ namespace IdentityGuard.Core.Mappers
                 Type = toMap.ServicePrincipalType,
                 AppId = toMap.AppId,
                 Roles = Map(toMap.AppRoles)
+                
             };
         }
 
