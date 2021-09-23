@@ -42,7 +42,7 @@ namespace IdentityGuard.Api.Functions
             string id)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageUserAccessReviews, req.GetRequestingUser())) return req.UnauthorizedResponse();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageUsers, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
             var data = await _userManager.Get(directoryId,id);
 
@@ -58,7 +58,7 @@ namespace IdentityGuard.Api.Functions
             FunctionContext executionContext,
             string userType)
         {
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageUserAccessReviews, req.GetRequestingUser())) return req.UnauthorizedResponse();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageUsers, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
             var data = await _userManager.Search(userType, req.GetBody<List<string>>());
 
@@ -74,7 +74,7 @@ namespace IdentityGuard.Api.Functions
             string id)
         {
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageUserAccessReviews, req.GetRequestingUser())) return req.UnauthorizedResponse();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageUsers, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
             var data = await _userManager.GetAccess(directoryId, id);
 

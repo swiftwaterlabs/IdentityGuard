@@ -4,6 +4,6 @@
     {
         public const string ViewApplicationInfo = "viewapplicationinformation";
         public const string ManageDirectories = "ManageDirectories";
-        public const string ManageUserAccessReviews = "ManageUserAccessReviews";
+        public const string ManageUsers = "ManageUsers";
     }
 }
