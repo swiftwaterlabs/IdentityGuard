@@ -33,7 +33,8 @@ namespace IdentityGuard.Core.Mappers
                 Roles = toMap.AppRoles?.Select(Map)?.ToDictionary(r=>r.Id) ?? new Dictionary<string,Shared.Models.Role>(),
                 ManagementUrl = directory.PortalUrl,
                 Secrets = passwordSecrets.Union(keySecrets).ToList(),
-                Owners = ownerData
+                Owners = ownerData,
+                Permissions = toMap.RequiredResourceAccess?.Select(Map)?.SelectMany(r=>r)?.ToList() ?? new List<Shared.Models.ApplicationPermission>()
             };
         }
 
@@ -45,7 +46,8 @@ namespace IdentityGuard.Core.Mappers
                 Id = toMap.Id.ToString(),
                 DisplayName = toMap.DisplayName,
                 Name = toMap.Value,
-                Description = toMap.Description
+                Description = toMap.Description,
+                Source = toMap.Origin
             };
         }
 
@@ -73,6 +75,21 @@ namespace IdentityGuard.Core.Mappers
                 Type = "Certificate",
                 ExpiresAt = toMap.EndDateTime.GetValueOrDefault().DateTime
             };
+        }
+
+        public IEnumerable<Shared.Models.ApplicationPermission> Map(Microsoft.Graph.RequiredResourceAccess toMap)
+        {
+            foreach(var item in toMap.ResourceAccess)
+            {
+                yield return new Shared.Models.ApplicationPermission
+                {
+                    Id = item.Id.ToString(),
+                    ResourceId = toMap.ResourceAppId,
+                    ResourceName = "Unkown",
+                    Type = item.Type,
+                    DisplayName = "Unkown"
+                };
+            }
         }
     }
 }

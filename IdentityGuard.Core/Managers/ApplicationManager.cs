@@ -1,5 +1,6 @@
 ﻿using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,9 @@ namespace IdentityGuard.Core.Managers
             _servicePrincipalService = servicePrincipalService;
         }
 
-        public async Task<Application> Get(string directoryId, string id, bool includeOwners=false)
+        public async Task<Application> Get(string directoryId, string id, 
+            bool includeOwners=false,
+            bool includePermissions=false)
         {
             var directory = await _directoryManager.GetById(directoryId);
 
@@ -31,6 +34,11 @@ namespace IdentityGuard.Core.Managers
             var servicePrincipal = await _servicePrincipalService.GetByAppId(directory,application.AppId, includeOwners: includeOwners);
 
             application.ServicePrincipal = servicePrincipal;
+
+            if(!includePermissions)
+            {
+                application.Permissions = null;
+            }
 
             return application;
         }
@@ -75,7 +83,9 @@ namespace IdentityGuard.Core.Managers
         public async Task<ApplicationAccess> GetAccess(string directoryId, string id)
         {
             var directory = await _directoryManager.GetById(directoryId);
-            var application = await Get(directoryId, id, includeOwners:true);
+            var application = await Get(directoryId, id, includeOwners: true, includePermissions: true);
+
+            await ApplyPermissionNames(directory, application);
 
             return new ApplicationAccess
             {
@@ -83,6 +93,43 @@ namespace IdentityGuard.Core.Managers
                 DirectoryName = directory.Domain,
                 Application = application
             };
+        }
+        private async Task ApplyPermissionNames(Directory directory, Application application)
+        {
+            var permissionServicePrincipalsTask = application
+                .Permissions
+                .Select(p => p.ResourceId)
+                .Distinct()
+                .Select(r => _servicePrincipalService.GetByAppId(directory, r));
+
+            var permissionServicePrincipals = await Task.WhenAll(permissionServicePrincipalsTask);
+            var servicePrincipalsById = permissionServicePrincipals
+                .ToDictionary(p => p.AppId);
+
+            Parallel.ForEach(application.Permissions, permission => 
+            { 
+                if(servicePrincipalsById.TryGetValue(permission.ResourceId, out ServicePrincipal servicePrincipal))
+                {
+                    permission.ResourceName = servicePrincipal.DisplayName;
+
+                    if(servicePrincipal.Permissions.TryGetValue(permission.Id, out ApplicationPermission exposedPermission))
+                    {
+                        permission.DisplayName = exposedPermission.DisplayName;
+                        permission.Description = exposedPermission.Description;
+                        permission.Name = exposedPermission.Name;
+                        permission.Type = exposedPermission.Type;
+                    }
+
+                    if (servicePrincipal.Roles.TryGetValue(permission.Id, out Role role))
+                    {
+                        permission.DisplayName = role.DisplayName;
+                        permission.Description = role.Description;
+                        permission.Name = role.Name;
+                        permission.Type = role.Source;
+                    }
+                }
+            });
+
         }
     }
 }

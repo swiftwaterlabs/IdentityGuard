@@ -13,7 +13,7 @@ namespace IdentityGuard.Core.Mappers
             _directoryObjectMapper = directoryObjectMapper;
         }
 
-        public Shared.Models.ServicePrincipal Map(Shared.Models.Directory directory, 
+        public Shared.Models.ServicePrincipal Map(Shared.Models.Directory directory,
             Microsoft.Graph.ServicePrincipal toMap,
             ICollection<Microsoft.Graph.DirectoryObject> owners)
         {
@@ -30,8 +30,9 @@ namespace IdentityGuard.Core.Mappers
                 Type = toMap.ServicePrincipalType,
                 AppId = toMap.AppId,
                 Roles = Map(toMap.AppRoles),
-                Owners = ownerData
-                
+                Owners = ownerData,
+                Permissions = toMap.PublishedPermissionScopes?.Select(p => Map(toMap, p))?.ToDictionary(p=>p.Id) ?? new Dictionary<string,Shared.Models.ApplicationPermission>()
+
             };
         }
 
@@ -55,7 +56,26 @@ namespace IdentityGuard.Core.Mappers
             return new Shared.Models.Role
             {
                 Id = toMap.Id.ToString(),
-                DisplayName = toMap.DisplayName
+                DisplayName = toMap.DisplayName,
+                Name = toMap.Value,
+                Description = toMap.Description,
+                Source = toMap.Origin
+
+            };
+        }
+
+        private Shared.Models.ApplicationPermission Map(Microsoft.Graph.ServicePrincipal servicePrincipal, Microsoft.Graph.PermissionScope toMap)
+        {
+            return new Shared.Models.ApplicationPermission
+            {
+                ResourceId = servicePrincipal.AppId,
+                ResourceName = servicePrincipal.DisplayName,
+                DisplayName = toMap.AdminConsentDisplayName,
+                Id = toMap.Id.ToString(),
+                Description = toMap.AdminConsentDescription,
+                Name = toMap.Value,
+                Type = toMap.Type
+
             };
         }
     }

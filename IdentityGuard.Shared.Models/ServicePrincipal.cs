@@ -12,6 +12,7 @@ namespace IdentityGuard.Shared.Models
         public string Type { get; set; }
         public List<DirectoryObject> Owners { get; set; }
         public Dictionary<string,Role> Roles { get; set; }
+        public Dictionary<string,ApplicationPermission> Permissions { get; set; }
     }
 
     

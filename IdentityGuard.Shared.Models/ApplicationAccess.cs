@@ -8,6 +8,7 @@ namespace IdentityGuard.Shared.Models
         public string DirectoryName { get; set; }
         public Application Application { get; set; }
 
+
     }
     
 }

@@ -20,6 +20,8 @@ namespace IdentityGuard.Shared.Models
         public ServicePrincipal ServicePrincipal { get; set; }
 
         public List<ApplicationSecret> Secrets { get; set; }
+
+        public List<ApplicationPermission> Permissions { get; set; }
     }
 
     
