@@ -5,12 +5,23 @@ namespace IdentityGuard.Core.Mappers
 {
     public class ApplicationMapper
     {
-        public Shared.Models.Application Map(Shared.Models.Directory directory, Microsoft.Graph.Application toMap)
+        private readonly DirectoryObjectMapper _directoryObjectMapper;
+
+        public ApplicationMapper(DirectoryObjectMapper directoryObjectMapper)
+        {
+            _directoryObjectMapper = directoryObjectMapper;
+        }
+
+        public Shared.Models.Application Map(Shared.Models.Directory directory, 
+            Microsoft.Graph.Application toMap,
+            ICollection<Microsoft.Graph.DirectoryObject> owners)
         {
             if (toMap == null) return null;
 
             var passwordSecrets = toMap.PasswordCredentials?.Select(Map)?.ToList() ?? new List<Shared.Models.ApplicationSecret>();
             var keySecrets = toMap.KeyCredentials?.Select(Map).ToList() ?? new List<Shared.Models.ApplicationSecret>();
+
+            var ownerData = owners?.Select(o=>_directoryObjectMapper.Map(directory,o))?.ToList() ?? new List<Shared.Models.DirectoryObject>();
 
             return new Shared.Models.Application
             {
@@ -21,7 +32,8 @@ namespace IdentityGuard.Core.Mappers
                 AppId = toMap.AppId,
                 Roles = toMap.AppRoles?.Select(Map)?.ToDictionary(r=>r.Id) ?? new Dictionary<string,Shared.Models.Role>(),
                 ManagementUrl = directory.PortalUrl,
-                Secrets = passwordSecrets.Union(keySecrets).ToList()
+                Secrets = passwordSecrets.Union(keySecrets).ToList(),
+                Owners = ownerData
             };
         }
 

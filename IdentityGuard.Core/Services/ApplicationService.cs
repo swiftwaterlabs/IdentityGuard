@@ -27,7 +27,33 @@ namespace IdentityGuard.Core.Services
                 .Request()
                 .GetAsync();
 
-            var result = _applicationMapper.Map(directory, data);
+            var owners = new List<Microsoft.Graph.DirectoryObject>();
+            if(includeOwners)
+            {
+                owners = await GetOwners(client, id);
+            }
+            var result = _applicationMapper.Map(directory, data, owners);
+
+            return result;
+        }
+
+        private async Task<List<Microsoft.Graph.DirectoryObject>> GetOwners(Microsoft.Graph.IGraphServiceClient client, string id)
+        {
+            List<Microsoft.Graph.DirectoryObject> result = new List<Microsoft.Graph.DirectoryObject>();
+
+            var ownersRequest = await client.Applications[id]
+                .Owners
+                .Request()
+                .GetAsync();
+
+
+            while (ownersRequest != null)
+            {
+                result.AddRange(ownersRequest);
+
+                if (ownersRequest.NextPageRequest == null) break;
+                ownersRequest = await ownersRequest.NextPageRequest.GetAsync();
+            };
 
             return result;
         }
@@ -51,11 +77,11 @@ namespace IdentityGuard.Core.Services
                 searchRequest = await searchRequest.NextPageRequest.GetAsync();
             };
 
-            var users = result
-                .Select(u => _applicationMapper.Map(directory, u))
+            var applications = result
+                .Select(u => _applicationMapper.Map(directory, u, new List<Microsoft.Graph.DirectoryObject>()))
                 .ToList();
 
-            return users;
+            return applications;
         }
 
         private static string GetSearchFilter(string name)

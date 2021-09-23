@@ -29,7 +29,13 @@ namespace IdentityGuard.Core.Services
                 .Request()
                 .GetAsync();
 
-            var result = _servicePrincipalMapper.Map(directory, data);
+            var owners = new List<Microsoft.Graph.DirectoryObject>();
+            if (includeOwners)
+            {
+                owners = await GetOwners(client, id);
+            }
+
+            var result = _servicePrincipalMapper.Map(directory, data, owners);
 
             return result;
         }
@@ -47,7 +53,35 @@ namespace IdentityGuard.Core.Services
             if (!results.Any()) return null;
 
             var data = results.First();
-            var result = _servicePrincipalMapper.Map(directory, data);
+
+            var owners = new List<Microsoft.Graph.DirectoryObject>();
+            if (includeOwners)
+            {
+                owners = await GetOwners(client, data.Id);
+            }
+
+            var result = _servicePrincipalMapper.Map(directory, data, owners);
+
+            return result;
+        }
+
+        private async Task<List<Microsoft.Graph.DirectoryObject>> GetOwners(Microsoft.Graph.IGraphServiceClient client, string id)
+        {
+            List<Microsoft.Graph.DirectoryObject> result = new List<Microsoft.Graph.DirectoryObject>();
+
+            var ownersRequest = await client.ServicePrincipals[id]
+                .Owners
+                .Request()
+                .GetAsync();
+
+
+            while (ownersRequest != null)
+            {
+                result.AddRange(ownersRequest);
+
+                if (ownersRequest.NextPageRequest == null) break;
+                ownersRequest = await ownersRequest.NextPageRequest.GetAsync();
+            };
 
             return result;
         }

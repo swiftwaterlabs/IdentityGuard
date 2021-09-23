@@ -6,9 +6,20 @@ namespace IdentityGuard.Core.Mappers
 {
     public class ServicePrincipalMapper
     {
-        public Shared.Models.ServicePrincipal Map(Shared.Models.Directory directory, Microsoft.Graph.ServicePrincipal toMap)
+        private readonly DirectoryObjectMapper _directoryObjectMapper;
+
+        public ServicePrincipalMapper(DirectoryObjectMapper directoryObjectMapper)
+        {
+            _directoryObjectMapper = directoryObjectMapper;
+        }
+
+        public Shared.Models.ServicePrincipal Map(Shared.Models.Directory directory, 
+            Microsoft.Graph.ServicePrincipal toMap,
+            ICollection<Microsoft.Graph.DirectoryObject> owners)
         {
             if (toMap == null) return null;
+
+            var ownerData = owners?.Select(o => _directoryObjectMapper.Map(directory, o))?.ToList() ?? new List<Shared.Models.DirectoryObject>();
 
             return new Shared.Models.ServicePrincipal
             {
@@ -18,7 +29,8 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryName = directory.Domain,
                 Type = toMap.ServicePrincipalType,
                 AppId = toMap.AppId,
-                Roles = Map(toMap.AppRoles)
+                Roles = Map(toMap.AppRoles),
+                Owners = ownerData
                 
             };
         }

@@ -23,12 +23,12 @@ namespace IdentityGuard.Core.Managers
             _servicePrincipalService = servicePrincipalService;
         }
 
-        public async Task<Application> Get(string directoryId, string id)
+        public async Task<Application> Get(string directoryId, string id, bool includeOwners=false)
         {
             var directory = await _directoryManager.GetById(directoryId);
 
-            var application = await _applicationService.Get(directory, id);
-            var servicePrincipal = await _servicePrincipalService.GetByAppId(directory,application.AppId);
+            var application = await _applicationService.Get(directory, id, includeOwners:includeOwners);
+            var servicePrincipal = await _servicePrincipalService.GetByAppId(directory,application.AppId, includeOwners: includeOwners);
 
             application.ServicePrincipal = servicePrincipal;
 
@@ -75,7 +75,7 @@ namespace IdentityGuard.Core.Managers
         public async Task<ApplicationAccess> GetAccess(string directoryId, string id)
         {
             var directory = await _directoryManager.GetById(directoryId);
-            var application = await Get(directoryId, id);
+            var application = await Get(directoryId, id, includeOwners:true);
 
             return new ApplicationAccess
             {

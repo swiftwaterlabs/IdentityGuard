@@ -8,6 +8,16 @@ namespace IdentityGuard.Core.Mappers
         {
             if (toMap == null) return null;
 
+            if (toMap is Microsoft.Graph.User user)
+            {
+                return new Shared.Models.DirectoryObject
+                {
+                    Id = user.Id,
+                    DisplayName = user.DisplayName,
+                    Type = "User",
+                    ManagementUrl = directory.PortalUrl
+                };
+            }
             if (toMap is Microsoft.Graph.Group group)
             {
                 return new Shared.Models.DirectoryObject
