@@ -127,17 +127,16 @@ namespace IdentityGuard.Core.Managers
             var servicePrincipals = await GetServicePrincipalsAssignedTo(directory, roleAssignments);
             var servicePrincipalsById = servicePrincipals.ToDictionary(s => s.Id);
 
-            foreach (var item in roleAssignments)
+            Parallel.ForEach(roleAssignments, item => 
             {
-                if(servicePrincipalsById.TryGetValue(item.AssignedTo.Id, out ServicePrincipal servicePrincipal))
+                if (servicePrincipalsById.TryGetValue(item.AssignedTo.Id, out ServicePrincipal servicePrincipal))
                 {
-                    if(servicePrincipal.Roles.TryGetValue(item.Role.Id,out Role role))
+                    if (servicePrincipal.Roles.TryGetValue(item.Role.Id, out Role role))
                     {
                         item.Role.DisplayName = role.DisplayName;
                     }
-                    
                 }
-            }
+            });
         }
 
         private async Task<ServicePrincipal[]> GetServicePrincipalsAssignedTo(Directory directory, List<ApplicationRole> roleAssignments)
