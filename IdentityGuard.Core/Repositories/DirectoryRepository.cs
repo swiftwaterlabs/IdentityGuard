@@ -9,7 +9,7 @@ using IdentityGuard.Shared.Models;
 
 namespace IdentityGuard.Core.Repositories
 {
-    public class DirectoryRepository
+    public class DirectoryRepository : IDirectoryRepository
     {
         private readonly CosmosDbService _cosmosDbService;
         private readonly DirectoryMapper _directoryMapper;
