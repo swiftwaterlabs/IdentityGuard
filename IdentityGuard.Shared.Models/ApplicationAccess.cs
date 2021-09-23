@@ -9,7 +9,8 @@ namespace IdentityGuard.Shared.Models
         public Application Application { get; set; }
 
         public List<ApplicationRole> RoleMemberships { get; set; }
-    }
 
+        public List<ApplicationSecret> Secrets { get; set; }
+    }
     
 }
