@@ -8,29 +8,41 @@
                 <MudCardHeader>
                     <MudText Typo="Typo.h5">@UserAccess.User.DisplayName</MudText>
                     <MudText Typo="Typo.subtitle2">@UserAccess.DirectoryName</MudText>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="StartReview">Start Review</MudButton>
                 </MudCardHeader>
                 <MudCardContent>
-                    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+                    <MudTabs Elevation="1" Rounded="true" PanelClass="mt-6">
                         <MudTabPanel Text="General">
-                            <MudList>
-                               
-                                <MudListItem>
-                                    <MudText Typo="Typo.subtitle2">Given Name</MudText>
-                                    <MudText Typo="Typo.body2">@UserAccess.User.GivenName</MudText>
-                                </MudListItem>
-                                <MudListItem>
-                                    <MudText Typo="Typo.subtitle2">SurName</MudText>
-                                    <MudText Typo="Typo.body2">@UserAccess.User.SurName</MudText>
-                                </MudListItem>
-                                <MudListItem>
-                                    <MudText Typo="Typo.subtitle2">Email</MudText>
-                                    <MudText Typo="Typo.body2">@UserAccess.User.EmailAddress</MudText>
-                                </MudListItem>
-                                <MudListItem>
-                                    <MudText Typo="Typo.subtitle2">User Type</MudText>
-                                    <MudText Typo="Typo.body2">@UserAccess.User.Type</MudText>
-                                </MudListItem>
-                            </MudList>
+                             <MudCard>
+                                <MudCardContent>
+                                <MudList>
+                                    <MudListItem>
+                                        <MudText Typo="Typo.subtitle2">Given Name</MudText>
+                                        <MudText Typo="Typo.body2">@UserAccess.User.GivenName</MudText>
+                                    </MudListItem>
+                                    <MudListItem>
+                                        <MudText Typo="Typo.subtitle2">SurName</MudText>
+                                        <MudText Typo="Typo.body2">@UserAccess.User.SurName</MudText>
+                                    </MudListItem>
+                                    <MudListItem>
+                                        <MudText Typo="Typo.subtitle2">Email</MudText>
+                                        <MudText Typo="Typo.body2">@UserAccess.User.EmailAddress</MudText>
+                                    </MudListItem>
+                                     <MudListItem>
+                                        <MudText Typo="Typo.subtitle2">Email</MudText>
+                                        <MudText Typo="Typo.body2">@UserAccess.User.JobTitle</MudText>
+                                    </MudListItem>
+                                     <MudListItem>
+                                        <MudText Typo="Typo.subtitle2">Company</MudText>
+                                        <MudText Typo="Typo.body2">@UserAccess.User.Company</MudText>
+                                    </MudListItem>
+                                    <MudListItem>
+                                        <MudText Typo="Typo.subtitle2">User Type</MudText>
+                                        <MudText Typo="Typo.body2">@UserAccess.User.Type</MudText>
+                                    </MudListItem>
+                                </MudList>
+                                </MudCardContent>
+                            </MudCard>
                         </MudTabPanel>
                         <MudTabPanel Text="Owned">
                             <MudGrid>
@@ -77,6 +89,9 @@
                             </MudGrid>
                         </MudTabPanel>
                         <MudTabPanel Text="Roles">
+                            <MudText>Show Default Access</MudText>
+                            <MudSwitch @bind-Checked="@ShowDefaultAccessRoles" Color="Color.Primary" />
+
                             <MudGrid>
                                 @foreach(var type in ApplicationRolesByAssignmentType.OrderBy(o=>o.Key))
                                 {
@@ -89,14 +104,21 @@
                                                 <MudList>
                                                     @foreach(var item in type.OrderBy(i=>i.AssignedTo.DisplayName))
                                                     {
-                                                        <MudListItem>
-                                                            <MudText Typo="Typo.subtitle1">@item.AssignedTo.DisplayName</MudText>
-                                                            <MudText Typo="Typo.body1">@item.Role.DisplayName</MudText>
-                                                            @if(item.AssignmentType == "Group")
-                                                            {
-                                                                <MudText Typo="Typo.body2">From: @item.AssignedBy.DisplayName</MudText>
-                                                            }
-                                                        </MudListItem>
+                                                        @if(!ShowDefaultAccessRoles && item.Role.Id == IdentityGuard.Shared.Models.Role.DefaultAccessId)
+                                                        {
+                                                            // Show Nothing
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudListItem>
+                                                                <MudText Typo="Typo.subtitle1">@item.AssignedTo.DisplayName</MudText>
+                                                                <MudText Typo="Typo.body1">@item.Role.DisplayName</MudText>
+                                                                @if(item.AssignmentType == "Group")
+                                                                {
+                                                                    <MudText Typo="Typo.body2">From: @item.AssignedBy.DisplayName</MudText>
+                                                                }
+                                                            </MudListItem>
+                                                        }
                                                     }
                                                 </MudList>
                                             </MudCardContent>
@@ -108,10 +130,6 @@
                     </MudTabs>
 
                 </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="StartReview" EndIcon="@Icons.Material.Filled.PlayCircle">Start Review</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Back" Class="ml-4">Back</MudButton>
-                </MudCardActions>
             </MudCard>
         }
     </Loadable>

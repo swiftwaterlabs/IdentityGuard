@@ -20,7 +20,9 @@
                 Type = toMap.UserType,
                 CreatedAt = toMap.CreatedDateTime.GetValueOrDefault().DateTime,
                 CreationType = toMap.CreationType,
-                Status = toMap.State
+                Status = toMap.State,
+                JobTitle = toMap.JobTitle,
+                Company = toMap.CompanyName
             };
         }
     }

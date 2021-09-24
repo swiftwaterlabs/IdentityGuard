@@ -27,6 +27,8 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews.Users
 
         public bool IsLoading { get; set; } = false;
 
+        public bool ShowDefaultAccessRoles { get; set; } = true;
+
         public UserAccess UserAccess { get; set; }
 
         public ILookup<string, DirectoryObject> OwnedObjectsByType { get; set; }

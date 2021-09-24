@@ -14,6 +14,8 @@ namespace IdentityGuard.Shared.Models
         public string SurName { get; set; }
         public string EmailAddress { get; set; }
         public string Type { get; set; }
+        public string JobTitle { get; set; }
+        public string Company { get; set; }
         public DateTime? CreatedAt { get; set; }
         public string CreationType { get; set; }
         public string Status { get; set; }
