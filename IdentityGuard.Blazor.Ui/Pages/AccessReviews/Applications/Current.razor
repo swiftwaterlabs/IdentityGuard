@@ -1,12 +1,12 @@
-﻿@page "/user/access/{DirectoryId}/{UserId}"
+﻿@page "/application/access/{DirectoryId}/{ApplicationId}"
 
 <MudContainer Class="mt-16">
     <Loadable IsLoading="IsLoading">
-        @if (IsUserLoaded)
+        @if (IsApplicationLoaded)
         {
             <MudCard>
                 <MudCardHeader>
-                    <MudText Typo="Typo.h5">@UserName</MudText>
+                    <MudText Typo="Typo.h5">@ApplicationName</MudText>
                     <MudText Typo="Typo.subtitle2">@DirectoryName</MudText>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="StartReview">Start Review</MudButton>
                 </MudCardHeader>
@@ -15,14 +15,17 @@
                         <MudTabPanel Text="General">
                              <AttributeCard Data="UserAttributes"/>
                         </MudTabPanel>
-                        <MudTabPanel Text="Owned">
-                            <DirectoryObjectCards Data="OwnedObjectsByType"/>
+                        <MudTabPanel Text="Owners">
+                            <DirectoryObjectCards Data="OwnersByType"/>
                         </MudTabPanel>
-                        <MudTabPanel Text="Group Membership">
-                            <DirectoryObjectCards Data="GroupMembershipByType"/>
+                        <MudTabPanel Text="Secrets">
+                            <ApplicationSecretCards Data="SecretsByType"/>
+                        </MudTabPanel>
+                         <MudTabPanel Text="Permissions">
+                            
                         </MudTabPanel>
                         <MudTabPanel Text="Roles">
-                            <ApplicationRoleCards Data="ApplicationRolesByAssignmentType"/>
+                            
                         </MudTabPanel>
                     </MudTabs>
 

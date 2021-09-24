@@ -28,7 +28,6 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews.Users
 
         public bool IsLoading { get; set; } = false;
         public bool IsUserLoaded { get; set; } = false;
-        public bool ShowDefaultAccessRoles { get; set; } = true;
 
         public string UserName { get; set; }
         public string DirectoryName { get; set; }
