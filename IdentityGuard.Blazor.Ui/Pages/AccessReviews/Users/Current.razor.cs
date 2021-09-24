@@ -30,8 +30,6 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews.Users
         public bool IsUserLoaded { get; set; } = false;
         public bool ShowDefaultAccessRoles { get; set; } = true;
 
-        public UserAccess UserAccess { get; set; }
-
         public string UserName { get; set; }
         public string DirectoryName { get; set; }
         
@@ -49,7 +47,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews.Users
             AppState.SetBreadcrumbs(
                 new BreadcrumbItem("Access Reviews", Paths.AccessReviews),
                 new BreadcrumbItem("Users", Paths.UserAccessReviews),
-                new BreadcrumbItem(UserAccess.User.DisplayName, "#")
+                new BreadcrumbItem(UserName, "#")
                 );
         }
 
@@ -57,28 +55,28 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews.Users
         {
             IsLoading = true;
 
-            UserAccess = await UserService.UserAccess(DirectoryId, UserId);
+            var userAccess = await UserService.UserAccess(DirectoryId, UserId);
 
-            IsUserLoaded = UserAccess != null;
+            IsUserLoaded = userAccess != null;
 
-            if (UserAccess != null)
+            if (userAccess != null)
             {
-                DirectoryName = UserAccess.User.DirectoryName;
-                UserName = UserAccess.User.DisplayName;
+                DirectoryName = userAccess.User.DirectoryName;
+                UserName = userAccess.User.DisplayName;
 
                 UserAttributes = new Dictionary<string, string>
                 {
-                    {"First Name",UserAccess.User.GivenName},
-                    {"Last Name",UserAccess.User.SurName},
-                    {"Email",UserAccess.User.EmailAddress},
-                    {"Job Title",UserAccess.User.JobTitle},
-                    {"Company",UserAccess.User.Company},
-                    {"Type",UserAccess.User.Type},
+                    {"First Name",userAccess.User.GivenName},
+                    {"Last Name",userAccess.User.SurName},
+                    {"Email",userAccess.User.EmailAddress},
+                    {"Job Title",userAccess.User.JobTitle},
+                    {"Company",userAccess.User.Company},
+                    {"Type",userAccess.User.Type},
                 };
 
-                OwnedObjectsByType = UserAccess.OwnedObjects.ToLookup(o => o.Type);
-                GroupMembershipByType = UserAccess.GroupMembership.ToLookup(o => string.IsNullOrEmpty(o.SubType) ? o.Type : o.SubType);
-                ApplicationRolesByAssignmentType = UserAccess.RoleMemberships.ToLookup(o => o.AssignmentType);
+                OwnedObjectsByType = userAccess.OwnedObjects.ToLookup(o => o.Type);
+                GroupMembershipByType = userAccess.GroupMembership.ToLookup(o => string.IsNullOrEmpty(o.SubType) ? o.Type : o.SubType);
+                ApplicationRolesByAssignmentType = userAccess.RoleMemberships.ToLookup(o => o.AssignmentType);
             }
             IsLoading = false;
         }

@@ -1,0 +1,15 @@
+﻿<MudText>Show Default Access</MudText>
+<MudSwitch @bind-Checked="@ShowDefaultAccess" Color="Color.Primary" />
+
+<MudGrid>
+    @foreach(var type in Data.OrderBy(o=>o.Key))
+    {
+        <MudItem xs="12" sm="8" md="4">
+            <ApplicationRoleGroupCard 
+                Title="@type.Key"
+                Data="@type"
+                ShowDefaultAccess="ShowDefaultAccess"
+            />
+        </MudItem>
+    }
+</MudGrid>

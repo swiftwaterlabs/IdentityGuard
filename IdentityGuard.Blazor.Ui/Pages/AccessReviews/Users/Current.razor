@@ -2,7 +2,7 @@
 
 <MudContainer Class="mt-16">
     <Loadable IsLoading="IsLoading">
-        @if (UserAccess != null)
+        @if (IsUserLoaded)
         {
             <MudCard>
                 <MudCardHeader>
@@ -16,45 +16,13 @@
                              <IdentityGuard.Blazor.Ui.Components.AttributeCard Data="UserAttributes"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Owned">
-                            <MudGrid>
-                            @foreach(var type in OwnedObjectsByType.OrderBy(o=>o.Key))
-                            {
-                                <MudItem xs="12" sm="8" md="4">
-                                    <DirectoryObjectGroupCard
-                                        Title="@type.Key"
-                                        Data ="@type"/>
-                                </MudItem>
-                            }
-                            </MudGrid>
+                            <DirectoryObjectCards Data="OwnedObjectsByType"/>
                         </MudTabPanel>
-                        <MudTabPanel Text="Groups">
-                            <MudGrid>
-                            @foreach(var type in GroupMembershipByType.OrderBy(o=>o.Key))
-                            {
-                                <MudItem xs="12" sm="8" md="4">
-                                    <DirectoryObjectGroupCard
-                                        Title="@type.Key"
-                                        Data ="@type"/>
-                                </MudItem>
-                            }
-                            </MudGrid>
+                        <MudTabPanel Text="Group Membership">
+                            <DirectoryObjectCards Data="GroupMembershipByType"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Roles">
-                            <MudText>Show Default Access</MudText>
-                            <MudSwitch @bind-Checked="@ShowDefaultAccessRoles" Color="Color.Primary" />
-
-                            <MudGrid>
-                                @foreach(var type in ApplicationRolesByAssignmentType.OrderBy(o=>o.Key))
-                                {
-                                    <MudItem xs="12" sm="8" md="4">
-                                        <ApplicationRoleGroupCard 
-                                            Title="@type.Key"
-                                            Data="@type"
-                                            ShowDefaultAccess="ShowDefaultAccessRoles"
-                                        />
-                                    </MudItem>
-                                }
-                            </MudGrid>
+                            <ApplicationRoleCards Data="ApplicationRolesByAssignmentType"/>
                         </MudTabPanel>
                     </MudTabs>
 

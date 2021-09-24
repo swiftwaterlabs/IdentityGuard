@@ -1,0 +1,10 @@
+﻿<MudGrid>
+@foreach(var type in Data.OrderBy(o=>o.Key))
+{
+    <MudItem xs="12" sm="8" md="4">
+        <DirectoryObjectGroupCard
+            Title="@type.Key"
+            Data ="@type"/>
+    </MudItem>
+}
+</MudGrid>
