@@ -3,6 +3,7 @@ using IdentityGuard.Blazor.Ui.Services;
 using IdentityGuard.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,33 +27,60 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews.Users
         public string UserId { get; set; }
 
         public bool IsLoading { get; set; } = false;
-
+        public bool IsUserLoaded { get; set; } = false;
         public bool ShowDefaultAccessRoles { get; set; } = true;
 
         public UserAccess UserAccess { get; set; }
 
+        public string UserName { get; set; }
+        public string DirectoryName { get; set; }
+        
+        public Dictionary<string,string> UserAttributes { get; set; }
         public ILookup<string, DirectoryObject> OwnedObjectsByType { get; set; }
         public ILookup<string,DirectoryObject> GroupMembershipByType { get; set; }
         public ILookup<string,ApplicationRole> ApplicationRolesByAssignmentType { get; set; }
 
         protected override async Task OnParametersSetAsync()
         {
-            IsLoading = true;
-            
-            UserAccess = await UserService.UserAccess(DirectoryId, UserId);
-            OwnedObjectsByType = UserAccess.OwnedObjects.ToLookup(o => o.Type);
-            GroupMembershipByType = UserAccess.GroupMembership.ToLookup(o => string.IsNullOrEmpty(o.SubType) ? o.Type : o.SubType);
-            ApplicationRolesByAssignmentType = UserAccess.RoleMemberships.ToLookup(o => o.AssignmentType);
-            
-            IsLoading = false;
+            await LoadUserData();
 
-            if (UserAccess == null) return;
+            if (!IsUserLoaded) return;
 
             AppState.SetBreadcrumbs(
                 new BreadcrumbItem("Access Reviews", Paths.AccessReviews),
                 new BreadcrumbItem("Users", Paths.UserAccessReviews),
                 new BreadcrumbItem(UserAccess.User.DisplayName, "#")
                 );
+        }
+
+        private async Task LoadUserData()
+        {
+            IsLoading = true;
+
+            UserAccess = await UserService.UserAccess(DirectoryId, UserId);
+
+            IsUserLoaded = UserAccess != null;
+
+            if (UserAccess != null)
+            {
+                DirectoryName = UserAccess.User.DirectoryName;
+                UserName = UserAccess.User.DisplayName;
+
+                UserAttributes = new Dictionary<string, string>
+                {
+                    {"First Name",UserAccess.User.GivenName},
+                    {"Last Name",UserAccess.User.SurName},
+                    {"Email",UserAccess.User.EmailAddress},
+                    {"Job Title",UserAccess.User.JobTitle},
+                    {"Company",UserAccess.User.Company},
+                    {"Type",UserAccess.User.Type},
+                };
+
+                OwnedObjectsByType = UserAccess.OwnedObjects.ToLookup(o => o.Type);
+                GroupMembershipByType = UserAccess.GroupMembership.ToLookup(o => string.IsNullOrEmpty(o.SubType) ? o.Type : o.SubType);
+                ApplicationRolesByAssignmentType = UserAccess.RoleMemberships.ToLookup(o => o.AssignmentType);
+            }
+            IsLoading = false;
         }
 
         public async Task StartReview()

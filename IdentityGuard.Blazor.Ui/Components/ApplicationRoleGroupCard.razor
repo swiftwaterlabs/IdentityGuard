@@ -1,0 +1,27 @@
+﻿<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.subtitle1">@Title</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudList>
+            @foreach(var item in Data.OrderBy(i=>i.AssignedTo.DisplayName))
+            {
+                @if(!ShowDefaultAccess && item.Role.Id == IdentityGuard.Shared.Models.Role.DefaultAccessId)
+                {
+                    // Show Nothing
+                }
+                else
+                {
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle1">@item.AssignedTo.DisplayName</MudText>
+                        <MudText Typo="Typo.body1">@item.Role.DisplayName</MudText>
+                        @if(item.AssignmentType == "Group")
+                        {
+                            <MudText Typo="Typo.body2">From: @item.AssignedBy.DisplayName</MudText>
+                        }
+                    </MudListItem>
+                }
+            }
+        </MudList>
+    </MudCardContent>
+</MudCard>

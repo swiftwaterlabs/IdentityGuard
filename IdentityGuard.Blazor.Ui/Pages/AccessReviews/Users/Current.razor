@@ -6,62 +6,23 @@
         {
             <MudCard>
                 <MudCardHeader>
-                    <MudText Typo="Typo.h5">@UserAccess.User.DisplayName</MudText>
-                    <MudText Typo="Typo.subtitle2">@UserAccess.DirectoryName</MudText>
+                    <MudText Typo="Typo.h5">@UserName</MudText>
+                    <MudText Typo="Typo.subtitle2">@DirectoryName</MudText>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="StartReview">Start Review</MudButton>
                 </MudCardHeader>
                 <MudCardContent>
                     <MudTabs Elevation="1" Rounded="true" PanelClass="mt-6">
                         <MudTabPanel Text="General">
-                             <MudCard>
-                                <MudCardContent>
-                                <MudList>
-                                    <MudListItem>
-                                        <MudText Typo="Typo.subtitle2">Given Name</MudText>
-                                        <MudText Typo="Typo.body2">@UserAccess.User.GivenName</MudText>
-                                    </MudListItem>
-                                    <MudListItem>
-                                        <MudText Typo="Typo.subtitle2">SurName</MudText>
-                                        <MudText Typo="Typo.body2">@UserAccess.User.SurName</MudText>
-                                    </MudListItem>
-                                    <MudListItem>
-                                        <MudText Typo="Typo.subtitle2">Email</MudText>
-                                        <MudText Typo="Typo.body2">@UserAccess.User.EmailAddress</MudText>
-                                    </MudListItem>
-                                     <MudListItem>
-                                        <MudText Typo="Typo.subtitle2">Email</MudText>
-                                        <MudText Typo="Typo.body2">@UserAccess.User.JobTitle</MudText>
-                                    </MudListItem>
-                                     <MudListItem>
-                                        <MudText Typo="Typo.subtitle2">Company</MudText>
-                                        <MudText Typo="Typo.body2">@UserAccess.User.Company</MudText>
-                                    </MudListItem>
-                                    <MudListItem>
-                                        <MudText Typo="Typo.subtitle2">User Type</MudText>
-                                        <MudText Typo="Typo.body2">@UserAccess.User.Type</MudText>
-                                    </MudListItem>
-                                </MudList>
-                                </MudCardContent>
-                            </MudCard>
+                             <IdentityGuard.Blazor.Ui.Components.AttributeCard Data="UserAttributes"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Owned">
                             <MudGrid>
                             @foreach(var type in OwnedObjectsByType.OrderBy(o=>o.Key))
                             {
                                 <MudItem xs="12" sm="8" md="4">
-                                    <MudCard>
-                                        <MudCardHeader>
-                                            <MudText Typo="Typo.subtitle1">@type.Key</MudText>
-                                        </MudCardHeader>
-                                        <MudCardContent>
-                                            <MudList>
-                                                @foreach(var item in type.OrderBy(i=>i.DisplayName))
-                                                {
-                                                    <MudListItem>@item.DisplayName</MudListItem>
-                                                }
-                                            </MudList>
-                                        </MudCardContent>
-                                    </MudCard>
+                                    <DirectoryObjectGroupCard
+                                        Title="@type.Key"
+                                        Data ="@type"/>
                                 </MudItem>
                             }
                             </MudGrid>
@@ -71,19 +32,9 @@
                             @foreach(var type in GroupMembershipByType.OrderBy(o=>o.Key))
                             {
                                 <MudItem xs="12" sm="8" md="4">
-                                    <MudCard>
-                                        <MudCardHeader>
-                                            <MudText Typo="Typo.subtitle1">@type.Key</MudText>
-                                        </MudCardHeader>
-                                        <MudCardContent>
-                                            <MudList>
-                                                @foreach(var item in type.OrderBy(i=>i.DisplayName))
-                                                {
-                                                    <MudListItem>@item.DisplayName</MudListItem>
-                                                }
-                                            </MudList>
-                                        </MudCardContent>
-                                    </MudCard>
+                                    <DirectoryObjectGroupCard
+                                        Title="@type.Key"
+                                        Data ="@type"/>
                                 </MudItem>
                             }
                             </MudGrid>
@@ -96,33 +47,11 @@
                                 @foreach(var type in ApplicationRolesByAssignmentType.OrderBy(o=>o.Key))
                                 {
                                     <MudItem xs="12" sm="8" md="4">
-                                        <MudCard>
-                                            <MudCardHeader>
-                                                <MudText Typo="Typo.subtitle1">@type.Key</MudText>
-                                            </MudCardHeader>
-                                            <MudCardContent>
-                                                <MudList>
-                                                    @foreach(var item in type.OrderBy(i=>i.AssignedTo.DisplayName))
-                                                    {
-                                                        @if(!ShowDefaultAccessRoles && item.Role.Id == IdentityGuard.Shared.Models.Role.DefaultAccessId)
-                                                        {
-                                                            // Show Nothing
-                                                        }
-                                                        else
-                                                        {
-                                                            <MudListItem>
-                                                                <MudText Typo="Typo.subtitle1">@item.AssignedTo.DisplayName</MudText>
-                                                                <MudText Typo="Typo.body1">@item.Role.DisplayName</MudText>
-                                                                @if(item.AssignmentType == "Group")
-                                                                {
-                                                                    <MudText Typo="Typo.body2">From: @item.AssignedBy.DisplayName</MudText>
-                                                                }
-                                                            </MudListItem>
-                                                        }
-                                                    }
-                                                </MudList>
-                                            </MudCardContent>
-                                        </MudCard>
+                                        <ApplicationRoleGroupCard 
+                                            Title="@type.Key"
+                                            Data="@type"
+                                            ShowDefaultAccess="ShowDefaultAccessRoles"
+                                        />
                                     </MudItem>
                                 }
                             </MudGrid>

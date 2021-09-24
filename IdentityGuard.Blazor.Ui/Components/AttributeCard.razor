@@ -1,0 +1,16 @@
+﻿<MudCard>
+    <MudCardContent>
+        <MudList>
+            @foreach(var item in Data)
+            {
+                @if(!string.IsNullOrWhiteSpace(item.Value))
+                {
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">@item.Key</MudText>
+                        <MudText Typo="Typo.body2">@item.Value</MudText>
+                    </MudListItem>
+                }                      
+            }
+        </MudList>
+    </MudCardContent>
+</MudCard>
