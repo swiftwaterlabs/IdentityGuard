@@ -39,11 +39,11 @@ namespace IdentityGuard.Core.Services
             return user;
         }
 
-        public async Task<List<User>> SearchUser(Shared.Models.Directory directory, string type, string name, UserSearchType searchType)
+        public async Task<List<User>> SearchUser(Shared.Models.Directory directory, string name, UserSearchType searchType)
         {
             var client = await _graphClientFactory.CreateAsync(directory);
 
-            var filter = GetSearchFilter(type, name, searchType);
+            var filter = GetSearchFilter(name, searchType);
             var searchRequest = await client.Users
                 .Request()
                 .Filter(filter)
@@ -65,13 +65,13 @@ namespace IdentityGuard.Core.Services
             return users;
         }
 
-        private static string GetSearchFilter(string userType, string name, UserSearchType searchType)
+        private static string GetSearchFilter(string name, UserSearchType searchType)
         {
             var encodedName = System.Web.HttpUtility.UrlEncode(name);
             return searchType switch
             {
-                UserSearchType.UserPrincipalName => $"userType eq '{userType}' and userPrincipalName eq '{encodedName}'",
-                UserSearchType.Email => $"userType eq '{userType}' and mail eq '{encodedName}'",
+                UserSearchType.UserPrincipalName => $"userPrincipalName eq '{encodedName}'",
+                UserSearchType.Email => $"mail eq '{encodedName}'",
                 _ => throw new ArgumentOutOfRangeException(nameof(searchType), "Only UserPrincipalName and Email are supported")
             };
         }

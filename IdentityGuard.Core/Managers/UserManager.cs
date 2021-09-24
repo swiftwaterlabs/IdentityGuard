@@ -49,7 +49,7 @@ namespace IdentityGuard.Core.Managers
             return user;
         }
 
-        public async Task<List<Shared.Models.User>> Search(string userType, List<string> names)
+        public async Task<List<Shared.Models.User>> Search(List<string> names)
         {
             if (names == null || !names.Any()) return new List<User>();
 
@@ -57,7 +57,7 @@ namespace IdentityGuard.Core.Managers
 
             var searchTasks = directories
                 .AsParallel()
-                .Select(directory => SearchDirectory(directory, userType, names));
+                .Select(directory => SearchDirectory(directory, names));
 
             var searchResult = await Task.WhenAll(searchTasks);
 
@@ -69,15 +69,15 @@ namespace IdentityGuard.Core.Managers
 
         }
 
-        private async Task<List<Shared.Models.User>> SearchDirectory(Directory directory, string userType, List<string> names)
+        private async Task<List<Shared.Models.User>> SearchDirectory(Directory directory, List<string> names)
         {
             var upnTasks = names
                 .AsParallel()
-                .Select(name => _userService.SearchUser(directory, userType, name, Models.UserSearchType.UserPrincipalName));
+                .Select(name => _userService.SearchUser(directory, name, Models.UserSearchType.UserPrincipalName));
 
             var emailTasks = names
                 .AsParallel()
-                .Select(name => _userService.SearchUser(directory, userType, name, Models.UserSearchType.UserPrincipalName));
+                .Select(name => _userService.SearchUser(directory, name, Models.UserSearchType.UserPrincipalName));
 
             var upnResult = await Task.WhenAll(upnTasks);
             var emailResult = await Task.WhenAll(emailTasks);

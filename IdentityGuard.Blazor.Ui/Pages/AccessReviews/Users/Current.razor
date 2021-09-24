@@ -1,0 +1,118 @@
+﻿@page "/user/access/{DirectoryId}/{UserId}"
+
+<MudContainer Class="mt-16">
+    <Loadable IsLoading="IsLoading">
+        @if (UserAccess != null)
+        {
+            <MudCard>
+                <MudCardHeader>
+                    <MudText Typo="Typo.h5">@UserAccess.User.DisplayName</MudText>
+                    <MudText Typo="Typo.subtitle2">@UserAccess.DirectoryName</MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+                        <MudTabPanel Text="General">
+                            <MudList>
+                               
+                                <MudListItem>
+                                    <MudText Typo="Typo.subtitle2">Given Name</MudText>
+                                    <MudText Typo="Typo.body2">@UserAccess.User.GivenName</MudText>
+                                </MudListItem>
+                                <MudListItem>
+                                    <MudText Typo="Typo.subtitle2">SurName</MudText>
+                                    <MudText Typo="Typo.body2">@UserAccess.User.SurName</MudText>
+                                </MudListItem>
+                                <MudListItem>
+                                    <MudText Typo="Typo.subtitle2">Email</MudText>
+                                    <MudText Typo="Typo.body2">@UserAccess.User.EmailAddress</MudText>
+                                </MudListItem>
+                                <MudListItem>
+                                    <MudText Typo="Typo.subtitle2">User Type</MudText>
+                                    <MudText Typo="Typo.body2">@UserAccess.User.Type</MudText>
+                                </MudListItem>
+                            </MudList>
+                        </MudTabPanel>
+                        <MudTabPanel Text="Owned">
+                            <MudGrid>
+                            @foreach(var type in OwnedObjectsByType.OrderBy(o=>o.Key))
+                            {
+                                <MudItem xs="12" sm="8" md="4">
+                                    <MudCard>
+                                        <MudCardHeader>
+                                            <MudText Typo="Typo.subtitle1">@type.Key</MudText>
+                                        </MudCardHeader>
+                                        <MudCardContent>
+                                            <MudList>
+                                                @foreach(var item in type.OrderBy(i=>i.DisplayName))
+                                                {
+                                                    <MudListItem>@item.DisplayName</MudListItem>
+                                                }
+                                            </MudList>
+                                        </MudCardContent>
+                                    </MudCard>
+                                </MudItem>
+                            }
+                            </MudGrid>
+                        </MudTabPanel>
+                        <MudTabPanel Text="Groups">
+                            <MudGrid>
+                            @foreach(var type in GroupMembershipByType.OrderBy(o=>o.Key))
+                            {
+                                <MudItem xs="12" sm="8" md="4">
+                                    <MudCard>
+                                        <MudCardHeader>
+                                            <MudText Typo="Typo.subtitle1">@type.Key</MudText>
+                                        </MudCardHeader>
+                                        <MudCardContent>
+                                            <MudList>
+                                                @foreach(var item in type.OrderBy(i=>i.DisplayName))
+                                                {
+                                                    <MudListItem>@item.DisplayName</MudListItem>
+                                                }
+                                            </MudList>
+                                        </MudCardContent>
+                                    </MudCard>
+                                </MudItem>
+                            }
+                            </MudGrid>
+                        </MudTabPanel>
+                        <MudTabPanel Text="Roles">
+                            <MudGrid>
+                                @foreach(var type in ApplicationRolesByAssignmentType.OrderBy(o=>o.Key))
+                                {
+                                    <MudItem xs="12" sm="8" md="4">
+                                        <MudCard>
+                                            <MudCardHeader>
+                                                <MudText Typo="Typo.subtitle1">@type.Key</MudText>
+                                            </MudCardHeader>
+                                            <MudCardContent>
+                                                <MudList>
+                                                    @foreach(var item in type.OrderBy(i=>i.AssignedTo.DisplayName))
+                                                    {
+                                                        <MudListItem>
+                                                            <MudText Typo="Typo.subtitle1">@item.AssignedTo.DisplayName</MudText>
+                                                            <MudText Typo="Typo.body1">@item.Role.DisplayName</MudText>
+                                                            @if(item.AssignmentType == "Group")
+                                                            {
+                                                                <MudText Typo="Typo.body2">From: @item.AssignedBy.DisplayName</MudText>
+                                                            }
+                                                        </MudListItem>
+                                                    }
+                                                </MudList>
+                                            </MudCardContent>
+                                        </MudCard>
+                                    </MudItem>
+                                }
+                            </MudGrid>
+                        </MudTabPanel>
+                    </MudTabs>
+
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="StartReview" EndIcon="@Icons.Material.Filled.PlayCircle">Start Review</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Back" Class="ml-4">Back</MudButton>
+                </MudCardActions>
+            </MudCard>
+        }
+    </Loadable>
+</MudContainer>

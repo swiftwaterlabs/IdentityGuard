@@ -24,7 +24,8 @@ namespace IdentityGuard.Core.Mappers
                 {
                     Id = group.Id,
                     DisplayName = group.DisplayName,
-                    Type = string.Join(',',group.GroupTypes),
+                    Type = "Group",
+                    SubType = string.Join(',', group.GroupTypes),
                     ManagementUrl = directory.PortalUrl
                 };
             }
@@ -62,7 +63,7 @@ namespace IdentityGuard.Core.Mappers
             return new Shared.Models.DirectoryObject
             {
                 Id = toMap.Id,
-                DisplayName = "Unkown",
+                DisplayName = "Unknown",
                 Type = toMap.ODataType,
                 ManagementUrl = directory.PortalUrl
             };

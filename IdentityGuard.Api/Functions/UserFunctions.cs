@@ -53,14 +53,13 @@ namespace IdentityGuard.Api.Functions
 
         [Function("user-search")]
         public async Task<HttpResponseData> Search(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user/search/{userType}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user/search")]
             HttpRequestData req,
-            FunctionContext executionContext,
-            string userType)
+            FunctionContext executionContext)
         {
             if (!_authorizationManager.IsAuthorized(AuthorizedActions.ManageUsers, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
-            var data = await _userManager.Search(userType, req.GetBody<List<string>>());
+            var data = await _userManager.Search(req.GetBody<List<string>>());
 
             return await req.OkResponseAsync(data);
         }
