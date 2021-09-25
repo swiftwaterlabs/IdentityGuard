@@ -71,19 +71,14 @@ namespace IdentityGuard.Core.Managers
 
         private async Task<List<Shared.Models.User>> SearchDirectory(Directory directory, List<string> names)
         {
-            var upnTasks = names
+            var searchTasks = names
                 .AsParallel()
-                .Select(name => _userService.SearchUser(directory, name, Models.UserSearchType.UserPrincipalName));
+                .Select(name => _userService.SearchUser(directory, name));
 
-            var emailTasks = names
-                .AsParallel()
-                .Select(name => _userService.SearchUser(directory, name, Models.UserSearchType.UserPrincipalName));
+            var searchResult = await Task.WhenAll(searchTasks);
 
-            var upnResult = await Task.WhenAll(upnTasks);
-            var emailResult = await Task.WhenAll(emailTasks);
-
-            var results = upnResult.SelectMany(r => r)
-                .Union(emailResult.SelectMany(r => r));
+            var results = searchResult
+                .SelectMany(r => r);
 
             var uniqueResults = results
                 .ToLookup(u => $"{u.DirectoryId}|{u.Id}")
