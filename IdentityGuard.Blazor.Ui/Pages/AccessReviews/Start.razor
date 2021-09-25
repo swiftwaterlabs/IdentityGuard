@@ -21,23 +21,41 @@
                         }
                     </MudRadioGroup>
                 </MudItem>
-                <MudItem  xs="12" md="12">
-                    <Loadable IsLoading="IsLoading">
-                        <MudList>
-                            @foreach (var item in SearchResults)
-                            {
-                                <MudListItem>
-                                    <div class="d-flex flex-row">
-                                        <MudText>@item.DisplayName</MudText>
-                                        <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(()=>StartReview(item))" />
-                                    </div>
-                                </MudListItem>
-                                
-                            }
-                           
-                        </MudList>
-                    </Loadable>
-                   
+                <MudItem xs="12" md="12">
+
+                    @if (HasSearched)
+                    {
+                        <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="add" OnClick="StartAccessReviews" Class="mb-2" Disabled="@(!SelectedResults.Any())">Start Access Reviews</MudButton>
+
+                        <MudTable Items="@SearchResults"
+                                  MultiSelection="true"
+                                  @bind-SelectedItems="SelectedResults"
+                                  Hover="true"
+                                  Loading="IsLoading">
+                            <HeaderContent>
+                                <MudTh>Name</MudTh>
+                                <MudTh>Directory</MudTh>
+                                <MudTh>Type</MudTh>
+                                <MudTh></MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Name">@context.DisplayName</MudTd>
+                                <MudTd DataLabel="Directory">@context.DirectoryName</MudTd>
+                                <MudTd DataLabel="Type">@context.SubType</MudTd>
+                                <MudTd>
+                                    <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.ViewComfy" aria-label="edit" OnClick="@(()=>ShowAccess(context))" />
+                                </MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager HidePagination="@(!ArePagesVisible)"
+                                               HidePageNumber="@(!ArePagesVisible)"
+                                               HideRowsPerPage="@(!ArePagesVisible)"
+                                               PageSizeOptions="new int[]{10, 50, 100}" />
+                            </PagerContent>
+                        </MudTable>
+                    }
+
+
                 </MudItem>
             </MudGrid>
         </MudCardContent>

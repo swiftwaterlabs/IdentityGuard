@@ -25,6 +25,8 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         public NavigationManager NavigationManager { get; set; }
 
         public bool IsLoading { get; set; } = false;
+        public bool HasSearched { get; set; } = false;
+        public bool ArePagesVisible { get; set; } = false;
 
         public Dictionary<string, string> ObjectTypes { get; set; } = new ();
         public string SelectedObjectType { get; set; }
@@ -32,6 +34,8 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         public string SearchText { get; set; }
 
         public List<DirectoryObject> SearchResults { get; set; } = new ();
+
+        public HashSet<DirectoryObject> SelectedResults { get; set; } = new ();
 
         protected override Task OnInitializedAsync()
         {
@@ -50,6 +54,8 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
 
         public async Task Search()
         {
+            HasSearched = true;
+            SearchResults = new List<DirectoryObject>();
             if (string.IsNullOrWhiteSpace(SearchText))
             {
                 return;
@@ -60,7 +66,11 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                 {
                     IsLoading = true;
                     var results = await ApplicationService.Search(new[] {SearchText});
-                    SearchResults = results.Select(Map).ToList();
+                    SearchResults = results
+                        .Select(Map)
+                        .OrderBy(r=>r.DirectoryName).ThenBy(r=>r.DisplayName)
+                        .ToList();
+                    ArePagesVisible = SearchResults.Count > 10;
                     IsLoading = false;
                     return;
                 }
@@ -68,7 +78,11 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                 {
                     IsLoading = true;
                     var results = await UserService.Search(new[] { SearchText });
-                    SearchResults = results.Select(Map).ToList();
+                    SearchResults = results
+                        .Select(Map)
+                        .OrderBy(r => r.DirectoryName).ThenBy(r => r.DisplayName)
+                        .ToList();
+                    ArePagesVisible = SearchResults.Count > 10;
                     IsLoading = false;
                     return;
                 }
@@ -88,7 +102,8 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                 DisplayName = toMap.DisplayName,
                 DirectoryName = toMap.DirectoryName,
                 DirectoryId = toMap.DirectoryId,
-                Type = "Application"
+                Type = "Application",
+                SubType = toMap.ServicePrincipal?.Type ?? "Application"
             };
         }
 
@@ -100,11 +115,17 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                 DisplayName = toMap.DisplayName,
                 DirectoryName = toMap.DirectoryName,
                 DirectoryId = toMap.DirectoryId,
-                Type = "User"
+                Type = "User",
+                SubType = toMap.Type
             };
         }
 
-        public void StartReview(DirectoryObject item)
+        public async Task StartAccessReviews()
+        {
+
+        }
+
+        public void ShowAccess(DirectoryObject item)
         {
             var path = GetStartReviewPath(item);
             NavigationManager.NavigateTo(path);
