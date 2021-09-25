@@ -5,10 +5,14 @@
         @if (IsUserLoaded)
         {
             <MudCard>
-                <MudCardHeader>
-                    <MudText Typo="Typo.h5">@UserName</MudText>
-                    <MudText Typo="Typo.subtitle2">@DirectoryName</MudText>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="StartReview">Start Review</MudButton>
+                <MudCardHeader Class="d-flex">
+                   <CardHeaderContent>
+                       <MudText Typo="Typo.h5">@UserName</MudText>
+                       <MudText Typo="Typo.subtitle2">@DirectoryName</MudText>
+                   </CardHeaderContent>
+                   <CardHeaderActions>
+                       <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="start" OnClick="StartReview" Class="mb-2">Start Review</MudButton>
+                   </CardHeaderActions>
                 </MudCardHeader>
                 <MudCardContent>
                     <MudTabs Elevation="1" Rounded="true" PanelClass="mt-6">
