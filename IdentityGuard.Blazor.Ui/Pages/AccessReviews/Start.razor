@@ -4,17 +4,20 @@
     <MudCard>
         <MudCardContent>
             <MudGrid>
-                <MudItem xs="11" md="11">
-                    <MudTextField @bind-Value="@SearchText" Placeholder="Enter Name" Variant="Variant.Outlined"/>
+                <MudItem xs="8" md="8">
+                    <MudTextField @bind-Value="@SearchText" 
+                                  Placeholder="Enter Name" 
+                                  Variant="Variant.Outlined"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@Icons.Material.Outlined.Search"
+                                  OnAdornmentClick="Search"
+                                  Disabled="IsLoading"/>
                 </MudItem>
-                <MudItem xs="1" md="1">
-                    <MudIconButton Icon="@Icons.Material.Outlined.Search" aria-label="Search" OnClick="Search"></MudIconButton>
-                </MudItem>
-                <MudItem xs="12" md="12">
+                <MudItem xs="4" md="4">
                     <MudRadioGroup @bind-SelectedOption="@SelectedObjectType">
                         @foreach (var type in ObjectTypes)
                         {
-                            <MudRadio Option="@type.Key">@type.Value</MudRadio>
+                            <MudRadio Option="@type.Key" Disabled="IsLoading">@type.Value</MudRadio>
                         }
                     </MudRadioGroup>
                 </MudItem>
