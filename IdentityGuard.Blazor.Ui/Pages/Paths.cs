@@ -5,8 +5,9 @@
         public const string Home ="/";
         public const string Directories ="directory/";
         public const string AccessReviews ="accessreview/";
-        public const string UserAccessReviews ="accessreview/user";
-        public const string GroupAccessReviews ="accessreview/group";
-        public const string ApplicationAccessReviews ="accessreview/application";
+        public const string NewAccessReviews ="accessreview/new";
+        public const string UserAccessReviews ="user/access";
+        public const string GroupAccessReviews ="group/access";
+        public const string ApplicationAccessReviews ="application/access";
     }
 }

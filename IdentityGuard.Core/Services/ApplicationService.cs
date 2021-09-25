@@ -62,7 +62,7 @@ namespace IdentityGuard.Core.Services
         {
             var client = await _graphClientFactory.CreateAsync(directory);
 
-            string filter = GetSearchFilter(name);
+            var filter = GetSearchFilter(name);
             var searchRequest = await client.Applications
                 .Request()
                 .Filter(filter)
@@ -87,7 +87,7 @@ namespace IdentityGuard.Core.Services
         private static string GetSearchFilter(string name)
         {
             var encodedName = System.Web.HttpUtility.UrlEncode(name);
-            var filter = $"displayName contains '{encodedName}'";
+            var filter = $"startsWith(displayName,'{encodedName}')";
             return filter;
         }
     }

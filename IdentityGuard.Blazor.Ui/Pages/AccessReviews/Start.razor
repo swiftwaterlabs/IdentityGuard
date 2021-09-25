@@ -1,0 +1,42 @@
+﻿@page  "/accessreview/new"
+
+<MudContainer Class="mt-16">
+    <MudCard>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="11" md="11">
+                    <MudTextField @bind-Value="@SearchText" Placeholder="Enter Name" Variant="Variant.Outlined"/>
+                </MudItem>
+                <MudItem xs="1" md="1">
+                    <MudIconButton Icon="@Icons.Material.Outlined.Search" aria-label="Search" OnClick="Search"></MudIconButton>
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudRadioGroup @bind-SelectedOption="@SelectedObjectType">
+                        @foreach (var type in ObjectTypes)
+                        {
+                            <MudRadio Option="@type.Key">@type.Value</MudRadio>
+                        }
+                    </MudRadioGroup>
+                </MudItem>
+                <MudItem  xs="12" md="12">
+                    <Loadable IsLoading="IsLoading">
+                        <MudList>
+                            @foreach (var item in SearchResults)
+                            {
+                                <MudListItem>
+                                    <div class="d-flex flex-row">
+                                        <MudText>@item.DisplayName</MudText>
+                                        <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(()=>StartReview(item))" />
+                                    </div>
+                                </MudListItem>
+                                
+                            }
+                           
+                        </MudList>
+                    </Loadable>
+                   
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>

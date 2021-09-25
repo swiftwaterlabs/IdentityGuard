@@ -12,6 +12,9 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         [Inject]
         public AppState AppState { get; set; }
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         public bool IsLoading { get; set; } = false;
 
         public List<AccessReview> PendingAccessReviews { get; set; } = new ();
@@ -38,7 +41,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
 
         public void ShowNew()
         {
-
+            NavigationManager.NavigateTo(Paths.NewAccessReviews);
         }
     }
 }

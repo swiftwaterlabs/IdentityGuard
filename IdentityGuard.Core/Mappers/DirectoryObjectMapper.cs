@@ -15,6 +15,8 @@ namespace IdentityGuard.Core.Mappers
                     Id = user.Id,
                     DisplayName = user.DisplayName,
                     Type = "User",
+                    DirectoryId =  directory.Id,
+                    DirectoryName = directory.Domain,
                     ManagementUrl = directory.PortalUrl
                 };
             }
@@ -26,6 +28,8 @@ namespace IdentityGuard.Core.Mappers
                     DisplayName = group.DisplayName,
                     Type = "Group",
                     SubType = string.Join(',', group.GroupTypes),
+                    DirectoryId = directory.Id,
+                    DirectoryName = directory.Domain,
                     ManagementUrl = directory.PortalUrl
                 };
             }
@@ -36,6 +40,8 @@ namespace IdentityGuard.Core.Mappers
                     Id = application.Id,
                     DisplayName = application.DisplayName,
                     Type = "Application",
+                    DirectoryId = directory.Id,
+                    DirectoryName = directory.Domain,
                     ManagementUrl = directory.PortalUrl
                 };
             }
@@ -46,6 +52,8 @@ namespace IdentityGuard.Core.Mappers
                     Id = servicePrincipal.Id,
                     DisplayName = servicePrincipal.DisplayName,
                     Type = "Service Principal",
+                    DirectoryId = directory.Id,
+                    DirectoryName = directory.Domain,
                     ManagementUrl = directory.PortalUrl
                 };
             }
@@ -56,6 +64,8 @@ namespace IdentityGuard.Core.Mappers
                     Id = directoryRole.Id,
                     DisplayName = directoryRole.DisplayName,
                     Type = "Directory Role",
+                    DirectoryId = directory.Id,
+                    DirectoryName = directory.Domain,
                     ManagementUrl = directory.PortalUrl
                 };
             }
@@ -65,6 +75,8 @@ namespace IdentityGuard.Core.Mappers
                 Id = toMap.Id,
                 DisplayName = "Unknown",
                 Type = toMap.ODataType,
+                DirectoryId = directory.Id,
+                DirectoryName = directory.Domain,
                 ManagementUrl = directory.PortalUrl
             };
             
