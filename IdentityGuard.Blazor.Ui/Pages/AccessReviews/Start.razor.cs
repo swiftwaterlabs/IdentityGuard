@@ -6,6 +6,7 @@ using IdentityGuard.Blazor.Ui.Models;
 using IdentityGuard.Blazor.Ui.Services;
 using IdentityGuard.Shared.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 
 namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
@@ -118,6 +119,14 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                 Type = "User",
                 SubType = toMap.Type
             };
+        }
+
+        public async Task OnSearchKeyPress(KeyboardEventArgs input)
+        {
+            if (input.Code == "Enter")
+            {
+                await Search();
+            }
         }
 
         public async Task StartAccessReviews()

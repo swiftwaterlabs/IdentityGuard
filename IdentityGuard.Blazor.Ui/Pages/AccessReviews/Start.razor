@@ -11,7 +11,10 @@
                                   Adornment="Adornment.End"
                                   AdornmentIcon="@Icons.Material.Outlined.Search"
                                   OnAdornmentClick="Search"
-                                  Disabled="IsLoading"/>
+                                  Disabled="IsLoading"
+                                  Clearable="true"
+                                  OnKeyPress="OnSearchKeyPress"
+                                  Immediate="true"/>
                 </MudItem>
                 <MudItem xs="4" md="4">
                     <MudRadioGroup @bind-SelectedOption="@SelectedObjectType">
@@ -43,7 +46,7 @@
                                 <MudTd DataLabel="Directory">@context.DirectoryName</MudTd>
                                 <MudTd DataLabel="Type">@context.SubType</MudTd>
                                 <MudTd>
-                                    <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.ViewComfy" aria-label="edit" OnClick="@(()=>ShowAccess(context))" />
+                                    <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Visibility" aria-label="edit" OnClick="@(()=>ShowAccess(context))" />
                                 </MudTd>
                             </RowTemplate>
                             <PagerContent>
