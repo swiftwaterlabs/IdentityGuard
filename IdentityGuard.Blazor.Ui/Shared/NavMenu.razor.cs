@@ -14,8 +14,9 @@ namespace IdentityGuard.Blazor.Ui.Shared
         [Inject]
         public AuthenticationStateProvider AuthenticationStateService { get; set; }
 
-        public bool CanPerformAdminActions = false;
-        public bool CanViewUsers = false;
+        public bool IsLoading { get; set; } = false;
+        public bool CanPerformAdminActions { get; set; } = false;
+        public bool CanPerformAccessReviews { get; set; } = false;
 
         private bool IsConfiguredForAuthenticatedUser = false;
 
@@ -29,19 +30,22 @@ namespace IdentityGuard.Blazor.Ui.Shared
         {
             if (IsConfiguredForAuthenticatedUser) return;
 
+            IsLoading = true;
             var state = await AuthenticationStateService.GetAuthenticationStateAsync();
 
             if (!state.User.Identity.IsAuthenticated)
             {
                 CanPerformAdminActions = false;
-                CanViewUsers = false;
+                CanPerformAccessReviews = false;
             }
             else
             {
                 CanPerformAdminActions = await AuthorizationService.IsAuthorized(AuthorizedActions.ManageDirectories);
-                CanViewUsers = await AuthorizationService.IsAuthorized(AuthorizedActions.ManageUsers);
+                CanPerformAccessReviews = await AuthorizationService.IsAuthorized(AuthorizedActions.AccessReviewContributor);
                 IsConfiguredForAuthenticatedUser = true;
             }
+
+            IsLoading = false;
 
             StateHasChanged();
         }
