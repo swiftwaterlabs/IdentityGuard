@@ -1,6 +1,12 @@
 ﻿@page  "/accessreview/new"
 
 <MudContainer Class="mt-16">
+    @if(IsAccessReviewRequestVisible)
+    {
+        <AccessReviewRequest ObjectsToReview ="SelectedResults"/> 
+    }
+    else
+    {
     <MudCard>
         <MudCardContent>
             <MudGrid>
@@ -61,6 +67,6 @@
             </MudGrid>
         </MudCardContent>
     </MudCard>
-
+    }
 
 </MudContainer>

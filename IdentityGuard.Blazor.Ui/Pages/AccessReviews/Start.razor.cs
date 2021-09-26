@@ -29,6 +29,8 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         public bool HasSearched { get; set; } = false;
         public bool ArePagesVisible { get; set; } = false;
 
+        public bool IsAccessReviewRequestVisible { get; set; } = false;
+
         public Dictionary<string, string> ObjectTypes { get; set; } = new ();
         public string SelectedObjectType { get; set; }
 
@@ -131,7 +133,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
 
         public async Task RequestAccessReviews()
         {
-
+            IsAccessReviewRequestVisible = true;
         }
 
         public void ShowAccess(DirectoryObject item)

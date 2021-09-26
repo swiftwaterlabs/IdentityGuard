@@ -5,6 +5,16 @@
         <MudCardContent>
             <MudGrid>
                 <MudItem xs="12" md="12">
+                    <MudGrid>
+                        <MudItem xs="10" md="10">
+                             <MudText Typo="Typo.subtitle1">@Title</MudText>
+                        </MudItem>
+                        <MudItem xs="2" md="2">
+                             <MudChip Variant="Variant.Outlined">@ObjectUnderReviewCount</MudChip>
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+                <MudItem xs="12" md="12">
                     <MudTextField @bind-Value="@SearchText" 
                                   Placeholder="Enter Name" 
                                   Variant="Variant.Outlined"
@@ -65,7 +75,7 @@
                             <MudListItem>
                                
                                 @item.DisplayName
-                                <MudFab Class="ml-4" Color="Color.Warning" Icon="@Icons.Material.Filled.Delete" aria-label="remove-user" OnClick="@(RemoveReviewer(item))" />
+                                <MudFab Class="ml-4" Color="Color.Warning" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" aria-label="remove-user" OnClick="@(()=>RemoveReviewer(item))" />
                             </MudListItem>
                         }
                     </MudList>

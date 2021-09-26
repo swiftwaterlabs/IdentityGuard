@@ -2,7 +2,6 @@
 using IdentityGuard.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +11,7 @@ namespace IdentityGuard.Blazor.Ui.Components
     public partial class AccessReviewRequest
     {
         [Parameter]
-        public List<DirectoryObject> ObjectsToReview { get; set; }
+        public HashSet<DirectoryObject> ObjectsToReview { get; set; }
 
         [Inject]
         public IUserService UserService { get; set; }
@@ -24,12 +23,40 @@ namespace IdentityGuard.Blazor.Ui.Components
         public bool HasSearched { get; set; } = false;
         public bool ArePagesVisible { get; set; } = false;
         public string SearchText { get; set; }
+        public string Title { get; set; }
+        public int ObjectUnderReviewCount { get; set; } = 1;
 
         public List<User> SearchResults { get; set; } = new();
 
         public HashSet<User> SelectedResults { get; set; } = new();
 
         public Dictionary<string,User> Reviewers { get; set; } = new();
+
+        protected override void OnParametersSet()
+        {
+            SetTitle();
+
+            base.OnParametersSet();
+        }
+
+        private void SetTitle()
+        {
+            ObjectUnderReviewCount = ObjectsToReview?.Count ?? 0;
+
+            var names = ObjectsToReview?
+                    .Select(o => o.DisplayName)
+                    .OrderBy(o => o)
+                    .Take(3);
+
+            var namesJoined = string.Join(", ", names ?? new string[0]);
+
+            Title = $"Select Reviewers for {namesJoined}";
+
+            if (ObjectsToReview.Count > 3)
+            {
+                Title = $"{Title}...";
+            }
+        }
 
         public void AddReviewer()
         {
