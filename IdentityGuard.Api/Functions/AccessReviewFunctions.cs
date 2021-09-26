@@ -65,16 +65,16 @@ namespace IdentityGuard.Api.Functions
             return await req.OkResponseAsync(data);
         }
 
-        [Function("accessreview-post")]
-        public async Task<HttpResponseData> Post(
+        [Function("accessreview-request")]
+        public async Task<HttpResponseData> Requeset(
            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "accessreview/")]
             HttpRequestData req,
            FunctionContext executionContext)
         {
+            var user = req.GetRequestingUser();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.AccessReviewContributor, user)) return req.UnauthorizedResponse();
 
-            if (!_authorizationManager.IsAuthorized(AuthorizedActions.AccessReviewContributor, req.GetRequestingUser())) return req.UnauthorizedResponse();
-
-            var data = await _accessReviewManager.Add(req.GetBody<AccessReview>());
+            var data = await _accessReviewManager.Request(req.GetBody<AccessReviewRequest>(),user);
 
             return await req.OkResponseAsync(data);
         }

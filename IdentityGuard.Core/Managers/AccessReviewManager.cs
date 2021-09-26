@@ -6,22 +6,71 @@ using IdentityGuard.Core.Repositories;
 using IdentityGuard.Shared.Models;
 using IdentityGuard.Core.Extensions;
 using System.Linq;
+using IdentityGuard.Core.Services;
 
 namespace IdentityGuard.Core.Managers
 {
     public class AccessReviewManager
     {
         private readonly IAccessReviewRepository _accessReviewRepository;
+        private readonly ApplicationService _applicationService;
+        private readonly UserService _userService;
+        private readonly DirectoryManager _directoryManager;
 
-        public AccessReviewManager(IAccessReviewRepository accessReviewRepository)
+        public AccessReviewManager(IAccessReviewRepository accessReviewRepository,
+            ApplicationService applicationService,
+            UserService userService,
+            DirectoryManager directoryManager)
         {
             _accessReviewRepository = accessReviewRepository;
+            _applicationService = applicationService;
+            _userService = userService;
+            _directoryManager = directoryManager;
         }
-        public Task<AccessReview> Add(AccessReview toSave)
+        public async Task<AccessReview> Request(AccessReviewRequest request, IEnumerable<ClaimsIdentity> currentUser)
         {
-            toSave.Id = Guid.NewGuid().ToString();
+            var accessReview = new AccessReview
+            {
+                Id = Guid.NewGuid().ToString(),
+                AssignedTo = request.AssignedTo,
+                ObjectId = request.ObjectId,
+                ObjectType = request.ObjectType,
+                DirectoryId = request.DirectoryId,
+                CreatedAt = DateTime.Now,
+                CreatedBy = GetUser(currentUser),
+                Status = AccessReviewStatus.New
+            };
 
-            return _accessReviewRepository.Save(toSave);
+            await AddDisplayName(accessReview);
+
+            var result = await _accessReviewRepository.Save(accessReview);
+            return result;
+        }
+
+        private async Task AddDisplayName(AccessReview review)
+        {
+            var directory = await _directoryManager.GetById(review.DirectoryId);
+            if (directory == null) return;
+
+            switch (review.ObjectType.ToLower())
+            {
+                case "application":
+                    {
+                        var data = await _applicationService.Get(directory, review.ObjectId);
+                        review.DisplayName = data?.DisplayName;
+                        return;
+                    }
+                case "user":
+                    {
+                        var data = await _userService.Get(directory, review.ObjectId);
+                        review.DisplayName = data?.DisplayName;
+                        return;
+                    }
+                default:
+                    {
+                        return;
+                    }
+            }
         }
 
         public async Task<AccessReview> Complete(string id, IEnumerable<ClaimsIdentity> currentUser)
