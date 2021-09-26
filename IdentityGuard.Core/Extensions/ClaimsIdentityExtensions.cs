@@ -30,5 +30,17 @@ namespace IdentityGuard.Core.Extensions
 
             return userId;
         }
+
+        public static string GetUserName(this IEnumerable<ClaimsIdentity> identities)
+        {
+            var userIds = identities
+                .SelectMany(i => i.Claims)
+                .Where(c => c.Type == "name")
+                .Select(c => c.Value);
+
+            var userId = userIds.FirstOrDefault();
+
+            return userId;
+        }
     }
 }

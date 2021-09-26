@@ -124,7 +124,8 @@ namespace IdentityGuard.Core.Managers
             return new DirectoryObject
             {
                 Id = currentUser.GetUserId(),
-                DirectoryId = currentUser.GetUserDirectoryId()
+                DirectoryId = currentUser.GetUserDirectoryId(),
+                DisplayName = currentUser.GetUserName()
             };
         }
 

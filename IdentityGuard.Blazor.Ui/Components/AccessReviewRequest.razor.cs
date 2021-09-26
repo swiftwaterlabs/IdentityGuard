@@ -1,4 +1,5 @@
-﻿using IdentityGuard.Blazor.Ui.Services;
+﻿using IdentityGuard.Blazor.Ui.Pages;
+using IdentityGuard.Blazor.Ui.Services;
 using IdentityGuard.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -19,7 +20,12 @@ namespace IdentityGuard.Blazor.Ui.Components
         [Inject]
         public IAccessReviewService AccessReviewService { get; set; }
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
+
         public bool IsLoading { get; set; } = false;
+        public bool IsRequesting { get; set; } = false;
         public bool HasSearched { get; set; } = false;
         public bool ArePagesVisible { get; set; } = false;
         public string SearchText { get; set; }
@@ -109,6 +115,47 @@ namespace IdentityGuard.Blazor.Ui.Components
             {
                 await Search();
             }
+        }
+
+        public async Task RequestAccessReviews()
+        {
+            IsRequesting = true;
+            var requests = ObjectsToReview
+                 .Select(Map);
+
+            var requestTasks = requests
+                .Select(RequestAccessReview);
+
+            await Task.WhenAll(requestTasks);
+
+            IsRequesting = false;
+            NavigationManager.NavigateTo(Paths.AccessReviews);
+
+        }
+
+        private IdentityGuard.Shared.Models.AccessReviewRequest Map(DirectoryObject toMap)
+        {
+            return new IdentityGuard.Shared.Models.AccessReviewRequest
+            {
+                ObjectId = toMap.Id,
+                DirectoryId = toMap.DirectoryId,
+                ObjectType = toMap.Type,
+                AssignedTo = Reviewers.Values.Select(r=>Map(r)).ToList()
+            };
+        }
+
+        private DirectoryObject Map(User toMap)
+        {
+            return new DirectoryObject
+            {
+                Id = toMap.Id,
+                DirectoryId = toMap.DirectoryId
+            };
+        }
+
+        private Task RequestAccessReview(IdentityGuard.Shared.Models.AccessReviewRequest toRequest)
+        {
+            return AccessReviewService.Request(toRequest);
         }
     }
 }

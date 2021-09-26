@@ -7,6 +7,7 @@
             <MudTabPanel Text="Pending">
                 <MudTable Items="@PendingAccessReviews" Loading="IsLoading">
                     <HeaderContent>
+                        <MudTh></MudTh>
                         <MudTh>Type</MudTh>
                         <MudTh>Name</MudTh>
                         <MudTh>Created At</MudTh>
@@ -28,6 +29,7 @@
             <MudTabPanel Text="Complete">
                 <MudTable Items="@CompletedAccessReviews" Loading="IsLoading">
                     <HeaderContent>
+                        <MudTh></MudTh>
                         <MudTh>Type</MudTh>
                         <MudTh>Name</MudTh>
                         <MudTh>Completed At</MudTh>
@@ -36,7 +38,7 @@
                     </HeaderContent>
                     <RowTemplate>
                         <MudTd>
-                            <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit" aria-label="edit" OnClick="@(()=>ShowAccessReview(context.Id))" />
+                            <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Visibility" aria-label="edit" OnClick="@(()=>ShowAccessReview(context.Id))" />
                         </MudTd>
                         <MudTd DataLabel="Name">@context.ObjectType</MudTd>
                         <MudTd DataLabel="Domain">@context.DisplayName</MudTd>

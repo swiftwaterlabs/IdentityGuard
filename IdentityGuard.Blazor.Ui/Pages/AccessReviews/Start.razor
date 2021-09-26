@@ -34,7 +34,7 @@
 
                     @if (HasSearched)
                     {
-                        <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="add" OnClick="RequestAccessReviews" Class="mb-2" Disabled="@(!SelectedResults.Any())">Request Access Reviews</MudButton>
+                        <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="add" OnClick="RequestAccessReviews" Class="mb-2" Disabled="@(!SelectedResults.Any())">Select Reviewers</MudButton>
 
                         <MudTable Items="@SearchResults"
                                   MultiSelection="true"

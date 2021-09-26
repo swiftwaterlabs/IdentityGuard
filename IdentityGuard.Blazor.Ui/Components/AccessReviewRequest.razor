@@ -1,4 +1,5 @@
 ﻿<MudContainer Class="mt-16">
+    <MudOverlay @bind-Visible="IsRequesting" DarkBackground="true" AutoClose="false"/>
     <MudGrid>
         <MudItem xs="8" md="8">
             <MudCard>
@@ -6,11 +7,14 @@
             <MudGrid>
                 <MudItem xs="12" md="12">
                     <MudGrid>
-                        <MudItem xs="10" md="10">
+                        <MudItem xs="11" md="11">
                              <MudText Typo="Typo.subtitle1">@Title</MudText>
                         </MudItem>
-                        <MudItem xs="2" md="2">
+                        <MudItem xs="1" md="1">
                              <MudChip Variant="Variant.Outlined">@ObjectUnderReviewCount</MudChip>
+                        </MudItem>
+                        <MudItem xs="11" md="11">
+                             <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="add" OnClick="RequestAccessReviews" Class="mb-2" Disabled="@(!Reviewers.Any() || IsLoading)">Request Access Review</MudButton>
                         </MudItem>
                     </MudGrid>
                 </MudItem>
@@ -38,15 +42,14 @@
                                   Hover="true"
                                   Loading="IsLoading">
                             <HeaderContent>
-                                <MudTh></MudTh>
                                 <MudTh>Name</MudTh>
                                 <MudTh>Directory</MudTh>
-                                <MudTh>Type</MudTh>
+                                <MudTh>Email</MudTh>
                             </HeaderContent>
                             <RowTemplate>
                                 <MudTd DataLabel="Name">@context.DisplayName</MudTd>
                                 <MudTd DataLabel="Directory">@context.DirectoryName</MudTd>
-                                <MudTd DataLabel="Type">@context.Type</MudTd>
+                                <MudTd DataLabel="Type">@context.EmailAddress</MudTd>
                             </RowTemplate>
                             <PagerContent>
                                 <MudTablePager HidePagination="@(!ArePagesVisible)"

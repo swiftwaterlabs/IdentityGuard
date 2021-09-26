@@ -38,6 +38,8 @@ namespace IdentityGuard.Core.Repositories
 
         public async Task<Request> Save(Request toSave)
         {
+            toSave.Id = toSave.Id ?? Guid.NewGuid().ToString();
+
             var data = _requestMapper.Map(toSave);
             var result = await _cosmosDbService.Save(data,
                 CosmosConfiguration.Containers.Requests);
