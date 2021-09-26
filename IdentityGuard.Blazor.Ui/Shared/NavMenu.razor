@@ -12,12 +12,10 @@
         <MudNavLink Href="@Paths.Directories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Domain">Directories</MudNavLink>
     }
 
-    <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Access Reviews</MudText>
-    @if (CanViewUsers)
-    {
-        <MudNavLink Href="@Paths.UserAccessReviews" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.VerifiedUser">Users</MudNavLink>
-    }
-    <MudNavLink Href="@Paths.GroupAccessReviews" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Groups">Groups</MudNavLink>
-    <MudNavLink Href="@Paths.ApplicationAccessReviews" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.SupervisedUserCircle">Applications</MudNavLink>
+    <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Governance</MudText>
+    <MudNavLink Href="@Paths.AccessReviews" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.SupervisedUserCircle">Access Reviews</MudNavLink>
+
+    <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Lifecycle Management</MudText>
+    <MudNavLink Href="@Paths.Policies" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Policy">Policies</MudNavLink>
 
 </MudNavMenu>

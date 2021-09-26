@@ -5,6 +5,7 @@ using IdentityGuard.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace IdentityGuard.Core.Services
@@ -39,11 +40,11 @@ namespace IdentityGuard.Core.Services
             return user;
         }
 
-        public async Task<List<User>> SearchUser(Shared.Models.Directory directory, string name, UserSearchType searchType)
+        public async Task<List<User>> SearchUser(Shared.Models.Directory directory, string name)
         {
             var client = await _graphClientFactory.CreateAsync(directory);
 
-            var filter = GetSearchFilter(name, searchType);
+            var filter = GetSearchFilter(name);
             var searchRequest = await client.Users
                 .Request()
                 .Filter(filter)
@@ -65,15 +66,23 @@ namespace IdentityGuard.Core.Services
             return users;
         }
 
-        private static string GetSearchFilter(string name, UserSearchType searchType)
+        private static string GetSearchFilter(string name)
         {
             var encodedName = System.Web.HttpUtility.UrlEncode(name);
-            return searchType switch
+
+            var searchFields = new[]
             {
-                UserSearchType.UserPrincipalName => $"userPrincipalName eq '{encodedName}'",
-                UserSearchType.Email => $"mail eq '{encodedName}'",
-                _ => throw new ArgumentOutOfRangeException(nameof(searchType), "Only UserPrincipalName and Email are supported")
+                "userPrincipalName",
+                "mail",
+                "displayName"
             };
+
+            var searchClauses = searchFields
+                .Select(field => $"startswith({field},'{encodedName}')");
+
+            var result = string.Join(" or ", searchClauses);
+            return result;
+
         }
 
         public async Task<List<Shared.Models.DirectoryObject>> GetOwnedObjects(Shared.Models.Directory directory, string id)

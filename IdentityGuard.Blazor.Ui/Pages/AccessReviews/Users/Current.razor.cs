@@ -45,7 +45,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews.Users
 
             AppState.SetBreadcrumbs(
                 new BreadcrumbItem("Access Reviews", Paths.AccessReviews),
-                new BreadcrumbItem("Users", Paths.UserAccessReviews),
+                new BreadcrumbItem("Users", Paths.AccessReviews),
                 new BreadcrumbItem(UserName, "#")
                 );
         }

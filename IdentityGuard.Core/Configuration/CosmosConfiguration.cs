@@ -13,6 +13,7 @@
     public class CosmosContainers
     {
         public  string Directories = "Directories";
+        public  string AccessReviews = "AccessReviews";
     }
 
 

@@ -1,0 +1,66 @@
+﻿@page  "/accessreview/new"
+
+<MudContainer Class="mt-16">
+    <MudCard>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="8" md="8">
+                    <MudTextField @bind-Value="@SearchText" 
+                                  Placeholder="Enter Name" 
+                                  Variant="Variant.Outlined"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@Icons.Material.Outlined.Search"
+                                  OnAdornmentClick="Search"
+                                  Disabled="IsLoading"
+                                  Clearable="true"
+                                  OnKeyPress="OnSearchKeyPress"
+                                  Immediate="true"/>
+                </MudItem>
+                <MudItem xs="4" md="4">
+                    <MudRadioGroup @bind-SelectedOption="@SelectedObjectType">
+                        @foreach (var type in ObjectTypes)
+                        {
+                            <MudRadio Option="@type.Key" Disabled="IsLoading">@type.Value</MudRadio>
+                        }
+                    </MudRadioGroup>
+                </MudItem>
+                <MudItem xs="12" md="12">
+
+                    @if (HasSearched)
+                    {
+                        <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="add" OnClick="StartAccessReviews" Class="mb-2" Disabled="@(!SelectedResults.Any())">Start Access Reviews</MudButton>
+
+                        <MudTable Items="@SearchResults"
+                                  MultiSelection="true"
+                                  @bind-SelectedItems="SelectedResults"
+                                  Hover="true"
+                                  Loading="IsLoading">
+                            <HeaderContent>
+                                <MudTh>Name</MudTh>
+                                <MudTh>Directory</MudTh>
+                                <MudTh>Type</MudTh>
+                                <MudTh></MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Name">@context.DisplayName</MudTd>
+                                <MudTd DataLabel="Directory">@context.DirectoryName</MudTd>
+                                <MudTd DataLabel="Type">@context.SubType</MudTd>
+                                <MudTd>
+                                    <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Visibility" aria-label="edit" OnClick="@(()=>ShowAccess(context))" />
+                                </MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager HidePagination="@(!ArePagesVisible)"
+                                               HidePageNumber="@(!ArePagesVisible)"
+                                               HideRowsPerPage="@(!ArePagesVisible)"
+                                               PageSizeOptions="new int[]{10, 50, 100}" />
+                            </PagerContent>
+                        </MudTable>
+                    }
+
+
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
