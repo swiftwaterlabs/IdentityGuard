@@ -129,7 +129,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             }
         }
 
-        public async Task StartAccessReviews()
+        public async Task RequestAccessReviews()
         {
 
         }
