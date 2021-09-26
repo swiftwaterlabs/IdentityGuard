@@ -44,6 +44,7 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<DirectoryRepository>();
             services.AddSingleton<IDirectoryRepository, CachedDirectoryRepository>();
             services.AddSingleton<IAccessReviewRepository, AccessReviewRepository>();
+            services.AddSingleton<IRequestRepository, RequestRepository>();
 
             // Services
             services.AddTransient<ApplicationService>();

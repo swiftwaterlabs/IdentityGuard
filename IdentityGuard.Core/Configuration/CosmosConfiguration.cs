@@ -14,6 +14,7 @@
     {
         public  string Directories = "Directories";
         public  string AccessReviews = "AccessReviews";
+        public  string Requests = "Requests";
     }
 
 

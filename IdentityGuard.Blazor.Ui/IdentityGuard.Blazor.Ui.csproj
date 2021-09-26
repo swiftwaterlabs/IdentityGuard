@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\AccessReviews\Groups\**" />
+    <Content Remove="Pages\AccessReviews\Groups\**" />
+    <EmbeddedResource Remove="Pages\AccessReviews\Groups\**" />
+    <None Remove="Pages\AccessReviews\Groups\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.9" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="5.0.9" />
@@ -20,10 +27,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IdentityGuard.Shared.Models\IdentityGuard.Shared.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\AccessReviews\Groups\" />
   </ItemGroup>
 
 </Project>

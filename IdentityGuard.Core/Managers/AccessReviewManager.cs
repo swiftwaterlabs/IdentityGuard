@@ -16,35 +16,60 @@ namespace IdentityGuard.Core.Managers
         private readonly ApplicationService _applicationService;
         private readonly UserService _userService;
         private readonly DirectoryManager _directoryManager;
+        private readonly RequestManager _requestManager;
 
         public AccessReviewManager(IAccessReviewRepository accessReviewRepository,
             ApplicationService applicationService,
             UserService userService,
-            DirectoryManager directoryManager)
+            DirectoryManager directoryManager,
+            RequestManager requestManager)
         {
             _accessReviewRepository = accessReviewRepository;
             _applicationService = applicationService;
             _userService = userService;
             _directoryManager = directoryManager;
+            _requestManager = requestManager;
         }
         public async Task<AccessReview> Request(AccessReviewRequest request, IEnumerable<ClaimsIdentity> currentUser)
         {
-            var accessReview = new AccessReview
+            var requestingUser = GetUser(currentUser);
+            var requestData = await _requestManager.Save(request, RequestStatus.New, requestingUser);
+
+            RequestStatus status = RequestStatus.New;
+
+            try
             {
-                Id = Guid.NewGuid().ToString(),
-                AssignedTo = request.AssignedTo,
-                ObjectId = request.ObjectId,
-                ObjectType = request.ObjectType,
-                DirectoryId = request.DirectoryId,
-                CreatedAt = DateTime.Now,
-                CreatedBy = GetUser(currentUser),
-                Status = AccessReviewStatus.New
-            };
+                var accessReview = new AccessReview
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    AssignedTo = request.AssignedTo,
+                    ObjectId = request.ObjectId,
+                    ObjectType = request.ObjectType,
+                    DirectoryId = request.DirectoryId,
+                    CreatedAt = DateTime.Now,
+                    CreatedBy = requestingUser,
+                    Status = AccessReviewStatus.New
+                };
 
-            await AddDisplayName(accessReview);
+                await AddDisplayName(accessReview);
 
-            var result = await _accessReviewRepository.Save(accessReview);
-            return result;
+                var result = await _accessReviewRepository.Save(accessReview);
+
+                await _requestManager.UpdateStatus(requestData.Id, RequestStatus.Complete, requestingUser);
+                status = RequestStatus.Complete;
+
+                return result;
+            }
+            catch
+            {
+                status = RequestStatus.Failed;
+                throw;
+            }
+            finally
+            {
+                await _requestManager.UpdateStatus(requestData.Id, status, requestingUser);
+                
+            }
         }
 
         private async Task AddDisplayName(AccessReview review)
