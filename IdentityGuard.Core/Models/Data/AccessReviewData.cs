@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using IdentityGuard.Shared.Models;
+using Newtonsoft.Json;
 
-namespace IdentityGuard.Shared.Models
+namespace IdentityGuard.Core.Models.Data
 {
-    public class AccessReview
+    public class AccessReviewData
     {
+        [JsonProperty("id")]
         public string Id { get; set; }
         public string ObjectType { get; set; }
         public string DirectoryId { get; set; }
@@ -16,13 +19,5 @@ namespace IdentityGuard.Shared.Models
         public List<DirectoryObject> AssignedTo { get; set; }
         public DirectoryObject CompletedBy { get; set; }
         public AccessReviewStatus Status { get; set; }
-    }
-
-    public enum AccessReviewStatus
-    {
-        New,
-        InProgress,
-        Complete,
-        Abandoned
     }
 }
