@@ -6,5 +6,6 @@
         public const string ManageDirectories = "ManageDirectories";
         public const string ManageUsers = "ManageUsers";
         public const string ManageApplications = "ManageApplications";
+        public const string AccessReviewContributor = "AccessReviewContributor";
     }
 }

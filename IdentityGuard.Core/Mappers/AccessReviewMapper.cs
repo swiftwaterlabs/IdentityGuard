@@ -31,6 +31,7 @@ namespace IdentityGuard.Core.Mappers
             return new Models.Data.AccessReviewData
             {
                 Id = toMap.Id,
+                Area = Configuration.CosmosConfiguration.DefaultPartitionKey,
                 ObjectType = toMap.ObjectType,
                 ObjectId = toMap.ObjectId,
                 DirectoryId = toMap.DirectoryId,

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IdentityGuard.Core.Configuration;
 using IdentityGuard.Core.Mappers;
@@ -31,17 +32,19 @@ namespace IdentityGuard.Core.Repositories
             return result;
         }
 
-        public Task<ICollection<AccessReview>> Get()
+        public Task<ICollection<AccessReview>> Get(string userId, params AccessReviewStatus[] status)
         {
             var query = _cosmosDbService
-                .Query<AccessReviewData>(CosmosConfiguration.Containers.AccessReviews);
-
+                .Query<AccessReviewData>(CosmosConfiguration.Containers.AccessReviews)
+                .Where(r => r.AssignedTo.Any(a => a.Id == userId))
+                .Where(r => status.Contains(r.Status));
+                
             var result = _cosmosDbService.ExecuteRead(query, _accessReviewMapper.Map);
 
             return result;
         }
 
-        public async Task<AccessReview> Get(string id)
+        public async Task<AccessReview> GetById(string id)
         {
             var data = await _cosmosDbService
                 .Get<AccessReviewData>(id,CosmosConfiguration.Containers.AccessReviews,CosmosConfiguration.DefaultPartitionKey);

@@ -29,6 +29,7 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<AuthorizationManager>();
             services.AddTransient<DirectoryManager>();
             services.AddTransient<UserManager>();
+            services.AddTransient<AccessReviewManager>();
 
             // Mappers
             services.AddTransient<ApplicationMapper>();
@@ -37,10 +38,12 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<DirectoryObjectMapper>();
             services.AddTransient<ServicePrincipalMapper>();
             services.AddTransient<UserMapper>();
+            services.AddTransient<AccessReviewMapper>();
 
             // Repositories
             services.AddTransient<DirectoryRepository>();
             services.AddSingleton<IDirectoryRepository, CachedDirectoryRepository>();
+            services.AddSingleton<IAccessReviewRepository, AccessReviewRepository>();
 
             // Services
             services.AddTransient<ApplicationService>();

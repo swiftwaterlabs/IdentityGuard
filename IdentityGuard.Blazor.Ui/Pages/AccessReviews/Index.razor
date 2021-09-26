@@ -5,7 +5,7 @@
         <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="add" OnClick="ShowNew" Class="mb-2">Start Access Review</MudButton>
         <MudTabs Elevation="1" Rounded="true" PanelClass="mt-6">
             <MudTabPanel Text="Pending">
-                <MudTable Items="@PendingAccessReviews">
+                <MudTable Items="@PendingAccessReviews" Loading="IsLoading">
                     <HeaderContent>
                         <MudTh>Type</MudTh>
                         <MudTh>Name</MudTh>
@@ -26,7 +26,7 @@
                 </MudTable>
             </MudTabPanel>
             <MudTabPanel Text="Complete">
-                <MudTable Items="@CompletedAccessReviews">
+                <MudTable Items="@CompletedAccessReviews" Loading="IsLoading">
                     <HeaderContent>
                         <MudTh>Type</MudTh>
                         <MudTh>Name</MudTh>
