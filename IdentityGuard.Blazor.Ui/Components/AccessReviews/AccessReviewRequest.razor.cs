@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IdentityGuard.Blazor.Ui.Components
+namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
 {
     public partial class AccessReviewRequest
     {
