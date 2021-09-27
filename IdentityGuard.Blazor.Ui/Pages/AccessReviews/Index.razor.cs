@@ -55,7 +55,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
 
         public void ShowAccessReview(string id)
         {
-
+            NavigationManager.NavigateTo($"{Paths.AccessReviews}/{id}");
         }
 
         public void ShowNew()
