@@ -14,7 +14,10 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews.Users
 
         [Inject]
         public IUserService UserService { get; set; }
-       
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         [Parameter]
         public string DirectoryId { get; set; }
 
@@ -27,9 +30,9 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews.Users
 
             AppState.SetBreadcrumbs(
                 new BreadcrumbItem("Access Reviews", Paths.AccessReviews),
-                new BreadcrumbItem("Users", Paths.AccessReviews),
-                new BreadcrumbItem(userData?.DirectoryName, "#"),
-                new BreadcrumbItem(userData?.DisplayName, "#")
+                new BreadcrumbItem(userData?.DirectoryName, Paths.AccessReviews),
+                new BreadcrumbItem("User", Paths.AccessReviews),
+                new BreadcrumbItem(userData?.DisplayName, NavigationManager.Uri)
                 );
         }
 

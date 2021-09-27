@@ -40,7 +40,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.Directories
 
             await LoadData();
             AppState.SetBreadcrumbs(new BreadcrumbItem("Directories", Paths.Directories),
-                new BreadcrumbItem(Data.Name,"#"));
+                new BreadcrumbItem(Data.Name, NavigationManager.Uri));
         }
 
         private async Task LoadData()
