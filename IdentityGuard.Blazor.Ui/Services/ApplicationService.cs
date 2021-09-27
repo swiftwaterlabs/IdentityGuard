@@ -9,6 +9,7 @@ namespace IdentityGuard.Blazor.Ui.Services
     {
         Task<List<Application>> Search(ICollection<string> names);
         Task<ApplicationAccess> ApplicationAccess(string directoryId, string id);
+        Task<Application> Get(string directoryId, string id);
     }
 
     public class ApplicationService : AbstractHttpService, IApplicationService
@@ -18,5 +19,6 @@ namespace IdentityGuard.Blazor.Ui.Services
         public Task<List<Application>> Search(ICollection<string> names) => Post<List<Application>, ICollection<string>>("api/application/search", names);
 
         public Task<ApplicationAccess> ApplicationAccess(string directoryId, string id) => Get<ApplicationAccess>($"api/application/{directoryId}/{id}/access");
+        public Task<Application> Get(string directoryId, string id) => Get<Application>($"api/application/{directoryId}/{id}");
     }
 }
