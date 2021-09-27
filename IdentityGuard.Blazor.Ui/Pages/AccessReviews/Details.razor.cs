@@ -16,14 +16,21 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         [Inject]
         public IAccessReviewService AccessReviewService { get; set; }
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         [Parameter]
         public string Id { get; set; }
 
         public AccessReview AccessReview { get; set; }
 
+        public bool CanPerformActions { get; set; } = false;
+
         protected override async Task OnParametersSetAsync()
         {
             AccessReview = await AccessReviewService.Get(Id);
+            CanPerformActions = AccessReview != null && 
+                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress);
 
             AppState.SetBreadcrumbs(
                new BreadcrumbItem("Access Reviews", Paths.AccessReviews),
@@ -34,12 +41,16 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
 
         public async Task Complete()
         {
+            await AccessReviewService.Complete(Id);
 
+            NavigationManager.NavigateTo(Paths.AccessReviews);
         }
 
         public async Task Abandon()
         {
-            
+            await AccessReviewService.Abandon(Id);
+
+            NavigationManager.NavigateTo(Paths.AccessReviews);
         }
     }
 }

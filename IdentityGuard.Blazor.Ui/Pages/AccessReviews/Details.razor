@@ -2,8 +2,8 @@
 
 <MudContainer Class="mt-16">
     <div>
-        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Check" Color="Color.Primary" OnClick="Complete">Complete</MudButton>
-        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="Abandon" Class="ml-4">Abandon</MudButton>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Check" Color="Color.Primary" OnClick="Complete" Disabled="@(!CanPerformActions)">Complete</MudButton>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="Abandon" Class="ml-4" Disabled="@(!CanPerformActions)">Abandon</MudButton>
     </div>
     @if(AccessReview?.ObjectType == "Application")
     {
