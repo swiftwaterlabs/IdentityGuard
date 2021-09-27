@@ -26,6 +26,9 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
 
         public bool CanPerformActions { get; set; } = false;
 
+        public bool IsAbandonDialogOpen { get; set; } = false;
+        public bool IsCompleteDialogOpen { get; set; } = false;
+
         protected override async Task OnParametersSetAsync()
         {
             AccessReview = await AccessReviewService.Get(Id);
@@ -52,6 +55,26 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             await AccessReviewService.Abandon(Id);
 
             NavigationManager.NavigateTo(Paths.AccessReviews);
+        }
+
+        public void ShowAbandonDialog()
+        {
+            IsAbandonDialogOpen = true;
+        }
+
+        public void HideAbandonDialog()
+        {
+            IsAbandonDialogOpen = false;
+        }
+
+        public void ShowCompleteDialog()
+        {
+            IsCompleteDialogOpen = true;
+        }
+
+        public void HideCompleteDialog()
+        {
+            IsCompleteDialogOpen = false;
         }
     }
 }

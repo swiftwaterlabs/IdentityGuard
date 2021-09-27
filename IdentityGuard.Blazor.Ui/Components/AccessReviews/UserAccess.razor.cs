@@ -46,6 +46,7 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         protected override async Task OnParametersSetAsync()
         {
             if (string.IsNullOrEmpty(DirectoryId) || string.IsNullOrEmpty(UserId)) return;
+            if (IsUserLoaded) return;
 
             await LoadUserData();
         }
