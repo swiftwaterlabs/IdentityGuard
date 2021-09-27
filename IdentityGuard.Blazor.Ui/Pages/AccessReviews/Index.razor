@@ -1,0 +1,53 @@
+﻿@page  "/accessreview"
+
+<MudContainer Class="mt-16">
+    <Loadable IsLoading="IsLoading">
+        <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="add" OnClick="ShowNew" Class="mb-2">Start Access Review</MudButton>
+        <MudTabs Elevation="1" Rounded="true" PanelClass="mt-6">
+            <MudTabPanel Text="Pending">
+                <MudTable Items="@PendingAccessReviews" Loading="IsLoading">
+                    <HeaderContent>
+                        <MudTh></MudTh>
+                        <MudTh>Type</MudTh>
+                        <MudTh>Name</MudTh>
+                        <MudTh>Created At</MudTh>
+                        <MudTh>Created By</MudTh>
+                        <MudTh>Status</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd>
+                            <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit" aria-label="edit" OnClick="@(()=>ShowAccessReview(context.Id))" />
+                        </MudTd>
+                        <MudTd DataLabel="Name">@context.ObjectType</MudTd>
+                        <MudTd DataLabel="Domain">@context.DisplayName</MudTd>
+                        <MudTd DataLabel="Domain">@context.CreatedAt</MudTd>
+                        <MudTd DataLabel="Domain">@context.CreatedBy.DisplayName</MudTd>
+                        <MudTd DataLabel="Domain">@context.Status</MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </MudTabPanel>
+            <MudTabPanel Text="Complete">
+                <MudTable Items="@CompletedAccessReviews" Loading="IsLoading">
+                    <HeaderContent>
+                        <MudTh></MudTh>
+                        <MudTh>Type</MudTh>
+                        <MudTh>Name</MudTh>
+                        <MudTh>Completed At</MudTh>
+                        <MudTh>Completed By</MudTh>
+                        <MudTh>Status</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd>
+                            <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Visibility" aria-label="edit" OnClick="@(()=>ShowAccessReview(context.Id))" />
+                        </MudTd>
+                        <MudTd DataLabel="Name">@context.ObjectType</MudTd>
+                        <MudTd DataLabel="Domain">@context.DisplayName</MudTd>
+                        <MudTd DataLabel="Domain">@context.CompletedAt</MudTd>
+                        <MudTd DataLabel="Domain">@context.CompletedBy.DisplayName</MudTd>
+                        <MudTd DataLabel="Domain">@context.Status</MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </MudTabPanel>
+        </MudTabs>
+    </Loadable>
+</MudContainer>

@@ -1,0 +1,55 @@
+﻿@page  "/accessreview/{Id}"
+
+<MudContainer Class="mt-16">
+
+    @if(AccessReview?.ObjectType == "Application")
+    {
+        <IdentityGuard.Blazor.Ui.Components.AccessReviews.ApplicationAccess 
+            DirectoryId="@AccessReview?.DirectoryId" ApplicationId="@AccessReview?.ObjectId" AllowNewAccessReview="false">
+            <Actions>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions)">Complete</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="ShowAbandonDialog" Class="ml-4" Disabled="@(!CanPerformActions)">Abandon</MudButton>
+            </Actions> 
+        </IdentityGuard.Blazor.Ui.Components.AccessReviews.ApplicationAccess>
+
+    }
+
+    @if (AccessReview?.ObjectType == "User")
+    {
+        <IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess
+        DirectoryId="@AccessReview?.DirectoryId" UserId="@AccessReview?.ObjectId"  AllowNewAccessReview="false">
+            <Actions>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions)">Complete</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="ShowAbandonDialog" Class="ml-4" Disabled="@(!CanPerformActions)">Abandon</MudButton>
+            </Actions>    
+        </IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess>
+    }
+
+    <MudDialog @bind-IsVisible="IsAbandonDialogOpen">
+        <TitleContent>
+            <MudText Typo="Typo.h5"> Are you sure you would like to abandon this access review?</MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudText>Once abandoned, this acces review will no longer be available.</MudText>
+        </DialogContent>
+        <DialogActions>
+             <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Tertiary" OnClick="HideAbandonDialog" Class="ml-4">Cancel</MudButton>
+             <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="Abandon" Class="ml-4">Abandon</MudButton>
+        </DialogActions>
+    </MudDialog>
+
+     <MudDialog @bind-IsVisible="IsCompleteDialogOpen">
+    <TitleContent>
+        <MudText Typo="Typo.h5"> Are you sure you would like to complete this access review?</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText>By completing, you are attesting that all access for the @AccessReview?.ObjectType?.ToLower() is accurate and all unecessary access has been removed.</MudText>
+    </DialogContent>
+    <DialogActions>
+            <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Tertiary" OnClick="HideCompleteDialog" Class="ml-4">Cancel</MudButton>
+            <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="Complete" Class="ml-4">Complete</MudButton>
+    </DialogActions>
+</MudDialog>
+</MudContainer>
+
+

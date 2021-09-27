@@ -1,0 +1,13 @@
+﻿<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.subtitle1">@Title</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudList>
+            @foreach(var item in Data.OrderBy(i=>i.DisplayName))
+            {
+                <MudListItem>@item.DisplayName</MudListItem>
+            }
+        </MudList>
+    </MudCardContent>
+</MudCard>

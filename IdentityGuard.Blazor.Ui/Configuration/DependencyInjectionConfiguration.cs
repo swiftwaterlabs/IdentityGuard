@@ -22,9 +22,12 @@ namespace IdentityGuard.Blazor.Ui.Configuration
             //Register Managers
 
             //Register Services
-            services.AddTransient<Services.IAuthorizationService, AuthorizationService>();
+            services.AddTransient<Services.AuthorizationService>();
+            services.AddScoped<Services.IAuthorizationService, CachedAuthorizationService>();
             services.AddTransient<Services.IDirectoryService, DirectoryService>();
             services.AddTransient<Services.IUserService, UserService>();
+            services.AddTransient<Services.IApplicationService, ApplicationService>();
+            services.AddTransient<Services.IAccessReviewService, AccessReviewService>();
 
             services.AddGraphClient(configuration[ConfigurationNames.ApiScope]);
 

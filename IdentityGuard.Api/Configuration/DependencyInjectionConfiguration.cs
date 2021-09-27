@@ -24,19 +24,35 @@ namespace IdentityGuard.Api.Configuration
 
             // Managers
             services.AddTransient<AboutManager>();
+            services.AddTransient<ApplicationManager>();
             services.AddTransient<ApplicationHealthManager>();
             services.AddTransient<AuthorizationManager>();
             services.AddTransient<DirectoryManager>();
             services.AddTransient<UserManager>();
+            services.AddTransient<AccessReviewManager>();
+            services.AddTransient<RequestManager>();
 
             // Mappers
+            services.AddTransient<ApplicationMapper>();
+            services.AddTransient<ApplicationRoleMapper>();
             services.AddTransient<DirectoryMapper>();
+            services.AddTransient<DirectoryObjectMapper>();
+            services.AddTransient<ServicePrincipalMapper>();
+            services.AddTransient<UserMapper>();
+            services.AddTransient<AccessReviewMapper>();
+            services.AddTransient<RequestMapper>();
 
             // Repositories
             services.AddTransient<DirectoryRepository>();
+            services.AddSingleton<IDirectoryRepository, CachedDirectoryRepository>();
+            services.AddSingleton<IAccessReviewRepository, AccessReviewRepository>();
+            services.AddSingleton<IRequestRepository, RequestRepository>();
 
             // Services
+            services.AddTransient<ApplicationService>();
             services.AddTransient<EnvironmentService>();
+            services.AddTransient<ServicePrincipalService>();
+            services.AddTransient<UserService>();
 
             ConfigureKeyVault(services);
             ConfigureCosmosDb(services);

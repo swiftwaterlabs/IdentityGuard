@@ -8,9 +8,9 @@ namespace IdentityGuard.Core.Managers
 {
     public class DirectoryManager
     {
-        private readonly DirectoryRepository _directoryRepository;
+        private readonly IDirectoryRepository _directoryRepository;
 
-        public DirectoryManager(DirectoryRepository directoryRepository)
+        public DirectoryManager(IDirectoryRepository directoryRepository)
         {
             _directoryRepository = directoryRepository;
         }

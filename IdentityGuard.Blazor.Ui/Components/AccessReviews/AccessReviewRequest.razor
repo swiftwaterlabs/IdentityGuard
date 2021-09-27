@@ -1,0 +1,90 @@
+﻿<MudContainer Class="mt-16">
+    <MudOverlay @bind-Visible="IsRequesting" DarkBackground="true" AutoClose="false"/>
+    <MudGrid>
+        <MudItem xs="8" md="8">
+            <MudCard>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="12" md="12">
+                    <MudGrid>
+                        <MudItem xs="11" md="11">
+                             <MudText Typo="Typo.subtitle1">@Title</MudText>
+                        </MudItem>
+                        <MudItem xs="1" md="1">
+                             <MudChip Variant="Variant.Outlined">@ObjectUnderReviewCount</MudChip>
+                        </MudItem>
+                        <MudItem xs="11" md="11">
+                             <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="add" OnClick="RequestAccessReviews" Class="mb-2" Disabled="@(!Reviewers.Any() || IsLoading)">Request Access Review</MudButton>
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField @bind-Value="@SearchText" 
+                                  Placeholder="Enter Name" 
+                                  Variant="Variant.Outlined"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@Icons.Material.Outlined.Search"
+                                  OnAdornmentClick="Search"
+                                  Disabled="IsLoading"
+                                  Clearable="true"
+                                  OnKeyPress="OnSearchKeyPress"
+                                  Immediate="true"/>
+                </MudItem>
+                <MudItem xs="12" md="12">
+
+                    @if (HasSearched)
+                    {
+                        <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="add" OnClick="AddReviewer" Class="mb-2" Disabled="@(!SelectedResults.Any())">Add Reviewer</MudButton>
+
+                        <MudTable Items="@SearchResults"
+                                  MultiSelection="true"
+                                  @bind-SelectedItems="SelectedResults"
+                                  Hover="true"
+                                  Loading="IsLoading">
+                            <HeaderContent>
+                                <MudTh>Name</MudTh>
+                                <MudTh>Directory</MudTh>
+                                <MudTh>Email</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Name">@context.DisplayName</MudTd>
+                                <MudTd DataLabel="Directory">@context.DirectoryName</MudTd>
+                                <MudTd DataLabel="Type">@context.EmailAddress</MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager HidePagination="@(!ArePagesVisible)"
+                                               HidePageNumber="@(!ArePagesVisible)"
+                                               HideRowsPerPage="@(!ArePagesVisible)"
+                                               PageSizeOptions="new int[]{10, 50, 100}" />
+                            </PagerContent>
+                        </MudTable>
+                    }
+
+
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+        </MudItem>
+        <MudItem xs="4" md="4">
+            <MudCard>
+                <MudCardHeader>
+                   <MudText Typo="Typo.subtitle2">Reviewers</MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudList>
+                        @foreach(var item in Reviewers.Values.OrderBy(u=>u.DisplayName))
+                        {
+                            <MudListItem>
+                               
+                                @item.DisplayName
+                                <MudFab Class="ml-4" Color="Color.Error" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" aria-label="remove-user" OnClick="@(()=>RemoveReviewer(item))" />
+                            </MudListItem>
+                        }
+                    </MudList>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+    
+</MudContainer>

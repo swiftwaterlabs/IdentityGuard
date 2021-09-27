@@ -1,0 +1,8 @@
+﻿@page "/user/access/{DirectoryId}/{UserId}"
+
+
+<MudContainer Class="mt-16">
+    <IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess
+        DirectoryId="@DirectoryId" UserId="@UserId"  AllowNewAccessReview="true"/>
+    
+</MudContainer>
