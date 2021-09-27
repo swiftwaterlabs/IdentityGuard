@@ -13,6 +13,7 @@ namespace IdentityGuard.Core.Models.Data
         public string Area { get; set; }
         public string ObjectType { get; set; }
         public string DirectoryId { get; set; }
+        public string DirectoryName { get; set; }
         public string ObjectId { get; set; }
         public string DisplayName { get; set; }
         public DirectoryObject CreatedBy { get; set; }

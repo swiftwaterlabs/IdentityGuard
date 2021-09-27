@@ -50,6 +50,11 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
             await LoadUserData();
         }
 
+        public Task RefreshData()
+        {
+            return LoadUserData();
+        }
+
         private async Task LoadUserData()
         {
             IsLoading = true;

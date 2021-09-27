@@ -39,6 +39,8 @@ namespace IdentityGuard.Core.Managers
 
             try
             {
+                var directory = await _directoryManager.GetById(request.DirectoryId);
+
                 var accessReview = new AccessReview
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -46,6 +48,7 @@ namespace IdentityGuard.Core.Managers
                     ObjectId = request.ObjectId,
                     ObjectType = request.ObjectType,
                     DirectoryId = request.DirectoryId,
+                    DirectoryName = directory?.Domain,
                     CreatedAt = DateTime.Now,
                     CreatedBy = requestingUser,
                     Status = AccessReviewStatus.New

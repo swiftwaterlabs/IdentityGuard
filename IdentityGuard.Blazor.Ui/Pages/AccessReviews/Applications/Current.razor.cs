@@ -34,6 +34,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews.Applications
             AppState.SetBreadcrumbs(
                 new BreadcrumbItem("Access Reviews", Paths.AccessReviews),
                 new BreadcrumbItem("Applications", Paths.AccessReviews),
+                new BreadcrumbItem(applicationData?.DirectoryName, "#"),
                 new BreadcrumbItem(applicationData?.DisplayName, "#")
                 );
         }

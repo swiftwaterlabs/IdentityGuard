@@ -4,8 +4,15 @@
             <MudCard>
                 <MudCardHeader>
                     <CardHeaderContent>
-                        <MudText Typo="Typo.h5">@ApplicationName</MudText>
-                        <MudText Typo="Typo.subtitle2">@DirectoryName</MudText>
+                        <MudGrid>
+                           <MudItem>
+                                <MudText Typo="Typo.h5">@ApplicationName</MudText>
+                                <MudText Typo="Typo.subtitle2">@DirectoryName</MudText>
+                            </MudItem>
+                            <MudItem>
+                                <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Refresh" aria-label="edit" OnClick="RefreshData" />
+                            </MudItem>
+                        </MudGrid>
                     </CardHeaderContent>
                     <CardHeaderActions>
                     @if (AllowNewAccessReview)
