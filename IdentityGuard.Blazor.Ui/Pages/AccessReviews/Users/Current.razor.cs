@@ -84,10 +84,5 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews.Users
         {
             
         }
-
-        public void Back()
-        {
-            NavigationManager.NavigateTo(Paths.UserAccessReviews);
-        }
     }
 }
