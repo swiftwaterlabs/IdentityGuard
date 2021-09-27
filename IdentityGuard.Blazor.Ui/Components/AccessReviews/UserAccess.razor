@@ -10,9 +10,10 @@
                    </CardHeaderContent>
                    <CardHeaderActions>
                         @if (AllowNewAccessReview)
-                    {
-                            <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="start" OnClick="StartReview" Class="mb-2">Start Review</MudButton>
-                    }
+                        {
+                                <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="start" OnClick="StartReview" Class="mb-2">Start Review</MudButton>
+                        }
+                        @Actions
                    </CardHeaderActions>
                 </MudCardHeader>
                 <MudCardContent>

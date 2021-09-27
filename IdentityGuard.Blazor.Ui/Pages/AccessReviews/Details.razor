@@ -1,21 +1,27 @@
 ﻿@page  "/accessreview/{Id}"
 
 <MudContainer Class="mt-16">
-    <div>
-        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Check" Color="Color.Primary" OnClick="Complete" Disabled="@(!CanPerformActions)">Complete</MudButton>
-        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="Abandon" Class="ml-4" Disabled="@(!CanPerformActions)">Abandon</MudButton>
-    </div>
+
     @if(AccessReview?.ObjectType == "Application")
     {
         <IdentityGuard.Blazor.Ui.Components.AccessReviews.ApplicationAccess 
-            DirectoryId="@AccessReview?.DirectoryId" ApplicationId="@AccessReview?.ObjectId" AllowNewAccessReview="false"/>
+            DirectoryId="@AccessReview?.DirectoryId" ApplicationId="@AccessReview?.ObjectId" AllowNewAccessReview="false">
+            <Actions>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="Complete" Disabled="@(!CanPerformActions)">Complete</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="Abandon" Class="ml-4" Disabled="@(!CanPerformActions)">Abandon</MudButton>
+            </Actions> 
+        </IdentityGuard.Blazor.Ui.Components.AccessReviews.ApplicationAccess>
 
     }
 
     @if (AccessReview?.ObjectType == "User")
     {
         <IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess
-        DirectoryId="@AccessReview?.DirectoryId" UserId="@AccessReview?.ObjectId"  AllowNewAccessReview="false"/>
+        DirectoryId="@AccessReview?.DirectoryId" UserId="@AccessReview?.ObjectId"  AllowNewAccessReview="false">
+            <Actions>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="Complete" Disabled="@(!CanPerformActions)">Complete</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="Abandon" Class="ml-4" Disabled="@(!CanPerformActions)">Abandon</MudButton>
+            </Actions>    
+        </IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess>
     }
 </MudContainer>
-}
