@@ -5,7 +5,20 @@
     <Loadable IsLoading="IsLoading">
             <MudCard>
                 <MudCardHeader>
-                    <MudText Typo="Typo.h5">@Data.Name</MudText>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5">@Data.Name</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        @if (IsEditing)
+                        {
+                            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Material.Outlined.Cancel" OnClick="Cancel" Class="ml-4">Cancel</MudButton>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Save" OnClick="Save">Save</MudButton>
+                        }
+                        else
+                        {
+                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Edit" OnClick="Edit">Edit</MudButton>
+                        }
+                    </CardHeaderActions>
                 </MudCardHeader>
                 <MudCardContent>
                     @if (IsEditing)
@@ -75,18 +88,6 @@
                         
                     }
                 </MudCardContent>
-                <MudCardActions>
-                    @if (IsEditing)
-                    {
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Save">Save</MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Cancel" Class="ml-4">Cancel</MudButton>
-                    }
-                    else
-                    {
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Edit">Edit</MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="Back" Class="ml-4">Back</MudButton>
-                    }
-                </MudCardActions>
             </MudCard>
     </Loadable>
     
