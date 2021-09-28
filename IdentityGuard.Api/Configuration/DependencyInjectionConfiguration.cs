@@ -20,7 +20,8 @@ namespace IdentityGuard.Api.Configuration
         public static void Configure(HostBuilderContext context, IServiceCollection services)
         {
             // Factories
-            services.AddTransient<IGraphClientFactory, GraphClientFactory>();
+            services.AddScoped<IGraphClientFactory, CachedGraphClientFactory>();
+            services.AddTransient<GraphClientFactory>();
 
             // Managers
             services.AddTransient<AboutManager>();
@@ -44,9 +45,9 @@ namespace IdentityGuard.Api.Configuration
 
             // Repositories
             services.AddTransient<DirectoryRepository>();
-            services.AddSingleton<IDirectoryRepository, CachedDirectoryRepository>();
-            services.AddSingleton<IAccessReviewRepository, AccessReviewRepository>();
-            services.AddSingleton<IRequestRepository, RequestRepository>();
+            services.AddScoped<IDirectoryRepository, CachedDirectoryRepository>();
+            services.AddTransient<IAccessReviewRepository, AccessReviewRepository>();
+            services.AddTransient<IRequestRepository, RequestRepository>();
 
             // Services
             services.AddTransient<ApplicationService>();
@@ -60,7 +61,7 @@ namespace IdentityGuard.Api.Configuration
 
         private static void ConfigureKeyVault(IServiceCollection services)
         {
-            services.AddTransient(provider =>
+            services.AddScoped(provider =>
             {
                 var configuration = provider.GetService<IConfiguration>();
                 var endpoint = configuration[ConfigurationNames.KeyVault.BaseUri];
@@ -83,7 +84,7 @@ namespace IdentityGuard.Api.Configuration
 
         private static void ConfigureCosmosDb(IServiceCollection services)
         {
-            services.AddTransient(provider =>
+            services.AddScoped(provider =>
             {
                 var secretClient = provider.GetService<SecretClient>();
                 var configuration = provider.GetService<IConfiguration>();
