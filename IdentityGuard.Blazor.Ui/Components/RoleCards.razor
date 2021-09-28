@@ -1,5 +1,8 @@
-﻿<MudText>Show Default Access</MudText>
-<MudSwitch @bind-Checked="@ShowDefaultAccess" Color="Color.Primary" />
+﻿@if (Data.Any())
+{
+    <MudText>Show Default Access</MudText>
+    <MudSwitch @bind-Checked="@ShowDefaultAccess" Color="Color.Primary" />
+}
 
 <MudGrid>
     @foreach(var type in Data.OrderBy(o=>o.Key))
