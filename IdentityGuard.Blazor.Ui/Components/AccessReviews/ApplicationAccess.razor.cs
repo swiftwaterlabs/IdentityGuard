@@ -16,6 +16,9 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        IWindowService WindowService { get; set; }
+
         [Parameter]
         public string DirectoryId { get; set; }
 
@@ -33,6 +36,7 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
 
         public string ApplicationName { get; set; }
         public string DirectoryName { get; set; }
+        public string ManagementUrl { get; set; }
 
         public Dictionary<string, string> UserAttributes { get; set; }
         public ILookup<string, DirectoryObject> OwnersByType { get; set; }
@@ -78,6 +82,8 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
                 SecretsByType = data.Application.Secrets.ToLookup(o => o.Type);
                 PermissionsByResource = data.Application.Permissions.ToLookup(p => p.ResourceName);
                 RolesByType = data.Application.Roles.Values.ToLookup(o => o.Source);
+
+                ManagementUrl = data.Application.ManagementUrl;
             }
             IsLoading = false;
         }
@@ -107,7 +113,12 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
 
         public async Task StartReview()
         {
+            
+        }
 
+        public Task ShowManagementPage()
+        {
+            return WindowService.Open(ManagementUrl);
         }
     }
 }

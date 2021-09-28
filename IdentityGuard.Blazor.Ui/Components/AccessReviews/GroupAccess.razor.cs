@@ -20,6 +20,9 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        IWindowService WindowService { get; set; }
+
         [Parameter]
         public string DirectoryId { get; set; }
 
@@ -37,7 +40,7 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
 
         public string GroupName { get; set; }
         public string DirectoryName { get; set; }
-
+        public string ManagementUrl { get; set; }
         public Dictionary<string, string> UserAttributes { get; set; }
         public ILookup<string, DirectoryObject> OwnersByType { get; set; }
         public ILookup<string, DirectoryObject> MembersByType { get; set; }
@@ -80,6 +83,8 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
                 OwnersByType = data.Group.Owners.ToLookup(o => o.Type);
                 MembersByType = data.Group.Members.ToLookup(o => o.Type);
                 ApplicationRolesByAssignmentType = data.RoleMemberships.ToLookup(o => o.AssignmentType);
+
+                ManagementUrl = data.Group.ManagementUrl;
             }
             IsLoading = false;
         }
@@ -87,6 +92,11 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         public async Task StartReview()
         {
 
+        }
+
+        public Task ShowManagementPage()
+        {
+            return WindowService.Open(ManagementUrl);
         }
     }
 }
