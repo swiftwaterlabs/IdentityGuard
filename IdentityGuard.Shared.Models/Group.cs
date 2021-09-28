@@ -10,6 +10,7 @@ namespace IdentityGuard.Shared.Models
         public string DirectoryId { get; set; }
         public string DirectoryName { get; set; }
         public string Description { get; set; }
+        public string ManagementUrl { get; set; }
 
         public List<string> Types { get; set; }
         public string DynamicMembershipRule { get; set; }

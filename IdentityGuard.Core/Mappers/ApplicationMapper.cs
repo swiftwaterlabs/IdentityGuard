@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using IdentityGuard.Core.Extensions;
 
 namespace IdentityGuard.Core.Mappers
 {
@@ -31,10 +32,11 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryName = directory.Domain,
                 AppId = toMap.AppId,
                 Roles = toMap.AppRoles?.Select(Map)?.ToDictionary(r=>r.Id) ?? new Dictionary<string,Shared.Models.Role>(),
-                ManagementUrl = directory.PortalUrl,
+                ManagementUrl = toMap.GetPortalUrl(directory),
                 Secrets = passwordSecrets.Union(keySecrets).ToList(),
                 Owners = ownerData,
-                Permissions = toMap.RequiredResourceAccess?.Select(Map)?.SelectMany(r=>r)?.ToList() ?? new List<Shared.Models.ApplicationPermission>()
+                Permissions = toMap.RequiredResourceAccess?.Select(Map)?.SelectMany(r=>r)?.ToList() ?? new List<Shared.Models.ApplicationPermission>(),
+                
             };
         }
 

@@ -19,5 +19,6 @@ namespace IdentityGuard.Shared.Models
         public DateTime? CreatedAt { get; set; }
         public string CreationType { get; set; }
         public string Status { get; set; }
+        public string ManagementUrl { get; set; }
     }
 }

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using IdentityGuard.Core.Extensions;
 
 namespace IdentityGuard.Core.Mappers
 {
@@ -31,6 +30,7 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryName = directory.Domain,
                 DisplayName = toMap.DisplayName,
                 Description = toMap.Description,
+                ManagementUrl = toMap.GetPortalUrl(directory),
                 DynamicMembershipRule = toMap.MembershipRule,
                 Types = toMap.GroupTypes?.ToList() ?? new List<string>(),
                 Source = toMap.OnPremisesSyncEnabled.GetValueOrDefault(false) ? "On Premises Directory":"Cloud",

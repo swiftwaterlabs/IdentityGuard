@@ -1,4 +1,6 @@
-﻿namespace IdentityGuard.Core.Mappers
+﻿using IdentityGuard.Core.Extensions;
+
+namespace IdentityGuard.Core.Mappers
 {
     public class UserMapper
     {
@@ -12,7 +14,7 @@
 
                 DirectoryId = directory.Id,
                 DirectoryName = directory.Domain,
-                
+
                 DisplayName = toMap.DisplayName,
                 GivenName = toMap.GivenName,
                 SurName = toMap.Surname,
@@ -22,7 +24,8 @@
                 CreationType = toMap.CreationType,
                 Status = toMap.State,
                 JobTitle = toMap.JobTitle,
-                Company = toMap.CompanyName
+                Company = toMap.CompanyName,
+                ManagementUrl = toMap.GetPortalUrl(directory)
             };
         }
     }
