@@ -15,18 +15,21 @@ namespace IdentityGuard.Core.Managers
         private readonly IAccessReviewRepository _accessReviewRepository;
         private readonly ApplicationService _applicationService;
         private readonly UserService _userService;
+        private readonly GroupService _groupService;
         private readonly DirectoryManager _directoryManager;
         private readonly RequestManager _requestManager;
 
         public AccessReviewManager(IAccessReviewRepository accessReviewRepository,
             ApplicationService applicationService,
             UserService userService,
+            GroupService groupService,
             DirectoryManager directoryManager,
             RequestManager requestManager)
         {
             _accessReviewRepository = accessReviewRepository;
             _applicationService = applicationService;
             _userService = userService;
+            _groupService = groupService;
             _directoryManager = directoryManager;
             _requestManager = requestManager;
         }
@@ -91,6 +94,12 @@ namespace IdentityGuard.Core.Managers
                 case "user":
                     {
                         var data = await _userService.Get(directory, review.ObjectId);
+                        review.DisplayName = data?.DisplayName;
+                        return;
+                    }
+                case "group":
+                    {
+                        var data = await _groupService.Get(directory, review.ObjectId);
                         review.DisplayName = data?.DisplayName;
                         return;
                     }

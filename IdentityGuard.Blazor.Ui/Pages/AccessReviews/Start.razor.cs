@@ -23,6 +23,9 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         public IUserService UserService { get; set; }
 
         [Inject]
+        public IGroupService GroupService { get; set; }
+
+        [Inject]
         public NavigationManager NavigationManager { get; set; }
 
         public bool IsLoading { get; set; } = false;
@@ -48,6 +51,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             );
 
             ObjectTypes.Add("User", "User");
+            ObjectTypes.Add("Group","Group");
             ObjectTypes.Add("Application","Application");
 
             SelectedObjectType = ObjectTypes.Keys.First();
@@ -81,6 +85,18 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                 {
                     IsLoading = true;
                     var results = await UserService.Search(new[] { SearchText });
+                    SearchResults = results
+                        .Select(Map)
+                        .OrderBy(r => r.DirectoryName).ThenBy(r => r.DisplayName)
+                        .ToList();
+                    ArePagesVisible = SearchResults.Count > 10;
+                    IsLoading = false;
+                    return;
+                }
+                case "Group":
+                {
+                    IsLoading = true;
+                    var results = await GroupService.Search(new[] { SearchText });
                     SearchResults = results
                         .Select(Map)
                         .OrderBy(r => r.DirectoryName).ThenBy(r => r.DisplayName)
@@ -123,6 +139,19 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             };
         }
 
+        private DirectoryObject Map(Group toMap)
+        {
+            return new DirectoryObject
+            {
+                Id = toMap.Id,
+                DisplayName = toMap.DisplayName,
+                DirectoryName = toMap.DirectoryName,
+                DirectoryId = toMap.DirectoryId,
+                Type = "Group",
+                SubType = string.Join(",",toMap.Types ?? new List<string>())
+            };
+        }
+
         public async Task OnSearchKeyPress(KeyboardEventArgs input)
         {
             if (input.Code == "Enter")
@@ -153,7 +182,11 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                 case "User":
                 {
                     return $"{Paths.UserAccessReviews}/{item.DirectoryId}/{item.Id}";
-                    }
+                }
+                case "Group":
+                {
+                    return $"{Paths.GroupAccessReviews}/{item.DirectoryId}/{item.Id}";
+                }
                 default:
                 {
                     throw new ArgumentOutOfRangeException(nameof(item), item.Type);
