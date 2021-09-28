@@ -27,6 +27,7 @@ namespace IdentityGuard.Core.Services
 
             var data = await client.Groups[id]
                 .Request()
+                .Select(GetFieldsToSelect())
                 .GetAsync();
 
             var owners = new List<Microsoft.Graph.DirectoryObject>();
@@ -95,6 +96,7 @@ namespace IdentityGuard.Core.Services
             var searchRequest = await client.Groups
                 .Request()
                 .Filter(filter)
+                .Select(GetFieldsToSelect())
                 .GetAsync();
 
             var result = new List<Microsoft.Graph.Group>();
@@ -118,6 +120,21 @@ namespace IdentityGuard.Core.Services
             var encodedName = System.Web.HttpUtility.UrlEncode(name);
             var filter = $"startsWith(displayName,'{encodedName}')";
             return filter;
+        }
+
+        private static string GetFieldsToSelect()
+        {
+            var fields = new[] 
+            { 
+                "id", 
+                "displayName", 
+                "description", 
+                "groupTypes",
+                "membershipRule",
+                "onPremisesSyncEnabled",
+            };
+
+            return string.Join(",", fields);
         }
 
         public async Task<List<Shared.Models.ApplicationRole>> GetApplicationRoles(Shared.Models.Directory directory, string id)

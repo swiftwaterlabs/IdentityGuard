@@ -8,7 +8,7 @@ namespace IdentityGuard.Blazor.Ui.Services
     public interface IGroupService
     {
         Task<List<Group>> Search(ICollection<string> names);
-        Task<GroupAccess> ApplicationAccess(string directoryId, string id);
+        Task<GroupAccess> GroupAccess(string directoryId, string id);
         Task<Group> Get(string directoryId, string id);
     }
 
@@ -18,7 +18,7 @@ namespace IdentityGuard.Blazor.Ui.Services
 
         public Task<List<Group>> Search(ICollection<string> names) => Post<List<Group>, ICollection<string>>("api/group/search", names);
 
-        public Task<GroupAccess> ApplicationAccess(string directoryId, string id) => Get<GroupAccess>($"api/group/{directoryId}/{id}/access");
+        public Task<GroupAccess> GroupAccess(string directoryId, string id) => Get<GroupAccess>($"api/group/{directoryId}/{id}/access");
         public Task<Group> Get(string directoryId, string id) => Get<Group>($"api/group/{directoryId}/{id}");
     }
 }

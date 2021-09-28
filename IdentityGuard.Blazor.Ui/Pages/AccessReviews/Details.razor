@@ -25,6 +25,17 @@
         </IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess>
     }
 
+     @if (AccessReview?.ObjectType == "Group")
+    {
+        <IdentityGuard.Blazor.Ui.Components.AccessReviews.GroupAccess
+        DirectoryId="@AccessReview?.DirectoryId" GroupId="@AccessReview?.ObjectId"  AllowNewAccessReview="false">
+            <Actions>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions)">Complete</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="ShowAbandonDialog" Class="ml-4" Disabled="@(!CanPerformActions)">Abandon</MudButton>
+            </Actions>    
+        </IdentityGuard.Blazor.Ui.Components.AccessReviews.GroupAccess>
+    }
+
     <MudDialog @bind-IsVisible="IsAbandonDialogOpen">
         <TitleContent>
             <MudText Typo="Typo.h5"> Are you sure you would like to abandon this access review?</MudText>

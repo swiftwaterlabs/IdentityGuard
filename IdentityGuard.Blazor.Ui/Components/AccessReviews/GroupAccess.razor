@@ -1,0 +1,46 @@
+﻿<MudContainer Class="mt-16">
+    <Loadable IsLoading="IsLoading">
+        @if (IsGroupLoaded)
+        {
+            <MudCard>
+                <MudCardHeader Class="d-flex">
+                   <CardHeaderContent>
+                       <MudGrid>
+                           <MudItem>
+                                <MudText Typo="Typo.h5">@GroupName</MudText>
+                                <MudText Typo="Typo.subtitle2">@DirectoryName</MudText>
+                            </MudItem>
+                            <MudItem>
+                                <MudFab Class="ml-4" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Refresh" aria-label="edit" OnClick="RefreshData" />
+                            </MudItem>
+                       </MudGrid>
+                   </CardHeaderContent>
+                   <CardHeaderActions>
+                        @if (AllowNewAccessReview)
+                        {
+                                <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="start" OnClick="StartReview" Class="mb-2">Start Review</MudButton>
+                        }
+                        @Actions
+                   </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTabs Elevation="1" Rounded="true" PanelClass="mt-6">
+                        <MudTabPanel Text="General">
+                             <AttributeCard Data="UserAttributes"/>
+                        </MudTabPanel>
+                        <MudTabPanel Text="Owners">
+                            <DirectoryObjectCards Data="OwnersByType"/>
+                        </MudTabPanel>
+                        <MudTabPanel Text="Members">
+                            <DirectoryObjectCards Data="MembersByType"/>
+                        </MudTabPanel>
+                        <MudTabPanel Text="Roles">
+                            <ApplicationRoleCards Data="ApplicationRolesByAssignmentType"/>
+                        </MudTabPanel>
+                    </MudTabs>
+
+                </MudCardContent>
+            </MudCard>
+        }
+    </Loadable>
+</MudContainer>

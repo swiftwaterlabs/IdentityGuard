@@ -9,11 +9,13 @@ namespace IdentityGuard.Shared.Models
 
         public string DirectoryId { get; set; }
         public string DirectoryName { get; set; }
+        public string Description { get; set; }
 
         public List<string> Types { get; set; }
         public string DynamicMembershipRule { get; set; }
 
         public List<DirectoryObject> Owners { get; set; }
         public List<DirectoryObject> Members { get; set; }
+        public string Source { get; set; }
     }
 }

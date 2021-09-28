@@ -30,8 +30,10 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryId = directory.Id,
                 DirectoryName = directory.Domain,
                 DisplayName = toMap.DisplayName,
+                Description = toMap.Description,
                 DynamicMembershipRule = toMap.MembershipRule,
                 Types = toMap.GroupTypes?.ToList() ?? new List<string>(),
+                Source = toMap.OnPremisesSyncEnabled.GetValueOrDefault(false) ? "On Premises Directory":"Cloud",
                 Owners = ownerData,
                 Members = memberData
                 
