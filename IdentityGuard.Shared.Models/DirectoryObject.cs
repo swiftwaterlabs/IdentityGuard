@@ -12,6 +12,4 @@
         public string SubType { get; set; }
         public string ManagementUrl { get; set; }
     }
-
-    
 }

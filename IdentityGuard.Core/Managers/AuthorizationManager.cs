@@ -17,6 +17,7 @@ namespace IdentityGuard.Core.Managers
         {
             {AuthorizedActions.ViewApplicationInfo,new List<string>() },
             {AuthorizedActions.ManageUsers,new List<string>() },
+            {AuthorizedActions.ManageGroups,new List<string>() },
             {AuthorizedActions.ManageApplications,new List<string>() },
             {AuthorizedActions.AccessReviewContributor,new List<string>() },
             {AuthorizedActions.ManageDirectories,new List<string>{ ApplicationRoles.DirectoryAdmin} }

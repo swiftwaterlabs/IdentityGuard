@@ -32,6 +32,7 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<UserManager>();
             services.AddTransient<AccessReviewManager>();
             services.AddTransient<RequestManager>();
+            services.AddTransient<GroupManager>();
 
             // Mappers
             services.AddTransient<ApplicationMapper>();
@@ -42,6 +43,7 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<UserMapper>();
             services.AddTransient<AccessReviewMapper>();
             services.AddTransient<RequestMapper>();
+            services.AddTransient<GroupMapper>();
 
             // Repositories
             services.AddTransient<DirectoryRepository>();
@@ -54,6 +56,7 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<EnvironmentService>();
             services.AddTransient<ServicePrincipalService>();
             services.AddTransient<UserService>();
+            services.AddTransient<GroupService>();
 
             ConfigureKeyVault(services);
             ConfigureCosmosDb(services);
