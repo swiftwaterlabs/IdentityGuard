@@ -1,0 +1,24 @@
+﻿<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.subtitle1">@Title</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudList>
+            @foreach(var item in Data.OrderBy(i=>i.DisplayName))
+            {
+                @if(!ShowDefaultAccess && item.Id == IdentityGuard.Shared.Models.Role.DefaultAccessId)
+                {
+                    // Show Nothing
+                }
+                else
+                {
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle1">@item.DisplayName</MudText>
+                        <MudText Typo="Typo.body2">@item.Description</MudText>
+                        
+                    </MudListItem>
+                }
+            }
+        </MudList>
+    </MudCardContent>
+</MudCard>
