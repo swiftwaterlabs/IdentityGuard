@@ -27,6 +27,14 @@ namespace IdentityGuard.Core.Managers
             return _requestRepository.Save(request);
         }
 
+        public Task<Request> Save(AccessReview accessReview, IEnumerable<AccessReviewActionRequest> accessRequest, RequestStatus status, DirectoryObject requestedBy)
+        {
+            var request = _requestMapper.Map(accessReview, accessRequest, status, requestedBy);
+            request.Status = status;
+
+            return _requestRepository.Save(request);
+        }
+
         public async Task UpdateStatus(string id, RequestStatus status, DirectoryObject user)
         {
             var request = await _requestRepository.GetById(id);

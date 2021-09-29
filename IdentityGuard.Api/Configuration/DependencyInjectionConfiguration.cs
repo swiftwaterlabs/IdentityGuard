@@ -31,6 +31,7 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<DirectoryManager>();
             services.AddTransient<UserManager>();
             services.AddTransient<AccessReviewManager>();
+            services.AddTransient<AccessReviewActionManager>();
             services.AddTransient<RequestManager>();
             services.AddTransient<GroupManager>();
 

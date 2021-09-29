@@ -35,7 +35,7 @@ namespace IdentityGuard.Core.Managers
         }
         public async Task<AccessReview> Request(AccessReviewRequest request, IEnumerable<ClaimsIdentity> currentUser)
         {
-            var requestingUser = GetUser(currentUser);
+            var requestingUser = currentUser.GetUser();
             var requestData = await _requestManager.Save(request, RequestStatus.New, requestingUser);
 
             RequestStatus status = RequestStatus.New;
@@ -115,9 +115,9 @@ namespace IdentityGuard.Core.Managers
             if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
 
             var existing = await _accessReviewRepository.GetById(id);
-            var user = GetUser(currentUser);
+            var user = currentUser.GetUser();
 
-            if (!IsUserAssignedToReview(existing,user)) throw new UnauthorizedAccessException();
+            if (!existing.IsUserAssignedToReview(user)) throw new UnauthorizedAccessException();
 
             existing.Status = AccessReviewStatus.Complete;
             existing.CompletedAt = DateTime.Now;
@@ -126,29 +126,14 @@ namespace IdentityGuard.Core.Managers
             return await _accessReviewRepository.Save(existing);
         }
 
-        private bool IsUserAssignedToReview(AccessReview review, DirectoryObject user)
-        {
-            return review.AssignedTo.Any(a => a.Id == user.Id);
-        }
-
-        private DirectoryObject GetUser(IEnumerable<ClaimsIdentity> currentUser)
-        {
-            return new DirectoryObject
-            {
-                Id = currentUser.GetUserId(),
-                DirectoryId = currentUser.GetUserDirectoryId(),
-                DisplayName = currentUser.GetUserName()
-            };
-        }
-
         public async Task<AccessReview> Abandon(string id, IEnumerable<ClaimsIdentity> currentUser)
         {
             if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
 
             var existing = await _accessReviewRepository.GetById(id);
-            var user = GetUser(currentUser);
+            var user = currentUser.GetUser();
 
-            if (!IsUserAssignedToReview(existing, user)) throw new UnauthorizedAccessException();
+            if (!existing.IsUserAssignedToReview(user)) throw new UnauthorizedAccessException();
 
             existing.Status = AccessReviewStatus.Abandoned;
             existing.CompletedAt = DateTime.Now;
@@ -183,8 +168,8 @@ namespace IdentityGuard.Core.Managers
         {
             var result = await _accessReviewRepository.GetById(id);
 
-            var user = GetUser(currentUser);
-            if (!IsUserAssignedToReview(result, user)) throw new UnauthorizedAccessException();
+            var user = currentUser.GetUser();
+            if (!result.IsUserAssignedToReview(user)) throw new UnauthorizedAccessException();
 
             return result;
         }
@@ -192,9 +177,9 @@ namespace IdentityGuard.Core.Managers
         public async Task Delete(string id, IEnumerable<ClaimsIdentity> currentUser)
         {
             var existing = await _accessReviewRepository.GetById(id);
-            var user = GetUser(currentUser);
+            var user = currentUser.GetUser();
 
-            if (!IsUserAssignedToReview(existing, user)) throw new UnauthorizedAccessException();
+            if (!existing.IsUserAssignedToReview(user)) throw new UnauthorizedAccessException();
 
             await _accessReviewRepository.Delete(id);
         }

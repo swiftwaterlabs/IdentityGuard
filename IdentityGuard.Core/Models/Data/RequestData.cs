@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace IdentityGuard.Core.Models.Data
 {
@@ -20,5 +19,6 @@ namespace IdentityGuard.Core.Models.Data
         public DirectoryObject CompletedBy { get; set; }
         public DateTime? CompletedAt { get; set; }
         public RequestStatus Status { get; set; }
+        public Dictionary<string, object> AdditionalData { get; set; }
     }
 }

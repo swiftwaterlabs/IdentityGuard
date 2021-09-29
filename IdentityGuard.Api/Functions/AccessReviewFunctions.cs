@@ -12,11 +12,15 @@ namespace IdentityGuard.Api.Functions
     {
         private readonly AuthorizationManager _authorizationManager;
         private readonly AccessReviewManager _accessReviewManager;
+        private readonly AccessReviewActionManager _accessReviewActionManager;
 
-        public AccessReviewFunctions(AuthorizationManager authorizationManager, AccessReviewManager accessReviewManager)
+        public AccessReviewFunctions(AuthorizationManager authorizationManager, 
+            AccessReviewManager accessReviewManager,
+            AccessReviewActionManager accessReviewActionManager)
         {
             _authorizationManager = authorizationManager;
             _accessReviewManager = accessReviewManager;
+            _accessReviewActionManager = accessReviewActionManager;
         }
 
         [Function("accessreview-getpending")]
@@ -121,9 +125,9 @@ namespace IdentityGuard.Api.Functions
             if (!_authorizationManager.IsAuthorized(AuthorizedActions.AccessReviewContributor, user)) return req.UnauthorizedResponse();
 
             var data = req.GetBody<List<AccessReviewActionRequest>>();
-            var review = await _accessReviewManager.Get(id, req.GetRequestingUser());
+            var result = _accessReviewActionManager.ApplyChanges(id, data, req.GetRequestingUser());
 
-            return await req.OkResponseAsync(review);
+            return await req.OkResponseAsync(result);
         }
     }
 }
