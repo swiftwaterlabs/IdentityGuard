@@ -29,8 +29,8 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         public Components.AccessReviews.GroupAccess GroupComponent { get; set; }
         public AccessReview AccessReview { get; set; }
 
-        public bool CanPerformActions { get; set; } = false;
         public bool CanViewActions { get; set; } = false;
+        public bool IsReadOnly { get; set; } = false;
 
         public bool IsLoading { get; set; } = false;
         public bool IsRequesting { get; set; } = false;
@@ -57,9 +57,10 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             IsLoading = true;
 
             AccessReview = await AccessReviewService.Get(Id);
-            CanPerformActions = AccessReview != null &&
-                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress);
+
             CanViewActions = AccessReview?.Actions!=null && AccessReview.Actions.Any();
+            IsReadOnly = !(AccessReview != null &&
+                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress));
 
             IsLoading = false;           
         }
@@ -176,6 +177,13 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         public bool HasPendingActions()
         {
             return ActionsTaken.Any();
+        }
+
+        public bool CanPerformActions()
+        {
+            return AccessReview != null &&
+                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress) &&
+                !HasPendingActions();
         }
     }
 }
