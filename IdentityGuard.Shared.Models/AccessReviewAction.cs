@@ -20,17 +20,4 @@ namespace IdentityGuard.Shared.Models
         public DateTime RequestedAt { get; set; }
 
     }
-
-
-    public enum AccessReviewActionStatus
-    {
-        Pending,
-        Complete,
-        Failed
-    }
-
-    public static class AccessReviewActionTypes
-    {
-        public const string Remove = "Remove";
-    }
 }

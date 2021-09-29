@@ -28,7 +28,7 @@
         </IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess>
     }
 
-     @if (AccessReview?.ObjectType == IdentityGuard.Shared.Models.ObjectTypes.Group)
+    @if (AccessReview?.ObjectType == IdentityGuard.Shared.Models.ObjectTypes.Group)
     {
         <IdentityGuard.Blazor.Ui.Components.AccessReviews.GroupAccess
         DirectoryId="@AccessReview?.DirectoryId" GroupId="@AccessReview?.ObjectId"  AllowNewAccessReview="false" ReadOnly="@(!CanPerformActions)" OnItemRemoved="RemoveAccessReviewItem" OnItemAdded="AddAccessReviewItem"  @ref="GroupComponent">
@@ -38,6 +38,11 @@
                 <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="ShowAbandonDialog" Class="ml-4" Disabled="@(!CanPerformActions)">Abandon</MudButton>
             </Actions>    
         </IdentityGuard.Blazor.Ui.Components.AccessReviews.GroupAccess>
+    }
+
+    @if(CanViewActions)
+    {
+        <IdentityGuard.Blazor.Ui.Components.AccessReviews.AccessReviewActions Data="@AccessReview.Actions"/>
     }
 
     <MudDialog @bind-IsVisible="IsAbandonDialogOpen">
