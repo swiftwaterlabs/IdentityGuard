@@ -24,6 +24,9 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         [Parameter]
         public string Id { get; set; }
 
+        public Components.AccessReviews.ApplicationAccess ApplicationComponent { get; set; }
+        public Components.AccessReviews.UserAccess UserComponent { get; set; }
+        public Components.AccessReviews.GroupAccess GroupComponent { get; set; }
         public AccessReview AccessReview { get; set; }
 
         public bool CanPerformActions { get; set; } = false;
@@ -81,14 +84,26 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
 
         public async Task ApplyChanges()
         {
+            HideApplyChangesDialog();
             IsRequesting = true;
 
             await AccessReviewService.ApplyChanges(Id,ActionsTaken.Values);
+            ActionsTaken.Clear();
 
-            HideApplyChangesDialog();
             IsRequesting = false;
 
+            await RefreshData();
+        }
+
+        private async Task RefreshData()
+        {
             await LoadData();
+            IsLoading = true;
+
+            await InvokeAsync(() => {
+                StateHasChanged();
+            });
+            IsLoading = false;
         }
 
         public void ShowAbandonDialog()
@@ -119,6 +134,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         public void HideApplyChangesDialog()
         {
             IsApplyChangesDialogOpen = false;
+            StateHasChanged();
         }
 
         private void RemoveAccessReviewItem(string type, string id)
