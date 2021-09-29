@@ -1,10 +1,13 @@
 ﻿<MudGrid>
 	<MudItem>
-		<MudIconButton 
-			Icon="@(GetIcon())" 
-			Size="Size.Small" 
-			OnClick="CommandClicked"
-			Class="mr-1" />
+		@if(!Disabled)
+		{
+			<MudIconButton 
+				Icon="@(GetIcon())" 
+				Size="Size.Small" 
+				OnClick="CommandClicked"
+				Class="mr-1" />
+		}
 	</MudItem>
 	<MudItem>
 		<MudText Typo="@(this.Typo)" Style="@GetTextStyle()">@Text</MudText>

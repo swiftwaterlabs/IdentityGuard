@@ -24,6 +24,9 @@ namespace IdentityGuard.Blazor.Ui.Components.Core
         public string Id { get; set; }
 
         [Parameter]
+        public bool Disabled { get; set; } = false;
+
+        [Parameter]
         public Action<string,string> OnRemoved { get; set; } = (type,id) => { };
 
         [Parameter]
@@ -44,6 +47,8 @@ namespace IdentityGuard.Blazor.Ui.Components.Core
         }
         public void CommandClicked()
         {
+            if (Disabled) return;
+
             IsRemoved = !IsRemoved;
 
             if (IsRemoved)
