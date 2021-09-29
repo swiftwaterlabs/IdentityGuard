@@ -37,7 +37,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         public bool IsAbandonDialogOpen { get; set; } = false;
         public bool IsCompleteDialogOpen { get; set; } = false;
 
-        private Dictionary<string,AccessReviewAction> ActionsTaken { get; set; } = new();
+        private Dictionary<string,AccessReviewActionRequest> ActionsTaken { get; set; } = new();
 
         protected override async Task OnParametersSetAsync()
         {
@@ -142,7 +142,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             var key = GetActionKey(type, id);
             if(!ActionsTaken.ContainsKey(key))
             {
-                var action = new AccessReviewAction
+                var action = new AccessReviewActionRequest
                 {
                     Action = AccessReviewActionTypes.Remove,
                     ActionObjectId = id,

@@ -13,7 +13,7 @@ namespace IdentityGuard.Blazor.Ui.Services
         Task<AccessReview> Request(AccessReviewRequest request);
         Task<AccessReview> Complete(string id);
         Task<AccessReview> Abandon(string id);
-        Task<AccessReview> ApplyChanges(string id, IEnumerable<AccessReviewAction> actions);
+        Task<AccessReview> ApplyChanges(string id, IEnumerable<AccessReviewActionRequest> actions);
         
     }
 
@@ -27,7 +27,7 @@ namespace IdentityGuard.Blazor.Ui.Services
         public Task<List<AccessReview>> GetComplete() => Get<List<AccessReview>>("api/accessreview/search/complete");
         public Task<AccessReview> Complete(string id) => Post<AccessReview,string>($"api/accessreview/{id}/complete", id);
         public Task<AccessReview> Abandon(string id) => Post<AccessReview,string>($"api/accessreview/{id}/abandon", id);
-        public Task<AccessReview> ApplyChanges(string id, IEnumerable<AccessReviewAction> actions) => Post<AccessReview, IEnumerable<AccessReviewAction>>($"api/accessreview/{id}/actions", actions);
+        public Task<AccessReview> ApplyChanges(string id, IEnumerable<AccessReviewActionRequest> actions) => Post<AccessReview, IEnumerable<AccessReviewActionRequest>>($"api/accessreview/{id}/actions", actions);
 
     }
 }

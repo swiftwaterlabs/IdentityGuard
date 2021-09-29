@@ -120,7 +120,7 @@ namespace IdentityGuard.Api.Functions
             var user = req.GetRequestingUser();
             if (!_authorizationManager.IsAuthorized(AuthorizedActions.AccessReviewContributor, user)) return req.UnauthorizedResponse();
 
-            var data = req.GetBody<List<AccessReviewAction>>();
+            var data = req.GetBody<List<AccessReviewActionRequest>>();
             var review = await _accessReviewManager.Get(id);
 
             return await req.OkResponseAsync(review);

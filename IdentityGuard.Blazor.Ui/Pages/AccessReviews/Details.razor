@@ -68,7 +68,7 @@
 
     <MudDialog @bind-IsVisible="IsApplyChangesDialogOpen">
         <TitleContent>
-            <MudText Typo="Typo.h5"> Are you sure you would like to remove the specified items on the @(AccessReview.ObjectType)?</MudText>
+            <MudText Typo="Typo.h5"> Are you sure you would like to remove the specified items on the @(AccessReview.ObjectType.ToLower())?</MudText>
         </TitleContent>
         <DialogContent>
             <MudText>These changes will be applied and immediately removed from @(AccessReview.DisplayName). </MudText>
