@@ -34,7 +34,7 @@ namespace IdentityGuard.Blazor.Ui.Components.Core
 
         public string GetIcon()
         {
-            if (IsRemoved) return MudBlazor.Icons.Material.Filled.Add;
+            if (IsRemoved) return MudBlazor.Icons.Material.Filled.Undo;
 
             return MudBlazor.Icons.Material.Filled.Delete;
         }

@@ -1,7 +1,7 @@
 ﻿<MudGrid>
 	@if(!Disabled)
 	{
-	<MudItem>
+	<MudItem sm="1" >
 		
 			<MudIconButton 
 				Icon="@(GetIcon())" 
@@ -11,7 +11,7 @@
 		
 	</MudItem>
 	}
-	<MudItem>
+	<MudItem sm="11">
 		<MudText Typo="@(this.Typo)" Style="@GetTextStyle()">@Text</MudText>
 	</MudItem>
 </MudGrid>
