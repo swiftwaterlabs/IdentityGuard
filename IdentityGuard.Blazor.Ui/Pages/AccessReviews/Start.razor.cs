@@ -50,9 +50,9 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                 new BreadcrumbItem("Start", NavigationManager.Uri)
             );
 
-            ObjectTypes.Add("User", "User");
-            ObjectTypes.Add("Group","Group");
-            ObjectTypes.Add("Application","Application");
+            ObjectTypes.Add(IdentityGuard.Shared.Models.ObjectTypes.User, IdentityGuard.Shared.Models.ObjectTypes.User);
+            ObjectTypes.Add(IdentityGuard.Shared.Models.ObjectTypes.Group, IdentityGuard.Shared.Models.ObjectTypes.Group);
+            ObjectTypes.Add(IdentityGuard.Shared.Models.ObjectTypes.Application, IdentityGuard.Shared.Models.ObjectTypes.Application);
 
             SelectedObjectType = ObjectTypes.Keys.First();
 
@@ -69,7 +69,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             }
             switch (SelectedObjectType)
             {
-                case "Application":
+                case IdentityGuard.Shared.Models.ObjectTypes.Application:
                 {
                     IsLoading = true;
                     var results = await ApplicationService.Search(new[] {SearchText});
@@ -81,7 +81,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                     IsLoading = false;
                     return;
                 }
-                case "User":
+                case IdentityGuard.Shared.Models.ObjectTypes.User:
                 {
                     IsLoading = true;
                     var results = await UserService.Search(new[] { SearchText });
@@ -93,7 +93,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                     IsLoading = false;
                     return;
                 }
-                case "Group":
+                case IdentityGuard.Shared.Models.ObjectTypes.Group:
                 {
                     IsLoading = true;
                     var results = await GroupService.Search(new[] { SearchText });
@@ -121,8 +121,8 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                 DisplayName = toMap.DisplayName,
                 DirectoryName = toMap.DirectoryName,
                 DirectoryId = toMap.DirectoryId,
-                Type = "Application",
-                SubType = toMap.ServicePrincipal?.Type ?? "Application"
+                Type = IdentityGuard.Shared.Models.ObjectTypes.Application,
+                SubType = toMap.ServicePrincipal?.Type ?? IdentityGuard.Shared.Models.ObjectTypes.Application
             };
         }
 
@@ -134,7 +134,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                 DisplayName = toMap.DisplayName,
                 DirectoryName = toMap.DirectoryName,
                 DirectoryId = toMap.DirectoryId,
-                Type = "User",
+                Type = IdentityGuard.Shared.Models.ObjectTypes.User,
                 SubType = toMap.Type
             };
         }
@@ -147,7 +147,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                 DisplayName = toMap.DisplayName,
                 DirectoryName = toMap.DirectoryName,
                 DirectoryId = toMap.DirectoryId,
-                Type = "Group",
+                Type = IdentityGuard.Shared.Models.ObjectTypes.Group,
                 SubType = string.Join(",",toMap.Types ?? new List<string>())
             };
         }
@@ -175,15 +175,15 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         {
             switch (SelectedObjectType)
             {
-                case "Application":
+                case IdentityGuard.Shared.Models.ObjectTypes.Application:
                 {
                     return $"{Paths.ApplicationAccessReviews}/{item.DirectoryId}/{item.Id}";
                 }
-                case "User":
+                case IdentityGuard.Shared.Models.ObjectTypes.User:
                 {
                     return $"{Paths.UserAccessReviews}/{item.DirectoryId}/{item.Id}";
                 }
-                case "Group":
+                case IdentityGuard.Shared.Models.ObjectTypes.Group:
                 {
                     return $"{Paths.GroupAccessReviews}/{item.DirectoryId}/{item.Id}";
                 }

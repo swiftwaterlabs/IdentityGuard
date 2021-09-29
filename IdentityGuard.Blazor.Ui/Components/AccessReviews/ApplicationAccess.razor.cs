@@ -103,12 +103,12 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         {
             var applicationOwners = toMerge
                 .Owners
-                .Select(o => new KeyValuePair<string, DirectoryObject>("Application", o));
+                .Select(o => new KeyValuePair<string, DirectoryObject>(ObjectTypes.Application, o));
 
             var servicePrincipalOwners = toMerge
                 .ServicePrincipal?
                 .Owners?
-                .Select(o => new KeyValuePair<string, DirectoryObject>("Service Principal", o));
+                .Select(o => new KeyValuePair<string, DirectoryObject>(ObjectTypes.ServicePrincipal, o));
 
             if (servicePrincipalOwners != null)
             {

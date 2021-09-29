@@ -26,7 +26,7 @@
                 {
                     Id = toMap.ResourceId.ToString(),
                     DisplayName = toMap.ResourceDisplayName,
-                    Type = "Application",
+                    Type = Shared.Models.ObjectTypes.Application,
                     ManagementUrl = directory.PortalUrl
                 }
             };

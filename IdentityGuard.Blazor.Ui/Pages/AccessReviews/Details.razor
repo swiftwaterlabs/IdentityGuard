@@ -3,7 +3,7 @@
 <MudContainer Class="mt-16">
 <MudOverlay @bind-Visible="IsRequesting" DarkBackground="true" AutoClose="false"/>
  <Loadable IsLoading="IsLoading">
-    @if(AccessReview?.ObjectType == "Application")
+    @if(AccessReview?.ObjectType == IdentityGuard.Shared.Models.ObjectTypes.Application)
     {
         <IdentityGuard.Blazor.Ui.Components.AccessReviews.ApplicationAccess 
             DirectoryId="@AccessReview?.DirectoryId" ApplicationId="@AccessReview?.ObjectId" AllowNewAccessReview="false" ReadOnly="@(!CanPerformActions)" OnItemRemoved="RemoveAccessReviewItem" OnItemAdded="AddAccessReviewItem">
@@ -16,7 +16,7 @@
 
     }
 
-    @if (AccessReview?.ObjectType == "User")
+    @if (AccessReview?.ObjectType == IdentityGuard.Shared.Models.ObjectTypes.User)
     {
         <IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess
         DirectoryId="@AccessReview?.DirectoryId" UserId="@AccessReview?.ObjectId"  AllowNewAccessReview="false" ReadOnly="@(!CanPerformActions)" OnItemRemoved="RemoveAccessReviewItem" OnItemAdded="AddAccessReviewItem">
@@ -28,7 +28,7 @@
         </IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess>
     }
 
-     @if (AccessReview?.ObjectType == "Group")
+     @if (AccessReview?.ObjectType == IdentityGuard.Shared.Models.ObjectTypes.Group)
     {
         <IdentityGuard.Blazor.Ui.Components.AccessReviews.GroupAccess
         DirectoryId="@AccessReview?.DirectoryId" GroupId="@AccessReview?.ObjectId"  AllowNewAccessReview="false" ReadOnly="@(!CanPerformActions)" OnItemRemoved="RemoveAccessReviewItem" OnItemAdded="AddAccessReviewItem">

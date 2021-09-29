@@ -23,7 +23,7 @@
                             OnItemRemoved="OnItemRemoved"
                             OnItemAdded="OnItemAdded"/>
 
-                        @if(item.AssignmentType == "Group")
+                        @if(item.AssignmentType == IdentityGuard.Shared.Models.ObjectTypes.Group)
                         {
                             <MudText Typo="Typo.body2">From: @item.AssignedBy.DisplayName</MudText>
                         }

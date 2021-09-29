@@ -14,7 +14,7 @@ namespace IdentityGuard.Core.Mappers
                 {
                     Id = user.Id,
                     DisplayName = user.DisplayName,
-                    Type = "User",
+                    Type = Shared.Models.ObjectTypes.User,
                     DirectoryId =  directory.Id,
                     DirectoryName = directory.Domain,
                     ManagementUrl = directory.PortalUrl
@@ -26,7 +26,7 @@ namespace IdentityGuard.Core.Mappers
                 {
                     Id = group.Id,
                     DisplayName = group.DisplayName,
-                    Type = "Group",
+                    Type = Shared.Models.ObjectTypes.Group,
                     SubType = string.Join(',', group.GroupTypes),
                     DirectoryId = directory.Id,
                     DirectoryName = directory.Domain,
@@ -39,7 +39,7 @@ namespace IdentityGuard.Core.Mappers
                 {
                     Id = application.Id,
                     DisplayName = application.DisplayName,
-                    Type = "Application",
+                    Type = Shared.Models.ObjectTypes.Application,
                     DirectoryId = directory.Id,
                     DirectoryName = directory.Domain,
                     ManagementUrl = directory.PortalUrl
@@ -51,7 +51,7 @@ namespace IdentityGuard.Core.Mappers
                 {
                     Id = servicePrincipal.Id,
                     DisplayName = servicePrincipal.DisplayName,
-                    Type = "Service Principal",
+                    Type = Shared.Models.ObjectTypes.ServicePrincipal,
                     DirectoryId = directory.Id,
                     DirectoryName = directory.Domain,
                     ManagementUrl = directory.PortalUrl
@@ -63,7 +63,7 @@ namespace IdentityGuard.Core.Mappers
                 {
                     Id = directoryRole.Id,
                     DisplayName = directoryRole.DisplayName,
-                    Type = "Directory Role",
+                    Type = Shared.Models.ObjectTypes.DirectoryRole,
                     DirectoryId = directory.Id,
                     DirectoryName = directory.Domain,
                     ManagementUrl = directory.PortalUrl

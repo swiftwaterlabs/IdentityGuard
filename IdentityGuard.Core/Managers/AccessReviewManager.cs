@@ -83,21 +83,21 @@ namespace IdentityGuard.Core.Managers
             var directory = await _directoryManager.GetById(review.DirectoryId);
             if (directory == null) return;
 
-            switch (review.ObjectType.ToLower())
+            switch (review.ObjectType)
             {
-                case "application":
+                case ObjectTypes.Application:
                     {
                         var data = await _applicationService.Get(directory, review.ObjectId);
                         review.DisplayName = data?.DisplayName;
                         return;
                     }
-                case "user":
+                case ObjectTypes.User:
                     {
                         var data = await _userService.Get(directory, review.ObjectId);
                         review.DisplayName = data?.DisplayName;
                         return;
                     }
-                case "group":
+                case ObjectTypes.Group:
                     {
                         var data = await _groupService.Get(directory, review.ObjectId);
                         review.DisplayName = data?.DisplayName;
