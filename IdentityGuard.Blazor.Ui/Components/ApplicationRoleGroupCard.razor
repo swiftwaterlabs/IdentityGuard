@@ -13,9 +13,17 @@
                 else
                 {
                     <MudListItem>
+                         
                         <MudText Typo="Typo.subtitle1">@item.AssignedTo.DisplayName</MudText>
-                        <MudText Typo="Typo.body1">@item.Role.DisplayName</MudText>
-                        @if(item.AssignmentType == "Group")
+                        <RemovableItem Type="@(nameof(IdentityGuard.Shared.Models.ApplicationRole))" 
+                            Id="@item.Id" 
+                            Text="@item.Role.DisplayName"
+                            Typo="@Typo.body1"
+                            Disabled="@ReadOnly"
+                            OnItemRemoved="OnItemRemoved"
+                            OnItemAdded="OnItemAdded"/>
+
+                        @if(item.AssignmentType == IdentityGuard.Shared.Models.ObjectTypes.Group)
                         {
                             <MudText Typo="Typo.body2">From: @item.AssignedBy.DisplayName</MudText>
                         }

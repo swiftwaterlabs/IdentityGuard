@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace IdentityGuard.Shared.Models
 {
@@ -14,6 +15,7 @@ namespace IdentityGuard.Shared.Models
         public DateTime RequestedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
         public RequestStatus Status { get; set; }
+        public Dictionary<string,object> AdditionalData { get; set; }
     }
 
     public enum RequestStatus
@@ -27,5 +29,6 @@ namespace IdentityGuard.Shared.Models
     public static class RequestType
     {
         public const string AccessReview = "AccessReview";
+        public const string AccessReviewAction = "AccessReviewAction";
     }
 }

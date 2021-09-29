@@ -35,12 +35,22 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         [Parameter]
         public RenderFragment Actions { get; set; }
 
+        [Parameter]
+        public bool ReadOnly { get; set; } = false;
+
+        [Parameter]
+        public Action<string, string> OnItemRemoved { get; set; } = (type, id) => { };
+
+        [Parameter]
+        public Action<string, string> OnItemAdded { get; set; } = (type, id) => { };
+
         public bool IsLoading { get; set; } = false;
         public bool IsGroupLoaded { get; set; } = false;
 
         public string GroupName { get; set; }
         public string DirectoryName { get; set; }
         public string ManagementUrl { get; set; }
+
         public Dictionary<string, string> UserAttributes { get; set; }
         public ILookup<string, DirectoryObject> OwnersByType { get; set; }
         public ILookup<string, DirectoryObject> MembersByType { get; set; }

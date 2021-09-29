@@ -6,7 +6,15 @@
         <MudList>
             @foreach(var item in Data.OrderBy(i=>i.DisplayName))
             {
-                <MudListItem>@item.DisplayName</MudListItem>
+                <MudListItem>
+                    <RemovableItem Type="@Type" 
+                        Id="@item.Id" 
+                        Text="@item.DisplayName"
+                        Typo="@Typo.body1"
+                        Disabled="@ReadOnly"
+                        OnItemRemoved="OnItemRemoved"
+                        OnItemAdded="OnItemAdded"/>
+                </MudListItem>
             }
         </MudList>
     </MudCardContent>

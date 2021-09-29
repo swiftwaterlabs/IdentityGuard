@@ -31,6 +31,15 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         [Parameter]
         public RenderFragment Actions { get; set; }
 
+        [Parameter]
+        public bool ReadOnly { get; set; } = false;
+
+        [Parameter]
+        public Action<string, string> OnItemRemoved { get; set; } = (type, id) => { };
+
+        [Parameter]
+        public Action<string, string> OnItemAdded { get; set; } = (type, id) => { };
+
         public bool IsLoading { get; set; } = false;
         public bool IsApplicationLoaded { get; set; } = false;
 
@@ -38,12 +47,14 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         public string DirectoryName { get; set; }
         public string ManagementUrl { get; set; }
 
+        
+
         public Dictionary<string, string> UserAttributes { get; set; }
         public ILookup<string, DirectoryObject> OwnersByType { get; set; }
         public ILookup<string, ApplicationSecret> SecretsByType { get; set; }
         public ILookup<string, ApplicationPermission> PermissionsByResource { get; set; }
         public ILookup<string, Role> RolesByType { get; set; }
-
+        
 
         protected override async Task OnParametersSetAsync()
         {
@@ -92,12 +103,12 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         {
             var applicationOwners = toMerge
                 .Owners
-                .Select(o => new KeyValuePair<string, DirectoryObject>("Application", o));
+                .Select(o => new KeyValuePair<string, DirectoryObject>(ObjectTypes.Application, o));
 
             var servicePrincipalOwners = toMerge
                 .ServicePrincipal?
                 .Owners?
-                .Select(o => new KeyValuePair<string, DirectoryObject>("Service Principal", o));
+                .Select(o => new KeyValuePair<string, DirectoryObject>(ObjectTypes.ServicePrincipal, o));
 
             if (servicePrincipalOwners != null)
             {

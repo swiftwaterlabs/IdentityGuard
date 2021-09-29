@@ -1,9 +1,7 @@
 ﻿using IdentityGuard.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace IdentityGuard.Blazor.Ui.Components
 {
@@ -11,5 +9,14 @@ namespace IdentityGuard.Blazor.Ui.Components
     {
         [Parameter]
         public ILookup<string, ApplicationPermission> Data { get; set; }
+
+        [Parameter]
+        public bool ReadOnly { get; set; } = false;
+
+        [Parameter]
+        public Action<string, string> OnItemRemoved { get; set; } = (type, id) => { };
+
+        [Parameter]
+        public Action<string, string> OnItemAdded { get; set; } = (type, id) => { };
     }
 }

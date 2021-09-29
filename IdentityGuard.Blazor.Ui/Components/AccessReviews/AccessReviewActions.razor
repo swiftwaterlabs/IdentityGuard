@@ -1,0 +1,32 @@
+﻿<MudCard>
+    <MudCardHeader>
+        <CardHeaderContent>
+             <MudText Typo="Typo.h6">Actions</MudText>
+             <MudText Typo="Typo.subtitle2">Actions performed as part of this review</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+         <MudTable Items="@Actions">
+                    <HeaderContent>
+                        <MudTh>Action</MudTh>
+                        <MudTh>Parent Type</MudTh>
+                        <MudTh>Parent</MudTh>
+                        <MudTh>Target Type</MudTh>
+                        <MudTh>Target</MudTh>
+                        <MudTh>Requested By</MudTh>
+                        <MudTh>Requested At</MudTh>
+                        <MudTh>Status</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Name">@context.Action</MudTd>
+                        <MudTd DataLabel="Domain">@context.ParentObjectType</MudTd>
+                        <MudTd DataLabel="Domain">@context.ParentObjectDisplayName</MudTd>
+                        <MudTd DataLabel="Domain">@context.ActionObjectType</MudTd>
+                        <MudTd DataLabel="Domain">@context.ActionObjectDisplayName</MudTd>
+                        <MudTd DataLabel="Domain">@context.RequestedBy.DisplayName</MudTd>
+                        <MudTd DataLabel="Domain">@context.RequestedAt.ToString()</MudTd>
+                        <MudTd DataLabel="Domain">@context.Status</MudTd>
+                    </RowTemplate>
+                </MudTable>
+    </MudCardContent>
+</MudCard>

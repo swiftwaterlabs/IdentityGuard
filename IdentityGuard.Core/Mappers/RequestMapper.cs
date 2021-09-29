@@ -2,6 +2,7 @@
 using IdentityGuard.Shared.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace IdentityGuard.Core.Mappers
@@ -21,7 +22,8 @@ namespace IdentityGuard.Core.Mappers
                 ObjectType = toMap.ObjectType,
                 RequestedAt = toMap.RequestedAt,
                 RequestedBy = toMap.RequestedBy,
-                Status = toMap.Status
+                Status = toMap.Status,
+                AdditionalData = toMap.AdditionalData
             };
         }
 
@@ -39,7 +41,8 @@ namespace IdentityGuard.Core.Mappers
                 RequestedBy = toMap.RequestedBy,
                 CompletedBy = toMap.CompletedBy,
                 CompletedAt = toMap.CompletedAt,
-                Status = toMap.Status
+                Status = toMap.Status,
+                AdditionalData = toMap.AdditionalData
             };
         }
 
@@ -61,6 +64,34 @@ namespace IdentityGuard.Core.Mappers
                 CompletedBy = null,
                 CompletedAt = null,
                 Status = status
+            };
+        }
+
+        public Shared.Models.Request Map(AccessReview accessReview, 
+            IEnumerable<AccessReviewActionRequest> toMap, 
+            RequestStatus status, 
+            DirectoryObject requestedBy)
+        {
+            if (accessReview == null) return null;
+            if (toMap == null) return null;
+            if (!toMap.Any()) return null;
+
+            return new Shared.Models.Request
+            {
+                Id = accessReview.Id,
+                Action = RequestType.AccessReviewAction,
+                DirectoryId = accessReview.DirectoryId,
+                ObjectId = accessReview.ObjectId,
+                ObjectType = accessReview.ObjectType,
+                RequestedAt = DateTime.Now,
+                RequestedBy = requestedBy,
+                CompletedBy = null,
+                CompletedAt = null,
+                Status = status,
+                AdditionalData = new Dictionary<string, object>
+                {
+                    {"RequestedActions",toMap}
+                }
             };
         }
     }

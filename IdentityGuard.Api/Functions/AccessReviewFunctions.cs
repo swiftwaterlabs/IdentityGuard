@@ -3,6 +3,7 @@ using IdentityGuard.Core.Managers;
 using IdentityGuard.Shared.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace IdentityGuard.Api.Functions
@@ -11,11 +12,15 @@ namespace IdentityGuard.Api.Functions
     {
         private readonly AuthorizationManager _authorizationManager;
         private readonly AccessReviewManager _accessReviewManager;
+        private readonly AccessReviewActionManager _accessReviewActionManager;
 
-        public AccessReviewFunctions(AuthorizationManager authorizationManager, AccessReviewManager accessReviewManager)
+        public AccessReviewFunctions(AuthorizationManager authorizationManager, 
+            AccessReviewManager accessReviewManager,
+            AccessReviewActionManager accessReviewActionManager)
         {
             _authorizationManager = authorizationManager;
             _accessReviewManager = accessReviewManager;
+            _accessReviewActionManager = accessReviewActionManager;
         }
 
         [Function("accessreview-getpending")]
@@ -58,7 +63,7 @@ namespace IdentityGuard.Api.Functions
 
             if (!_authorizationManager.IsAuthorized(AuthorizedActions.AccessReviewContributor, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
-            var data = await _accessReviewManager.Get(id);
+            var data = await _accessReviewManager.Get(id,req.GetRequestingUser());
 
             if (string.IsNullOrEmpty(data?.Id)) return req.NotFoundResponse();
 
@@ -107,6 +112,22 @@ namespace IdentityGuard.Api.Functions
             var data = await _accessReviewManager.Abandon(id, user);
 
             return await req.OkResponseAsync(data);
+        }
+
+        [Function("accessreview-applychanges")]
+        public async Task<HttpResponseData> ApplyChanges(
+          [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "accessreview/{id}/actions")]
+            HttpRequestData req,
+            FunctionContext executionContext,
+            string id)
+        {
+            var user = req.GetRequestingUser();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.AccessReviewContributor, user)) return req.UnauthorizedResponse();
+
+            var data = req.GetBody<List<AccessReviewActionRequest>>();
+            var result = _accessReviewActionManager.ApplyChanges(id, data, req.GetRequestingUser());
+
+            return await req.OkResponseAsync(result);
         }
     }
 }

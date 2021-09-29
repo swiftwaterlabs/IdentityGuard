@@ -5,6 +5,9 @@
             <ApplicationPermissionGroupCard 
                 Title="@type.Key"
                 Data="@type"
+                ReadOnly="@ReadOnly"
+                OnItemRemoved="OnItemRemoved"
+                OnItemAdded="OnItemAdded"
             />
         </MudItem>
     }

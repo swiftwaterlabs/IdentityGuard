@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using IdentityGuard.Shared.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -41,6 +42,16 @@ namespace IdentityGuard.Core.Extensions
             var userId = userIds.FirstOrDefault();
 
             return userId;
+        }
+
+        public static DirectoryObject GetUser(this IEnumerable<ClaimsIdentity> currentUser)
+        {
+            return new DirectoryObject
+            {
+                Id = currentUser.GetUserId(),
+                DirectoryId = currentUser.GetUserDirectoryId(),
+                DisplayName = currentUser.GetUserName()
+            };
         }
     }
 }
