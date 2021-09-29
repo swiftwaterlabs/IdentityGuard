@@ -13,7 +13,10 @@
                 else
                 {
                     <MudListItem>
-                        <MudText Typo="Typo.subtitle1">@item.DisplayName</MudText>
+                        <RemovableItem Type="@(nameof(IdentityGuard.Shared.Models.Role))" 
+                            Id="@item.Id" 
+                            Text="@item.DisplayName"
+                            Typo="@Typo.subtitle1"/>
                         <MudText Typo="Typo.body2">@item.Description</MudText>
                         
                     </MudListItem>

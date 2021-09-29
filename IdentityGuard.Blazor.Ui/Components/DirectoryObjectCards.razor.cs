@@ -8,5 +8,8 @@ namespace IdentityGuard.Blazor.Ui.Components
     {
         [Parameter]
         public ILookup<string, DirectoryObject> Data { get; set; }
+
+        [Parameter]
+        public string Type { get; set; }
     }
 }

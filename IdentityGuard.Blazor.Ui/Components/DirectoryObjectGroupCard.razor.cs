@@ -11,5 +11,8 @@ namespace IdentityGuard.Blazor.Ui.Components
 
         [Parameter]
         public IEnumerable<DirectoryObject> Data { get; set; }
+
+        [Parameter]
+        public string Type { get; set; }
     }
 }
