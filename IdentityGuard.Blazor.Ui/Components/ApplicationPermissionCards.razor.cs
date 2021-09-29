@@ -11,5 +11,8 @@ namespace IdentityGuard.Blazor.Ui.Components
     {
         [Parameter]
         public ILookup<string, ApplicationPermission> Data { get; set; }
+
+        [Parameter]
+        public bool ReadOnly { get; set; } = false;
     }
 }

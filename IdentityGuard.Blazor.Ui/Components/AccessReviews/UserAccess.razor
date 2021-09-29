@@ -32,13 +32,13 @@
                              <AttributeCard Data="UserAttributes"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Owned">
-                            <DirectoryObjectCards Data="OwnedObjectsByType" Type="Owned"/>
+                            <DirectoryObjectCards Data="OwnedObjectsByType" Type="Owned" ReadOnly="@ReadOnly"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Group Membership">
-                            <DirectoryObjectCards Data="GroupMembershipByType" Type="Group"/>
+                            <DirectoryObjectCards Data="GroupMembershipByType" Type="Group" ReadOnly="@ReadOnly"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Roles">
-                            <ApplicationRoleCards Data="ApplicationRolesByAssignmentType"/>
+                            <ApplicationRoleCards Data="ApplicationRolesByAssignmentType" ReadOnly="@ReadOnly"/>
                         </MudTabPanel>
                     </MudTabs>
 

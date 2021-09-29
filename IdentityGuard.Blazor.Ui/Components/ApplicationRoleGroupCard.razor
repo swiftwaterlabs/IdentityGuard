@@ -18,7 +18,8 @@
                         <RemovableItem Type="@(nameof(IdentityGuard.Shared.Models.ApplicationRole))" 
                             Id="@item.Id" 
                             Text="@item.Role.DisplayName"
-                            Typo="@Typo.body1"/>
+                            Typo="@Typo.body1"
+                            Disabled="@ReadOnly"/>
 
                         @if(item.AssignmentType == "Group")
                         {

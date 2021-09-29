@@ -31,6 +31,9 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         [Parameter]
         public RenderFragment Actions { get; set; }
 
+        [Parameter]
+        public bool ReadOnly { get; set; } = false;
+
         public bool IsLoading { get; set; } = false;
         public bool IsApplicationLoaded { get; set; } = false;
 
@@ -38,12 +41,14 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         public string DirectoryName { get; set; }
         public string ManagementUrl { get; set; }
 
+        
+
         public Dictionary<string, string> UserAttributes { get; set; }
         public ILookup<string, DirectoryObject> OwnersByType { get; set; }
         public ILookup<string, ApplicationSecret> SecretsByType { get; set; }
         public ILookup<string, ApplicationPermission> PermissionsByResource { get; set; }
         public ILookup<string, Role> RolesByType { get; set; }
-
+        
 
         protected override async Task OnParametersSetAsync()
         {

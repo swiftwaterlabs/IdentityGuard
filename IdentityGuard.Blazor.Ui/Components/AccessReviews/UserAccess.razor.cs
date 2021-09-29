@@ -35,6 +35,9 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
         [Parameter]
         public RenderFragment Actions { get; set; }
 
+        [Parameter]
+        public bool ReadOnly { get; set; } = false;
+
         public bool IsLoading { get; set; } = false;
         public bool IsUserLoaded { get; set; } = false;
 

@@ -9,6 +9,9 @@ namespace IdentityGuard.Blazor.Ui.Components
         [Parameter]
         public ILookup<string, ApplicationRole> Data { get; set; }
 
+        [Parameter]
+        public bool ReadOnly { get; set; } = false;
+
         public bool ShowDefaultAccess { get; set; }
     }
 }

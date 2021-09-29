@@ -14,5 +14,8 @@ namespace IdentityGuard.Blazor.Ui.Components
 
         [Parameter]
         public IEnumerable<ApplicationPermission> Data { get; set; }
+
+        [Parameter]
+        public bool ReadOnly { get; set; } = false;
     }
 }

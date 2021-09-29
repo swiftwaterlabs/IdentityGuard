@@ -10,7 +10,8 @@
                      <RemovableItem Type="@(nameof(IdentityGuard.Shared.Models.ApplicationPermission))" 
                             Id="@item.Id" 
                             Text="@item.Name"
-                            Typo="@Typo.subtitle1"/>
+                            Typo="@Typo.subtitle1"
+                            Disabled="@ReadOnly"/>
                     <MudText Typo="Typo.subtitle2">@item.Type</MudText>
                     <MudText Typo="Typo.body1">@item.DisplayName</MudText>
                 </MudListItem>

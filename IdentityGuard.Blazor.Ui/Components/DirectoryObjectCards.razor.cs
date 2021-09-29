@@ -11,5 +11,8 @@ namespace IdentityGuard.Blazor.Ui.Components
 
         [Parameter]
         public string Type { get; set; }
+
+        [Parameter]
+        public bool ReadOnly { get; set; } = false;
     }
 }
