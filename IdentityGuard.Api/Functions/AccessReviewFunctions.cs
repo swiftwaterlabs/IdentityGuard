@@ -59,7 +59,7 @@ namespace IdentityGuard.Api.Functions
 
             if (!_authorizationManager.IsAuthorized(AuthorizedActions.AccessReviewContributor, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
-            var data = await _accessReviewManager.Get(id);
+            var data = await _accessReviewManager.Get(id,req.GetRequestingUser());
 
             if (string.IsNullOrEmpty(data?.Id)) return req.NotFoundResponse();
 
@@ -121,7 +121,7 @@ namespace IdentityGuard.Api.Functions
             if (!_authorizationManager.IsAuthorized(AuthorizedActions.AccessReviewContributor, user)) return req.UnauthorizedResponse();
 
             var data = req.GetBody<List<AccessReviewActionRequest>>();
-            var review = await _accessReviewManager.Get(id);
+            var review = await _accessReviewManager.Get(id, req.GetRequestingUser());
 
             return await req.OkResponseAsync(review);
         }
