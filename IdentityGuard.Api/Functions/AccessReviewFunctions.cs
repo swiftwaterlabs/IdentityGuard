@@ -3,6 +3,7 @@ using IdentityGuard.Core.Managers;
 using IdentityGuard.Shared.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace IdentityGuard.Api.Functions
@@ -107,6 +108,22 @@ namespace IdentityGuard.Api.Functions
             var data = await _accessReviewManager.Abandon(id, user);
 
             return await req.OkResponseAsync(data);
+        }
+
+        [Function("accessreview-applychanges")]
+        public async Task<HttpResponseData> ApplyChanges(
+          [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "accessreview/{id}/actions")]
+            HttpRequestData req,
+            FunctionContext executionContext,
+            string id)
+        {
+            var user = req.GetRequestingUser();
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.AccessReviewContributor, user)) return req.UnauthorizedResponse();
+
+            var data = req.GetBody<List<AccessReviewAction>>();
+            var review = await _accessReviewManager.Get(id);
+
+            return await req.OkResponseAsync(review);
         }
     }
 }

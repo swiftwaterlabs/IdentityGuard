@@ -2,7 +2,7 @@
 
 namespace IdentityGuard.Shared.Models
 {
-    public class AcessReviewAction
+    public class AccessReviewAction
     {
         public string Id { get; set; }
         public string Action { get; set; }
@@ -20,5 +20,10 @@ namespace IdentityGuard.Shared.Models
         Pending,
         Complete,
         Failed
+    }
+
+    public static class AccessReviewActionTypes
+    {
+        public const string Remove = "Remove";
     }
 }

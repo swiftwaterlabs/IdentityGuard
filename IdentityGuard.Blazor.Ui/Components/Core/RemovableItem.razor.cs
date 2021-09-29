@@ -27,10 +27,10 @@ namespace IdentityGuard.Blazor.Ui.Components.Core
         public bool Disabled { get; set; } = false;
 
         [Parameter]
-        public Action<string,string> OnRemoved { get; set; } = (type,id) => { };
+        public Action<string,string> OnItemRemoved { get; set; } = (type,id) => { };
 
         [Parameter]
-        public Action<string,string> OnAdded { get; set; } = (type,id) => { };
+        public Action<string,string> OnItemAdded { get; set; } = (type,id) => { };
 
         public string GetIcon()
         {
@@ -53,12 +53,12 @@ namespace IdentityGuard.Blazor.Ui.Components.Core
 
             if (IsRemoved)
             {
-                OnRemoved(Type,Id);
+                OnItemRemoved(Type,Id);
             }
 
             if(!IsRemoved)
             {
-                OnAdded(Type, Id);
+                OnItemAdded(Type, Id);
             }
 
         }

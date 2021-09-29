@@ -3,6 +3,8 @@ using IdentityGuard.Blazor.Ui.Services;
 using IdentityGuard.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
@@ -26,14 +28,17 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
 
         public bool CanPerformActions { get; set; } = false;
 
+        public bool IsLoading { get; set; } = false;
+        public bool IsRequesting { get; set; } = false;
+        public bool IsApplyChangesDialogOpen { get; set; } = false;
         public bool IsAbandonDialogOpen { get; set; } = false;
         public bool IsCompleteDialogOpen { get; set; } = false;
 
+        private Dictionary<string,AccessReviewAction> ActionsTaken { get; set; } = new();
+
         protected override async Task OnParametersSetAsync()
         {
-            AccessReview = await AccessReviewService.Get(Id);
-            CanPerformActions = AccessReview != null && 
-                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress);
+            await LoadData();
 
             AppState.SetBreadcrumbs(
                new BreadcrumbItem("Access Reviews", Paths.AccessReviews),
@@ -43,18 +48,47 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
                );
         }
 
+        private async Task LoadData()
+        {
+            IsLoading = true;
+
+            AccessReview = await AccessReviewService.Get(Id);
+            CanPerformActions = AccessReview != null &&
+                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress);
+
+            IsLoading = false;           
+        }
+
         public async Task Complete()
         {
-            await AccessReviewService.Complete(Id);
+            IsRequesting = true;
 
+            await AccessReviewService.Complete(Id);
             NavigationManager.NavigateTo(Paths.AccessReviews);
+
+            IsRequesting = false;
         }
 
         public async Task Abandon()
         {
-            await AccessReviewService.Abandon(Id);
+            IsRequesting = true;
 
+            await AccessReviewService.Abandon(Id);
             NavigationManager.NavigateTo(Paths.AccessReviews);
+
+            IsRequesting = false;
+        }
+
+        public async Task ApplyChanges()
+        {
+            IsRequesting = true;
+
+            await AccessReviewService.ApplyChanges(Id,ActionsTaken.Values);
+
+            HideApplyChangesDialog();
+            IsRequesting = false;
+
+            await LoadData();
         }
 
         public void ShowAbandonDialog()
@@ -75,6 +109,55 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         public void HideCompleteDialog()
         {
             IsCompleteDialogOpen = false;
+        }
+
+        public void ShowApplyChangesDialog()
+        {
+            IsApplyChangesDialogOpen = true;
+        }
+
+        public void HideApplyChangesDialog()
+        {
+            IsApplyChangesDialogOpen = false;
+        }
+
+        private void RemoveAccessReviewItem(string type, string id)
+        {
+            var key = GetActionKey(type, id);
+            if(!ActionsTaken.ContainsKey(key))
+            {
+                var action = new AccessReviewAction
+                {
+                    Action = AccessReviewActionTypes.Remove,
+                    ActionObjectId = id,
+                    ActionObjectType = type
+                };
+                ActionsTaken.Add(key, action);
+                
+            }
+
+            StateHasChanged();
+        }
+
+        private void AddAccessReviewItem(string type, string id)
+        {
+            var key = GetActionKey(type, id);
+            if (ActionsTaken.ContainsKey(key))
+            {
+                ActionsTaken.Remove(key);
+            }
+
+            StateHasChanged();
+        }
+
+        private string GetActionKey(string type, string id)
+        {
+            return $"{type}|{id}";
+        }
+
+        public bool HasPendingActions()
+        {
+            return ActionsTaken.Any();
         }
     }
 }

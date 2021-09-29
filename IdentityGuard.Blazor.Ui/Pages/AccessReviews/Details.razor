@@ -1,13 +1,15 @@
 ﻿@page  "/accessreview/{Id}"
 
 <MudContainer Class="mt-16">
-
+<MudOverlay @bind-Visible="IsRequesting" DarkBackground="true" AutoClose="false"/>
+ <Loadable IsLoading="IsLoading">
     @if(AccessReview?.ObjectType == "Application")
     {
         <IdentityGuard.Blazor.Ui.Components.AccessReviews.ApplicationAccess 
-            DirectoryId="@AccessReview?.DirectoryId" ApplicationId="@AccessReview?.ObjectId" AllowNewAccessReview="false" ReadOnly="@(!CanPerformActions)">
+            DirectoryId="@AccessReview?.DirectoryId" ApplicationId="@AccessReview?.ObjectId" AllowNewAccessReview="false" ReadOnly="@(!CanPerformActions)" OnItemRemoved="RemoveAccessReviewItem" OnItemAdded="AddAccessReviewItem">
             <Actions>
-                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions)">Complete</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Save" Color="Color.Primary" OnClick="ShowApplyChangesDialog" Disabled="@(!HasPendingActions())">Apply Changes</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Success" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions)">Complete</MudButton>
                 <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="ShowAbandonDialog" Class="ml-4" Disabled="@(!CanPerformActions)">Abandon</MudButton>
             </Actions> 
         </IdentityGuard.Blazor.Ui.Components.AccessReviews.ApplicationAccess>
@@ -17,9 +19,10 @@
     @if (AccessReview?.ObjectType == "User")
     {
         <IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess
-        DirectoryId="@AccessReview?.DirectoryId" UserId="@AccessReview?.ObjectId"  AllowNewAccessReview="false" ReadOnly="@(!CanPerformActions)">
+        DirectoryId="@AccessReview?.DirectoryId" UserId="@AccessReview?.ObjectId"  AllowNewAccessReview="false" ReadOnly="@(!CanPerformActions)" OnItemRemoved="RemoveAccessReviewItem" OnItemAdded="AddAccessReviewItem">
             <Actions>
-                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions)">Complete</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Save" Color="Color.Primary" OnClick="ShowApplyChangesDialog" Disabled="@(!HasPendingActions())">Apply Changes</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Success" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions)">Complete</MudButton>
                 <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="ShowAbandonDialog" Class="ml-4" Disabled="@(!CanPerformActions)">Abandon</MudButton>
             </Actions>    
         </IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess>
@@ -28,9 +31,10 @@
      @if (AccessReview?.ObjectType == "Group")
     {
         <IdentityGuard.Blazor.Ui.Components.AccessReviews.GroupAccess
-        DirectoryId="@AccessReview?.DirectoryId" GroupId="@AccessReview?.ObjectId"  AllowNewAccessReview="false" ReadOnly="@(!CanPerformActions)">
+        DirectoryId="@AccessReview?.DirectoryId" GroupId="@AccessReview?.ObjectId"  AllowNewAccessReview="false" ReadOnly="@(!CanPerformActions)" OnItemRemoved="RemoveAccessReviewItem" OnItemAdded="AddAccessReviewItem">
             <Actions>
-                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions)">Complete</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Save" Color="Color.Primary" OnClick="ShowApplyChangesDialog" Disabled="@(!HasPendingActions())">Apply Changes</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Success" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions)">Complete</MudButton>
                 <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="ShowAbandonDialog" Class="ml-4" Disabled="@(!CanPerformActions)">Abandon</MudButton>
             </Actions>    
         </IdentityGuard.Blazor.Ui.Components.AccessReviews.GroupAccess>
@@ -50,17 +54,31 @@
     </MudDialog>
 
      <MudDialog @bind-IsVisible="IsCompleteDialogOpen">
-    <TitleContent>
-        <MudText Typo="Typo.h5"> Are you sure you would like to complete this access review?</MudText>
-    </TitleContent>
-    <DialogContent>
-        <MudText>By completing, you are attesting that all access for the @AccessReview?.ObjectType?.ToLower() is accurate and all unecessary access has been removed.</MudText>
-    </DialogContent>
-    <DialogActions>
-            <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Tertiary" OnClick="HideCompleteDialog" Class="ml-4">Cancel</MudButton>
-            <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="Complete" Class="ml-4">Complete</MudButton>
-    </DialogActions>
-</MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h5"> Are you sure you would like to complete this access review?</MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudText>By completing, you are attesting that all access for the @AccessReview?.ObjectType?.ToLower() is accurate and all unecessary access has been removed.</MudText>
+        </DialogContent>
+        <DialogActions>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Tertiary" OnClick="HideCompleteDialog" Class="ml-4">Cancel</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="Complete" Class="ml-4">Complete</MudButton>
+        </DialogActions>
+    </MudDialog>
+
+    <MudDialog @bind-IsVisible="IsApplyChangesDialogOpen">
+        <TitleContent>
+            <MudText Typo="Typo.h5"> Are you sure you would like to remove the specified items on the @(AccessReview.ObjectType)?</MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudText>These changes will be applied and immediately removed from @(AccessReview.DisplayName). </MudText>
+        </DialogContent>
+        <DialogActions>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Tertiary" OnClick="HideApplyChangesDialog" Class="ml-4">Cancel</MudButton>
+                <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Primary" OnClick="ApplyChanges" Class="ml-4">Apply Changes</MudButton>
+        </DialogActions>
+    </MudDialog>
+</Loadable>
 </MudContainer>
 
 

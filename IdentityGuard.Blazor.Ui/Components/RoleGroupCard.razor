@@ -17,7 +17,9 @@
                             Id="@item.Id" 
                             Text="@item.DisplayName"
                             Typo="@Typo.subtitle1"
-                            Disabled="@ReadOnly"/>
+                            Disabled="@ReadOnly"
+                            OnItemRemoved="OnItemRemoved"
+                            OnItemAdded="OnItemAdded"/>
                         <MudText Typo="Typo.body2">@item.Description</MudText>
                         
                     </MudListItem>

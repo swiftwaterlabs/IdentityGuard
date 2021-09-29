@@ -18,7 +18,7 @@ namespace IdentityGuard.Shared.Models
         public DirectoryObject CompletedBy { get; set; }
         public AccessReviewStatus Status { get; set; }
 
-        public List<AcessReviewAction> Actions { get; set; }
+        public List<AccessReviewAction> Actions { get; set; }
     }
 
     public enum AccessReviewStatus

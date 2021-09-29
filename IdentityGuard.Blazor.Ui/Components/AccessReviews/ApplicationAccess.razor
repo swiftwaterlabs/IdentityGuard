@@ -31,16 +31,16 @@
                              <AttributeCard Data="UserAttributes"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Owners">
-                            <DirectoryObjectCards Data="OwnersByType" Type="Owner" ReadOnly="@ReadOnly"/>
-                        </MudTabPanel>
+                            <DirectoryObjectCards Data="OwnersByType" Type="Owner" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
+                        </MudTabPanel> 
                         <MudTabPanel Text="Secrets">
-                            <ApplicationSecretCards Data="SecretsByType" ReadOnly="@ReadOnly"/>
+                            <ApplicationSecretCards Data="SecretsByType" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
                         </MudTabPanel>
                          <MudTabPanel Text="Permissions">
-                            <ApplicationPermissionCards Data="PermissionsByResource" ReadOnly="@ReadOnly"/>
+                            <ApplicationPermissionCards Data="PermissionsByResource" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Roles">
-                            <RoleCards Data="RolesByType" ReadOnly="@ReadOnly"/>
+                            <RoleCards Data="RolesByType" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
                         </MudTabPanel>
                     </MudTabs>
 

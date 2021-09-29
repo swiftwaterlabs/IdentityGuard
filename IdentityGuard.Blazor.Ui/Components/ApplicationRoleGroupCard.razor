@@ -19,7 +19,9 @@
                             Id="@item.Id" 
                             Text="@item.Role.DisplayName"
                             Typo="@Typo.body1"
-                            Disabled="@ReadOnly"/>
+                            Disabled="@ReadOnly"
+                            OnItemRemoved="OnItemRemoved"
+                            OnItemAdded="OnItemAdded"/>
 
                         @if(item.AssignmentType == "Group")
                         {
