@@ -30,7 +30,6 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         public AccessReview AccessReview { get; set; }
 
         public bool CanViewActions { get; set; } = false;
-        public bool IsReadOnly { get; set; } = false;
 
         public bool IsLoading { get; set; } = false;
         public bool IsRequesting { get; set; } = false;
@@ -58,11 +57,15 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
 
             AccessReview = await AccessReviewService.Get(Id);
 
-            CanViewActions = AccessReview?.Actions!=null && AccessReview.Actions.Any();
-            IsReadOnly = !(AccessReview != null &&
-                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress));
+            CanViewActions = AccessReview?.Actions != null && AccessReview.Actions.Any();
 
-            IsLoading = false;           
+            IsLoading = false;
+        }
+
+        private bool IsReadOnly()
+        {
+            return !(AccessReview != null &&
+                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress));
         }
 
         public async Task Complete()
