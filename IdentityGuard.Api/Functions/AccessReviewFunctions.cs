@@ -125,7 +125,7 @@ namespace IdentityGuard.Api.Functions
             if (!_authorizationManager.IsAuthorized(AuthorizedActions.AccessReviewContributor, user)) return req.UnauthorizedResponse();
 
             var data = req.GetBody<List<AccessReviewActionRequest>>();
-            var result = _accessReviewActionManager.ApplyChanges(id, data, req.GetRequestingUser());
+            var result = await _accessReviewActionManager.ApplyChanges(id, data, req.GetRequestingUser());
 
             return await req.OkResponseAsync(result);
         }

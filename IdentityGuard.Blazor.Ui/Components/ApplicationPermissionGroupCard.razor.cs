@@ -17,9 +17,9 @@ namespace IdentityGuard.Blazor.Ui.Components
         public bool ReadOnly { get; set; } = false;
 
         [Parameter]
-        public Action<string, string> OnItemRemoved { get; set; } = (type, id) => { };
+        public Action<string, string, string> OnItemRemoved { get; set; } = (type, subType, id) => { };
 
         [Parameter]
-        public Action<string, string> OnItemAdded { get; set; } = (type, id) => { };
+        public Action<string, string, string> OnItemAdded { get; set; } = (type, subType, id) => { };
     }
 }

@@ -21,7 +21,8 @@ namespace IdentityGuard.Core.Mappers
                 AssignedTo = toMap.AssignedTo,
                 CompletedBy = toMap.CompletedBy,
                 CompletedAt = toMap.CompletedAt,
-                Status = toMap.Status
+                Status = toMap.Status,
+                Actions = toMap.Actions
             };
         }
 
@@ -43,7 +44,8 @@ namespace IdentityGuard.Core.Mappers
                 AssignedTo = toMap.AssignedTo,
                 CompletedBy = toMap.CompletedBy,
                 CompletedAt = toMap.CompletedAt,
-                Status = toMap.Status
+                Status = toMap.Status,
+                Actions = toMap.Actions
             };
         }
     }

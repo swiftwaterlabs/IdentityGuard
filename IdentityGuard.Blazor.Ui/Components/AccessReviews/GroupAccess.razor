@@ -1,4 +1,5 @@
-﻿<MudContainer Class="mt-16">
+﻿@using IdentityGuard.Shared.Models
+<MudContainer Class="mt-16">
     <Loadable IsLoading="IsLoading">
         @if (IsGroupLoaded)
         {
@@ -32,10 +33,10 @@
                              <AttributeCard Data="UserAttributes"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Owners">
-                            <DirectoryObjectCards Data="OwnersByType" Type="Owner" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
+                            <DirectoryObjectCards Data="OwnersByType" Type="@AccessReviewActionObjectTypes.Owned" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Members">
-                            <DirectoryObjectCards Data="MembersByType" Type="Member" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
+                            <DirectoryObjectCards Data="MembersByType" Type="@AccessReviewActionObjectTypes.GroupMembers" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Roles">
                             <ApplicationRoleCards Data="ApplicationRolesByAssignmentType" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>

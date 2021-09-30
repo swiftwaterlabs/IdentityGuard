@@ -1,4 +1,5 @@
-﻿<Loadable IsLoading="IsLoading">
+﻿@using IdentityGuard.Shared.Models
+<Loadable IsLoading="IsLoading">
         @if (IsApplicationLoaded)
         {
             <MudCard>
@@ -31,7 +32,7 @@
                              <AttributeCard Data="UserAttributes"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Owners">
-                            <DirectoryObjectCards Data="OwnersByType" Type="Owner" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
+                            <DirectoryObjectCards Data="OwnersByType" Type="@AccessReviewActionObjectTypes.Owner" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
                         </MudTabPanel> 
                         <MudTabPanel Text="Secrets">
                             <ApplicationSecretCards Data="SecretsByType" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>

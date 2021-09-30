@@ -1,4 +1,5 @@
-﻿<MudCard>
+﻿@using IdentityGuard.Shared.Models
+<MudCard>
     <MudCardHeader>
         <MudText Typo="Typo.subtitle1">@Title</MudText>
     </MudCardHeader>
@@ -15,7 +16,7 @@
                     <MudListItem>
                          
                         <MudText Typo="Typo.subtitle1">@item.AssignedTo.DisplayName</MudText>
-                        <RemovableItem Type="@(nameof(IdentityGuard.Shared.Models.ApplicationRole))" 
+                        <RemovableItem Type="@AccessReviewActionObjectTypes.ApplicationRoleMembership" 
                             Id="@item.Id" 
                             Text="@item.Role.DisplayName"
                             Typo="@Typo.body1"

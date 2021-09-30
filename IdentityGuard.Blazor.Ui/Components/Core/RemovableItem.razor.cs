@@ -21,16 +21,19 @@ namespace IdentityGuard.Blazor.Ui.Components.Core
         public string Type { get; set; }
 
         [Parameter]
+        public string SubType { get; set; }
+
+        [Parameter]
         public string Id { get; set; }
 
         [Parameter]
         public bool Disabled { get; set; } = false;
 
         [Parameter]
-        public Action<string,string> OnItemRemoved { get; set; } = (type,id) => { };
+        public Action<string,string,string> OnItemRemoved { get; set; } = (type,subType,id) => { };
 
         [Parameter]
-        public Action<string,string> OnItemAdded { get; set; } = (type,id) => { };
+        public Action<string,string,string> OnItemAdded { get; set; } = (type,subType,id) => { };
 
         public string GetIcon()
         {
@@ -53,12 +56,12 @@ namespace IdentityGuard.Blazor.Ui.Components.Core
 
             if (IsRemoved)
             {
-                OnItemRemoved(Type,Id);
+                OnItemRemoved(Type,SubType,Id);
             }
 
             if(!IsRemoved)
             {
-                OnItemAdded(Type, Id);
+                OnItemAdded(Type,SubType,Id);
             }
 
         }

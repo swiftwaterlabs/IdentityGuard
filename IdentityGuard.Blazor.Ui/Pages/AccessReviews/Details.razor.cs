@@ -143,16 +143,17 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             StateHasChanged();
         }
 
-        private void RemoveAccessReviewItem(string type, string id)
+        private void RemoveAccessReviewItem(string type, string subType, string id)
         {
-            var key = GetActionKey(type, id);
+            var key = GetActionKey(type, subType, id);
             if(!ActionsTaken.ContainsKey(key))
             {
                 var action = new AccessReviewActionRequest
                 {
                     Action = AccessReviewActionTypes.Remove,
                     ActionObjectId = id,
-                    ActionObjectType = type
+                    ActionObjectType = type,
+                    ActionObjectSubType = subType
                 };
                 ActionsTaken.Add(key, action);
                 
@@ -161,9 +162,9 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             StateHasChanged();
         }
 
-        private void AddAccessReviewItem(string type, string id)
+        private void AddAccessReviewItem(string type, string subType, string id)
         {
-            var key = GetActionKey(type, id);
+            var key = GetActionKey(type,subType, id);
             if (ActionsTaken.ContainsKey(key))
             {
                 ActionsTaken.Remove(key);
@@ -172,9 +173,9 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             StateHasChanged();
         }
 
-        private string GetActionKey(string type, string id)
+        private string GetActionKey(string type, string subType, string id)
         {
-            return $"{type}|{id}";
+            return $"{type ?? ""}|{subType ?? ""}|{id ?? ""}";
         }
 
         public bool HasPendingActions()

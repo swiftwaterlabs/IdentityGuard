@@ -22,5 +22,6 @@ namespace IdentityGuard.Core.Models.Data
         public List<DirectoryObject> AssignedTo { get; set; }
         public DirectoryObject CompletedBy { get; set; }
         public AccessReviewStatus Status { get; set; }
+        public List<AccessReviewAction> Actions { get; set; }
     }
 }

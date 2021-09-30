@@ -90,5 +90,23 @@ namespace IdentityGuard.Core.Services
             var filter = $"startsWith(displayName,'{encodedName}')";
             return filter;
         }
+
+        public async Task RemoveOwners(Shared.Models.Directory directory, string id, IEnumerable<string> toRemove)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var removeTasks = toRemove.Select(o => RemoveOwner(client, id, o)).ToArray();
+            await Task.WhenAll(removeTasks);
+        }
+
+        private Task RemoveOwner(Microsoft.Graph.IGraphServiceClient client, string id, string ownerId)
+        {
+            return client.Applications[id]
+                .Owners[ownerId]
+                .Reference
+                .Request()
+                .DeleteAsync();
+
+        }
     }
 }
