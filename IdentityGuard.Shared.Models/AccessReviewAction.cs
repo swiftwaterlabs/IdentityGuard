@@ -6,6 +6,7 @@ namespace IdentityGuard.Shared.Models
     {
         public string Id { get; set; }
         public string Action { get; set; }
+        public string Relation { get; set; }
 
         public string ParentObjectType { get; set; }
         public string ParentObjectId { get; set; }

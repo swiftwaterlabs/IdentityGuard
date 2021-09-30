@@ -146,11 +146,15 @@ namespace IdentityGuard.Core.Managers
                     .Where(a => a.ActionObjectSubType == ObjectTypes.ServicePrincipal)
                     .Select(a => a.ActionObjectId);
 
-                await _applicationService.RemoveOwners(directory, accessReview.ObjectId, applicationOwners);
+                var applicationData = await _applicationService.Get(directory, accessReview.ObjectId);
 
-                if(servicePrincipalOwners.Any())
+                if (applicationOwners.Any())
                 {
-                    var applicationData = await _applicationService.Get(directory, accessReview.ObjectId);
+                    await _applicationService.RemoveOwners(directory, applicationData.Id, applicationOwners);
+                }
+
+                if (servicePrincipalOwners.Any())
+                {
                     var servicePrincipal = await _servicePrincipalService.GetByAppId(directory, applicationData.AppId);
                     await _servicePrincipalService.RemoveOwners(directory, servicePrincipal.Id, servicePrincipalOwners);
                 }
@@ -159,15 +163,11 @@ namespace IdentityGuard.Core.Managers
             if (accessReview.ObjectType == ObjectTypes.Group)
             {
                 var ownersToRemove = actions.Select(a => a.ActionObjectId);
-                await _groupService.RemoveOwners(directory, accessReview.ObjectId, ownersToRemove);
+                var groupData = await _groupService.Get(directory,accessReview.ObjectId);
+                await _groupService.RemoveOwners(directory, groupData.Id, ownersToRemove);
             }
 
             return result;
-        }
-
-        private List<AccessReviewAction> CreateResults(string action)
-        {
-
         }
 
         private async Task<List<AccessReviewAction>> ProcessOwnedActions(Directory directory, AccessReview accessReview, IEnumerable<AccessReviewActionRequest> requestedActions)
