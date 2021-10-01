@@ -83,6 +83,8 @@ namespace IdentityGuard.Core.Managers
         {
             var directory = await _directoryManager.GetById(accessReview.DirectoryId);
 
+            if (!directory.CanManageObjects) throw new UnauthorizedAccessException($"Directory {directory?.Domain} does not support management of objects")
+
             var result = new List<AccessReviewAction>();
             foreach(var processor in _processors)
             {

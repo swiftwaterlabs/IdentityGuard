@@ -16,6 +16,7 @@ namespace IdentityGuard.Core.Models.Data
         public string DirectoryName { get; set; }
         public string ObjectId { get; set; }
         public string DisplayName { get; set; }
+        public bool CanManageObjects { get; set; }
         public DirectoryObject CreatedBy { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }

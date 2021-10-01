@@ -65,7 +65,8 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         private bool IsReadOnly()
         {
             return !(AccessReview != null &&
-                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress));
+                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress))
+                || !AccessReview.CanManageObjects;
         }
 
         public async Task Complete()
