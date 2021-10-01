@@ -12,14 +12,17 @@ namespace IdentityGuard.Core.Managers.ActionProcessors
         private readonly GroupService _groupService;
         private readonly ApplicationService _applicationService;
         private readonly ServicePrincipalService _servicePrincipalService;
+        private readonly DirectoryObjectService _directoryObjectService;
 
         public OwnerActionProcessor(GroupService groupService,
             ApplicationService applicationService,
-            ServicePrincipalService servicePrincipalService)
+            ServicePrincipalService servicePrincipalService,
+            DirectoryObjectService directoryObjectService)
         {
             _groupService = groupService;
             _applicationService = applicationService;
             _servicePrincipalService = servicePrincipalService;
+            _directoryObjectService = directoryObjectService;
         }
 
         public string ActionObjectType => AccessReviewActionObjectTypes.Owner;
@@ -77,17 +80,24 @@ namespace IdentityGuard.Core.Managers.ActionProcessors
             var applicationOwners = applicationOwnerActions
                 .Select(a => a.ActionObjectId);
 
+            var ownerDataTasks = applicationOwners
+                .Select(a => _directoryObjectService.Get(directory, a));
+
+            var ownerData = await Task.WhenAll(ownerDataTasks);
+
             await _applicationService.RemoveOwners(directory, applicationData.Id, applicationOwners);
-            var applicationResults = applicationOwnerActions
+            var applicationResults = ownerData
                 .Select(a => new AccessReviewAction
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Action = a.Action,
-                    Relation = a.ActionObjectType,
+                    Action = AccessReviewActionTypes.Remove,
+                    Relation = AccessReviewActionObjectTypes.Owner,
                     ParentObjectId = accessReview.ObjectId,
                     ParentObjectType = ObjectTypes.Application,
                     ParentObjectDisplayName = accessReview.DisplayName,
-                    ActionObjectId = a.ActionObjectId,
+                    ActionObjectId = a.Id,
+                    ActionObjectDisplayName = a.DisplayName,
+                    ActionObjectType = a.Type,
                     RequestedAt = DateTime.Now,
                     RequestedBy = requestingUser,
                     Status = AccessReviewActionStatus.Complete
@@ -100,19 +110,26 @@ namespace IdentityGuard.Core.Managers.ActionProcessors
             var servicePrincipalOwners = servicePrincipalOwnerActions
                 .Select(a => a.ActionObjectId);
 
+            var ownerDataTasks = servicePrincipalOwners
+               .Select(a => _directoryObjectService.Get(directory, a));
+
+            var ownerData = await Task.WhenAll(ownerDataTasks);
+
             var servicePrincipal = await _servicePrincipalService.GetByAppId(directory, applicationData.AppId);
             await _servicePrincipalService.RemoveOwners(directory, servicePrincipal.Id, servicePrincipalOwners);
 
-            var servicePrincipalResults = servicePrincipalOwnerActions
+            var servicePrincipalResults = ownerData
                 .Select(a => new AccessReviewAction
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Action = a.Action,
-                    Relation = a.ActionObjectType,
+                    Action = AccessReviewActionTypes.Remove,
+                    Relation = AccessReviewActionObjectTypes.Owner,
                     ParentObjectId = servicePrincipal.Id,
                     ParentObjectType = ObjectTypes.ServicePrincipal,
                     ParentObjectDisplayName = servicePrincipal.DisplayName,
-                    ActionObjectId = a.ActionObjectId,
+                    ActionObjectId = a.Id,
+                    ActionObjectDisplayName = a.DisplayName,
+                    ActionObjectType = a.Type,
                     RequestedAt = DateTime.Now,
                     RequestedBy = requestingUser,
                     Status = AccessReviewActionStatus.Complete
