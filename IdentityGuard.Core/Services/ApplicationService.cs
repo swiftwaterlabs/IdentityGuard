@@ -1,5 +1,6 @@
 ﻿using IdentityGuard.Core.Factories;
 using IdentityGuard.Core.Mappers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -106,6 +107,42 @@ namespace IdentityGuard.Core.Services
                 .Reference
                 .Request()
                 .DeleteAsync();
+
+        }
+
+        public async Task RemovePasswordSecrets(Shared.Models.Directory directory, string id, IEnumerable<string> toRemove)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var removeTasks = toRemove.Select(o => RemovePassword(client, id, o)).ToArray();
+            await Task.WhenAll(removeTasks);
+        }
+
+        private Task RemovePassword(Microsoft.Graph.IGraphServiceClient client, string id, string toRemove)
+        {
+            var passwordGuid = Guid.Parse(toRemove);
+            return client.Applications[id]
+                .RemovePassword(passwordGuid)
+                .Request()
+                .PostAsync();
+
+        }
+
+        public async Task RemoveCertificateSecrets(Shared.Models.Directory directory, string id, IEnumerable<string> toRemove)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var removeTasks = toRemove.Select(o => RemoveKey(client, id, o)).ToArray();
+            await Task.WhenAll(removeTasks);
+        }
+
+        private Task RemoveKey(Microsoft.Graph.IGraphServiceClient client, string id, string toRemove)
+        {
+            var keyGuid = Guid.Parse(toRemove);
+            return client.Applications[id]
+                .RemoveKey(keyGuid, null)
+                .Request()
+                .PostAsync();
 
         }
     }
