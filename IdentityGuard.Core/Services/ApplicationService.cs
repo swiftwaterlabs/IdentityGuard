@@ -38,6 +38,29 @@ namespace IdentityGuard.Core.Services
             return result;
         }
 
+        public async Task<Shared.Models.Application> GetByAppId(Shared.Models.Directory directory, string appId, bool includeOwners = false)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var query = await client
+                .Applications
+                .Request()
+                .Filter($"appId eq '{appId}'")
+                .GetAsync();
+
+            if (!query.Any()) return null;
+            var data = query.First();
+
+            var owners = new List<Microsoft.Graph.DirectoryObject>();
+            if (includeOwners)
+            {
+                owners = await GetOwners(client, data.Id);
+            }
+            var result = _applicationMapper.Map(directory, data, owners);
+
+            return result;
+        }
+
         private async Task<List<Microsoft.Graph.DirectoryObject>> GetOwners(Microsoft.Graph.IGraphServiceClient client, string id)
         {
             List<Microsoft.Graph.DirectoryObject> result = new List<Microsoft.Graph.DirectoryObject>();

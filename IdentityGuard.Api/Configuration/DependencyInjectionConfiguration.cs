@@ -43,6 +43,7 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<IActionProcessor, GroupMemberActionProcessor>();
             services.AddTransient<IActionProcessor, ApplicationSecretActionProcessor>();
             services.AddTransient<IActionProcessor, ApplicationPermissionActionProcessor>();
+            services.AddTransient<IActionProcessor, ApplicationRoleActionProcessor>();
 
             // Mappers
             services.AddTransient<ApplicationMapper>();
