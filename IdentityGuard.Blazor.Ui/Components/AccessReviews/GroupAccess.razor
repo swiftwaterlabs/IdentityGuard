@@ -41,6 +41,12 @@
                         <MudTabPanel Text="Roles">
                             <ApplicationRoleCards Data="ApplicationRolesByAssignmentType" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
                         </MudTabPanel>
+                        <MudTabPanel Text="Actions Taken" Disabled="@(ActionsTaken==null)">
+                            @if(ActionsTaken != null)
+                            {
+                                @ActionsTaken
+                            }
+                        </MudTabPanel>
                     </MudTabs>
 
                 </MudCardContent>

@@ -12,6 +12,14 @@
                 <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Success" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions())">Complete</MudButton>
                 <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="ShowAbandonDialog" Class="ml-4" Disabled="@(!CanPerformActions())">Abandon</MudButton>
             </Actions> 
+           
+            <ActionsTaken>
+                @if(CanViewActions)
+                {
+                    <IdentityGuard.Blazor.Ui.Components.AccessReviews.AccessReviewActions Actions="@AccessReview.Actions"/>
+                }
+            </ActionsTaken>
+                
         </IdentityGuard.Blazor.Ui.Components.AccessReviews.ApplicationAccess>
 
     }
@@ -25,6 +33,12 @@
                 <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Success" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions())">Complete</MudButton>
                 <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="ShowAbandonDialog" Class="ml-4" Disabled="@(!CanPerformActions())">Abandon</MudButton>
             </Actions>    
+            <ActionsTaken>
+                @if(CanViewActions)
+                {
+                    <IdentityGuard.Blazor.Ui.Components.AccessReviews.AccessReviewActions Actions="@AccessReview.Actions"/>
+                }
+            </ActionsTaken>
         </IdentityGuard.Blazor.Ui.Components.AccessReviews.UserAccess>
     }
 
@@ -36,13 +50,14 @@
                 <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Save" Color="Color.Primary" OnClick="ShowApplyChangesDialog" Disabled="@(!HasPendingActions())">Apply Changes</MudButton>
                 <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Check" Color="Color.Success" OnClick="ShowCompleteDialog" Disabled="@(!CanPerformActions())">Complete</MudButton>
                 <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="ShowAbandonDialog" Class="ml-4" Disabled="@(!CanPerformActions())">Abandon</MudButton>
-            </Actions>    
+            </Actions> 
+            <ActionsTaken>
+                @if(CanViewActions)
+                {
+                    <IdentityGuard.Blazor.Ui.Components.AccessReviews.AccessReviewActions Actions="@AccessReview.Actions"/>
+                }
+            </ActionsTaken>
         </IdentityGuard.Blazor.Ui.Components.AccessReviews.GroupAccess>
-    }
-
-    @if(CanViewActions)
-    {
-        <IdentityGuard.Blazor.Ui.Components.AccessReviews.AccessReviewActions Actions="@AccessReview.Actions"/>
     }
 
     <MudDialog @bind-IsVisible="IsAbandonDialogOpen">

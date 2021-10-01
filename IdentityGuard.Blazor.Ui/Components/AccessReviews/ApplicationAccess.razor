@@ -41,7 +41,13 @@
                             <ApplicationPermissionCards Data="PermissionsByResource" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
                         </MudTabPanel>
                         <MudTabPanel Text="Roles">
-                            <RoleCards Data="RolesByType" ReadOnly="true" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
+                            <RoleCards Data="RolesByType" ReadOnly="@ReadOnly" OnItemRemoved="OnItemRemoved" OnItemAdded="OnItemAdded"/>
+                        </MudTabPanel>
+                        <MudTabPanel Text="Actions Taken" Disabled="@(ActionsTaken==null)">
+                            @if(ActionsTaken != null)
+                            {
+                                @ActionsTaken
+                            }
                         </MudTabPanel>
                     </MudTabs>
 
