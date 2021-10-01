@@ -7,7 +7,8 @@
             @foreach(var item in Data.OrderBy(i=>i.DisplayName))
             {
                 <MudListItem>
-                    <RemovableItem Type="@Type" 
+                    <RemovableItem Type="@Type"
+                        SubType="@Title"
                         Id="@item.Id" 
                         Text="@item.DisplayName"
                         Typo="@Typo.body1"

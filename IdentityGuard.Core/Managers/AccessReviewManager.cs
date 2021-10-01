@@ -54,7 +54,8 @@ namespace IdentityGuard.Core.Managers
                     DirectoryName = directory?.Domain,
                     CreatedAt = DateTime.Now,
                     CreatedBy = requestingUser,
-                    Status = AccessReviewStatus.New
+                    Status = AccessReviewStatus.New,
+                    CanManageObjects = directory.CanManageObjects
                 };
 
                 await AddDisplayName(accessReview);

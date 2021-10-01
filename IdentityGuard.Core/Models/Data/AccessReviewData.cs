@@ -16,11 +16,13 @@ namespace IdentityGuard.Core.Models.Data
         public string DirectoryName { get; set; }
         public string ObjectId { get; set; }
         public string DisplayName { get; set; }
+        public bool CanManageObjects { get; set; }
         public DirectoryObject CreatedBy { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
         public List<DirectoryObject> AssignedTo { get; set; }
         public DirectoryObject CompletedBy { get; set; }
         public AccessReviewStatus Status { get; set; }
+        public List<AccessReviewAction> Actions { get; set; }
     }
 }

@@ -85,5 +85,43 @@ namespace IdentityGuard.Core.Services
 
             return result;
         }
+
+        public async Task RemoveOwners(Shared.Models.Directory directory, string id, IEnumerable<string> toRemove)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var removeTasks = toRemove.Select(o => RemoveOwner(client, id, o));
+            await Task.WhenAll(removeTasks);
+
+        }
+
+        private Task RemoveOwner(Microsoft.Graph.IGraphServiceClient client, string id, string ownerId)
+        {
+            return client.ServicePrincipals[id]
+                .Owners[ownerId]
+                .Reference
+                .Request()
+                .DeleteAsync();
+
+        }
+
+        public async Task RemoveRoleAssignments(Shared.Models.Directory directory, string id, IEnumerable<string> toRemove)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var removeTasks = toRemove.Select(o => RemoveRoleAssignment(client, id, o));
+            await Task.WhenAll(removeTasks);
+
+
+        }
+
+        private Task RemoveRoleAssignment(Microsoft.Graph.IGraphServiceClient client, string id, string assignmentId)
+        {
+            return client.ServicePrincipals[id]
+                .AppRoleAssignments[assignmentId]
+                .Request()
+                .DeleteAsync();
+
+        }
     }
 }

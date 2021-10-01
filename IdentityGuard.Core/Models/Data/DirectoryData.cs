@@ -14,6 +14,7 @@ namespace IdentityGuard.Core.Models.Data
         public string GraphUrl { get; set; }
         public string PortalUrl { get; set; }
         public bool IsDefault { get; set; }
+        public bool CanManageObjects { get; set; }
         public string ClientId { get; set; }
         public DirectoryClientType ClientType { get; set; }
     }

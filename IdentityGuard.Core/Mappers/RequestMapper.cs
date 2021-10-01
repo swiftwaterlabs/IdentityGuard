@@ -63,7 +63,7 @@ namespace IdentityGuard.Core.Mappers
                 RequestedBy = requestedBy,
                 CompletedBy = null,
                 CompletedAt = null,
-                Status = status
+                Status = status,
             };
         }
 
@@ -90,7 +90,8 @@ namespace IdentityGuard.Core.Mappers
                 Status = status,
                 AdditionalData = new Dictionary<string, object>
                 {
-                    {"RequestedActions",toMap}
+                    {"RequestedActions",toMap},
+                    {"AccessReviewId",accessReview.Id},
                 }
             };
         }

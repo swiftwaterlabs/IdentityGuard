@@ -29,7 +29,6 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
         public Components.AccessReviews.GroupAccess GroupComponent { get; set; }
         public AccessReview AccessReview { get; set; }
 
-        public bool CanPerformActions { get; set; } = false;
         public bool CanViewActions { get; set; } = false;
 
         public bool IsLoading { get; set; } = false;
@@ -57,11 +56,17 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             IsLoading = true;
 
             AccessReview = await AccessReviewService.Get(Id);
-            CanPerformActions = AccessReview != null &&
-                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress);
-            CanViewActions = AccessReview?.Actions!=null && AccessReview.Actions.Any();
 
-            IsLoading = false;           
+            CanViewActions = AccessReview?.Actions != null && AccessReview.Actions.Any();
+
+            IsLoading = false;
+        }
+
+        private bool IsReadOnly()
+        {
+            return !(AccessReview != null &&
+                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress))
+                || !AccessReview.CanManageObjects;
         }
 
         public async Task Complete()
@@ -139,16 +144,17 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             StateHasChanged();
         }
 
-        private void RemoveAccessReviewItem(string type, string id)
+        private void RemoveAccessReviewItem(string type, string subType, string id)
         {
-            var key = GetActionKey(type, id);
+            var key = GetActionKey(type, subType, id);
             if(!ActionsTaken.ContainsKey(key))
             {
                 var action = new AccessReviewActionRequest
                 {
                     Action = AccessReviewActionTypes.Remove,
                     ActionObjectId = id,
-                    ActionObjectType = type
+                    ActionObjectType = type,
+                    ActionObjectSubType = subType
                 };
                 ActionsTaken.Add(key, action);
                 
@@ -157,9 +163,9 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             StateHasChanged();
         }
 
-        private void AddAccessReviewItem(string type, string id)
+        private void AddAccessReviewItem(string type, string subType, string id)
         {
-            var key = GetActionKey(type, id);
+            var key = GetActionKey(type,subType, id);
             if (ActionsTaken.ContainsKey(key))
             {
                 ActionsTaken.Remove(key);
@@ -168,14 +174,21 @@ namespace IdentityGuard.Blazor.Ui.Pages.AccessReviews
             StateHasChanged();
         }
 
-        private string GetActionKey(string type, string id)
+        private string GetActionKey(string type, string subType, string id)
         {
-            return $"{type}|{id}";
+            return $"{type ?? ""}|{subType ?? ""}|{id ?? ""}";
         }
 
         public bool HasPendingActions()
         {
             return ActionsTaken.Any();
+        }
+
+        public bool CanPerformActions()
+        {
+            return AccessReview != null &&
+                (AccessReview.Status == AccessReviewStatus.New || AccessReview.Status == AccessReviewStatus.InProgress) &&
+                !HasPendingActions();
         }
     }
 }

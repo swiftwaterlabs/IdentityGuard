@@ -5,6 +5,7 @@ using Azure.Security.KeyVault.Secrets;
 using IdentityGuard.Core.Configuration;
 using IdentityGuard.Core.Factories;
 using IdentityGuard.Core.Managers;
+using IdentityGuard.Core.Managers.ActionProcessors;
 using IdentityGuard.Core.Mappers;
 using IdentityGuard.Core.Repositories;
 using IdentityGuard.Core.Services;
@@ -35,6 +36,15 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<RequestManager>();
             services.AddTransient<GroupManager>();
 
+            // Processors
+            services.AddTransient<IActionProcessor, OwnerActionProcessor>();
+            services.AddTransient<IActionProcessor, OwnedActionProcessor>();
+            services.AddTransient<IActionProcessor, GroupMembershipActionProcessor>();
+            services.AddTransient<IActionProcessor, GroupMemberActionProcessor>();
+            services.AddTransient<IActionProcessor, ApplicationSecretActionProcessor>();
+            services.AddTransient<IActionProcessor, ApplicationPermissionActionProcessor>();
+            services.AddTransient<IActionProcessor, ApplicationRoleActionProcessor>();
+
             // Mappers
             services.AddTransient<ApplicationMapper>();
             services.AddTransient<ApplicationRoleMapper>();
@@ -58,6 +68,7 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<ServicePrincipalService>();
             services.AddTransient<UserService>();
             services.AddTransient<GroupService>();
+            services.AddTransient<DirectoryObjectService>();
 
             ConfigureKeyVault(services);
             ConfigureCosmosDb(services);

@@ -1,5 +1,6 @@
 ﻿using IdentityGuard.Core.Factories;
 using IdentityGuard.Core.Mappers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,6 +32,29 @@ namespace IdentityGuard.Core.Services
             if(includeOwners)
             {
                 owners = await GetOwners(client, id);
+            }
+            var result = _applicationMapper.Map(directory, data, owners);
+
+            return result;
+        }
+
+        public async Task<Shared.Models.Application> GetByAppId(Shared.Models.Directory directory, string appId, bool includeOwners = false)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var query = await client
+                .Applications
+                .Request()
+                .Filter($"appId eq '{appId}'")
+                .GetAsync();
+
+            if (!query.Any()) return null;
+            var data = query.First();
+
+            var owners = new List<Microsoft.Graph.DirectoryObject>();
+            if (includeOwners)
+            {
+                owners = await GetOwners(client, data.Id);
             }
             var result = _applicationMapper.Map(directory, data, owners);
 
@@ -89,6 +113,110 @@ namespace IdentityGuard.Core.Services
             var encodedName = System.Web.HttpUtility.UrlEncode(name);
             var filter = $"startsWith(displayName,'{encodedName}')";
             return filter;
+        }
+
+        public async Task RemoveOwners(Shared.Models.Directory directory, string id, IEnumerable<string> toRemove)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var removeTasks = toRemove.Select(o => RemoveOwner(client, id, o)).ToArray();
+            await Task.WhenAll(removeTasks);
+        }
+
+        private Task RemoveOwner(Microsoft.Graph.IGraphServiceClient client, string id, string ownerId)
+        {
+            return client.Applications[id]
+                .Owners[ownerId]
+                .Reference
+                .Request()
+                .DeleteAsync();
+
+        }
+
+        public async Task RemovePasswordSecrets(Shared.Models.Directory directory, string id, IEnumerable<string> toRemove)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var removeTasks = toRemove.Select(o => RemovePassword(client, id, o)).ToArray();
+            await Task.WhenAll(removeTasks);
+        }
+
+        private Task RemovePassword(Microsoft.Graph.IGraphServiceClient client, string id, string toRemove)
+        {
+            var passwordGuid = Guid.Parse(toRemove);
+            return client.Applications[id]
+                .RemovePassword(passwordGuid)
+                .Request()
+                .PostAsync();
+
+        }
+
+        public async Task RemoveCertificateSecrets(Shared.Models.Directory directory, string id, IEnumerable<string> toRemove)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var removeTasks = toRemove.Select(o => RemoveKey(client, id, o)).ToArray();
+            await Task.WhenAll(removeTasks);
+        }
+
+        private Task RemoveKey(Microsoft.Graph.IGraphServiceClient client, string id, string toRemove)
+        {
+            var keyGuid = Guid.Parse(toRemove);
+            return client.Applications[id]
+                .RemoveKey(keyGuid, null)
+                .Request()
+                .PostAsync();
+
+        }
+
+        public async Task RemovePermissions(Shared.Models.Directory directory, string id, string resourceId, IEnumerable<string> toRemove)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var updatedApplication = await RemovePermissionFromApplication(id, resourceId, toRemove, client);
+
+            await client.Applications[id]
+                .Request()
+                .UpdateAsync(updatedApplication);
+
+        }
+
+        private static async Task<Microsoft.Graph.Application> RemovePermissionFromApplication(string id, string resourceId, IEnumerable<string> toRemove, Microsoft.Graph.IGraphServiceClient client)
+        {
+            var application = await client.Applications[id]
+                .Request()
+                .GetAsync();
+
+            foreach (var resource in application.RequiredResourceAccess)
+            {
+                var realizedAccess = resource.ResourceAccess.ToList();
+                if (resource.ResourceAppId == resourceId)
+                {
+                    foreach (var permissionId in toRemove)
+                    {
+                        var permission = resource.ResourceAccess.FirstOrDefault(a => a.Id?.ToString() == permissionId);
+                        if (permission != null)
+                        {
+                            realizedAccess.Remove(permission);
+                        }
+                    }
+
+                }
+                resource.ResourceAccess = realizedAccess;
+            }
+
+            var result = CreatePermissionUpdateRequest(application);
+
+            return result;
+        }
+
+        private static Microsoft.Graph.Application CreatePermissionUpdateRequest(Microsoft.Graph.Application application)
+        {
+            return new Microsoft.Graph.Application
+            {
+                Id = application.Id,
+                RequiredResourceAccess = application.RequiredResourceAccess
+            };
         }
     }
 }

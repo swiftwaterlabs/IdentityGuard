@@ -16,12 +16,14 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryId = toMap.DirectoryId,
                 DirectoryName = toMap.DirectoryName,
                 DisplayName = toMap.DisplayName,
+                CanManageObjects = toMap.CanManageObjects,
                 CreatedBy = toMap.CreatedBy,
                 CreatedAt = toMap.CreatedAt,
                 AssignedTo = toMap.AssignedTo,
                 CompletedBy = toMap.CompletedBy,
                 CompletedAt = toMap.CompletedAt,
-                Status = toMap.Status
+                Status = toMap.Status,
+                Actions = toMap.Actions
             };
         }
 
@@ -38,12 +40,14 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryId = toMap.DirectoryId,
                 DirectoryName = toMap.DirectoryName,
                 DisplayName = toMap.DisplayName,
+                CanManageObjects = toMap.CanManageObjects,
                 CreatedBy = toMap.CreatedBy,
                 CreatedAt = toMap.CreatedAt,
                 AssignedTo = toMap.AssignedTo,
                 CompletedBy = toMap.CompletedBy,
                 CompletedAt = toMap.CompletedAt,
-                Status = toMap.Status
+                Status = toMap.Status,
+                Actions = toMap.Actions
             };
         }
     }

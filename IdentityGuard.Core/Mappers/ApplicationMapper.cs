@@ -61,7 +61,7 @@ namespace IdentityGuard.Core.Mappers
             {
                 Id = toMap.KeyId.ToString(),
                 DisplayName = toMap.DisplayName,
-                Type = "Password",
+                Type = Shared.Models.ApplicationSecretType.Password,
                 ExpiresAt = toMap.EndDateTime.GetValueOrDefault().DateTime
             };
         }
@@ -74,7 +74,7 @@ namespace IdentityGuard.Core.Mappers
             {
                 Id = toMap.KeyId.ToString(),
                 DisplayName = toMap.DisplayName,
-                Type = "Certificate",
+                Type = Shared.Models.ApplicationSecretType.Certificate,
                 ExpiresAt = toMap.EndDateTime.GetValueOrDefault().DateTime
             };
         }
