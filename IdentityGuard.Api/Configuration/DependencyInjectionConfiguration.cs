@@ -5,6 +5,7 @@ using Azure.Security.KeyVault.Secrets;
 using IdentityGuard.Core.Configuration;
 using IdentityGuard.Core.Factories;
 using IdentityGuard.Core.Managers;
+using IdentityGuard.Core.Managers.ActionProcessors;
 using IdentityGuard.Core.Mappers;
 using IdentityGuard.Core.Repositories;
 using IdentityGuard.Core.Services;
@@ -34,6 +35,9 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<AccessReviewActionManager>();
             services.AddTransient<RequestManager>();
             services.AddTransient<GroupManager>();
+
+            // Processors
+            services.AddTransient<IActionProcessor, OwnerActionProcessor>();
 
             // Mappers
             services.AddTransient<ApplicationMapper>();

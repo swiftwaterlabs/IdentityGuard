@@ -42,7 +42,7 @@
 
     @if(CanViewActions)
     {
-        <IdentityGuard.Blazor.Ui.Components.AccessReviews.AccessReviewActions Data="@AccessReview.Actions"/>
+        <IdentityGuard.Blazor.Ui.Components.AccessReviews.AccessReviewActions Actions="@AccessReview.Actions"/>
     }
 
     <MudDialog @bind-IsVisible="IsAbandonDialogOpen">
