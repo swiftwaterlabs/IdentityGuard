@@ -24,7 +24,7 @@ namespace IdentityGuard.Core.Managers.ActionProcessors
 
         public string ActionObjectType => AccessReviewActionObjectTypes.Owner;
 
-        public async Task<IEnumerable<AccessReviewAction>> ProcessApplicationRoleActions(Directory directory, AccessReview accessReview, IEnumerable<AccessReviewActionRequest> actions, DirectoryObject requestingUser)
+        public async Task<IEnumerable<AccessReviewAction>> ProcessActions(Directory directory, AccessReview accessReview, IEnumerable<AccessReviewActionRequest> actions, DirectoryObject requestingUser)
         {
             var result = new List<AccessReviewAction>();
             if (!actions.Any()) return result;

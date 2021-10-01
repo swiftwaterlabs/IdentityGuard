@@ -38,6 +38,7 @@ namespace IdentityGuard.Api.Configuration
 
             // Processors
             services.AddTransient<IActionProcessor, OwnerActionProcessor>();
+            services.AddTransient<IActionProcessor, OwnedActionProcessor>();
 
             // Mappers
             services.AddTransient<ApplicationMapper>();
@@ -62,6 +63,7 @@ namespace IdentityGuard.Api.Configuration
             services.AddTransient<ServicePrincipalService>();
             services.AddTransient<UserService>();
             services.AddTransient<GroupService>();
+            services.AddTransient<DirectoryObjectService>();
 
             ConfigureKeyVault(services);
             ConfigureCosmosDb(services);

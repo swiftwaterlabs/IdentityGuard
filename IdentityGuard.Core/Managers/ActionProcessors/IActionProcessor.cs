@@ -9,7 +9,7 @@ namespace IdentityGuard.Core.Managers.ActionProcessors
     public interface IActionProcessor
     {
         string ActionObjectType { get;}
-        Task<IEnumerable<AccessReviewAction>> ProcessApplicationRoleActions(Directory directory, AccessReview accessReview, IEnumerable<AccessReviewActionRequest> requestedActions, DirectoryObject requestingUser);
+        Task<IEnumerable<AccessReviewAction>> ProcessActions(Directory directory, AccessReview accessReview, IEnumerable<AccessReviewActionRequest> requestedActions, DirectoryObject requestingUser);
 
 
     }

@@ -87,7 +87,7 @@ namespace IdentityGuard.Core.Managers
             foreach(var processor in _processors)
             {
                 var actions = GetActions(processor.ActionObjectType, requestedActions);
-                var actionResults = await processor.ProcessApplicationRoleActions(directory, accessReview, actions, currentUser);
+                var actionResults = await processor.ProcessActions(directory, accessReview, actions, currentUser);
 
                 result.AddRange(actionResults);
             }
