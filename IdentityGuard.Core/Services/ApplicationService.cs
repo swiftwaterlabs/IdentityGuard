@@ -145,5 +145,55 @@ namespace IdentityGuard.Core.Services
                 .PostAsync();
 
         }
+
+        public async Task RemovePermissions(Shared.Models.Directory directory, string id, string resourceId, IEnumerable<string> toRemove)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var updatedApplication = await RemovePermissionFromApplication(id, resourceId, toRemove, client);
+
+            await client.Applications[id]
+                .Request()
+                .UpdateAsync(updatedApplication);
+
+        }
+
+        private static async Task<Microsoft.Graph.Application> RemovePermissionFromApplication(string id, string resourceId, IEnumerable<string> toRemove, Microsoft.Graph.IGraphServiceClient client)
+        {
+            var application = await client.Applications[id]
+                .Request()
+                .GetAsync();
+
+            foreach (var resource in application.RequiredResourceAccess)
+            {
+                var realizedAccess = resource.ResourceAccess.ToList();
+                if (resource.ResourceAppId == resourceId)
+                {
+                    foreach (var permissionId in toRemove)
+                    {
+                        var permission = resource.ResourceAccess.FirstOrDefault(a => a.Id?.ToString() == permissionId);
+                        if (permission != null)
+                        {
+                            realizedAccess.Remove(permission);
+                        }
+                    }
+
+                }
+                resource.ResourceAccess = realizedAccess;
+            }
+
+            var result = CreatePermissionUpdateRequest(application);
+
+            return result;
+        }
+
+        private static Microsoft.Graph.Application CreatePermissionUpdateRequest(Microsoft.Graph.Application application)
+        {
+            return new Microsoft.Graph.Application
+            {
+                Id = application.Id,
+                RequiredResourceAccess = application.RequiredResourceAccess
+            };
+        }
     }
 }
