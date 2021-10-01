@@ -171,6 +171,15 @@ namespace IdentityGuard.Core.Services
                 
         }
 
+        public async Task RemoveMembers(Shared.Models.Directory directory, string id, IEnumerable<string> toRemove)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var removeTasks = toRemove.Select(o => RemoveMember(client, id, o));
+            await Task.WhenAll(removeTasks);
+
+        }
+
         private Task RemoveOwner(Microsoft.Graph.IGraphServiceClient client, string id, string ownerId)
         {
             return client.Groups[id]
@@ -179,6 +188,16 @@ namespace IdentityGuard.Core.Services
                 .Request()
                 .DeleteAsync();
                 
+        }
+
+        private Task RemoveMember(Microsoft.Graph.IGraphServiceClient client, string id, string memberId)
+        {
+            return client.Groups[id]
+                .Members[memberId]
+                .Reference
+                .Request()
+                .DeleteAsync();
+
         }
     }
 }
