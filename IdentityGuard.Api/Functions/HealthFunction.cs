@@ -44,12 +44,12 @@ namespace IdentityGuard.Api.Functions
         }
 
         [Function("health-status")]
-        public Task<HttpResponseData> Status([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health/status")] HttpRequestData req,
+        public async Task<HttpResponseData> Status([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health/status")] HttpRequestData req,
             FunctionContext executionContext)
         {
-            var data = _applicationHealthManager.Get();
+            var data = await _applicationHealthManager.Get();
 
-            return req.OkResponseAsync(data);
+            return await req.OkResponseAsync(data);
         }
     }
 }

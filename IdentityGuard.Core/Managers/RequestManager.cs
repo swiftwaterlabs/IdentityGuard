@@ -44,6 +44,7 @@ namespace IdentityGuard.Core.Managers
             if(status == RequestStatus.Complete)
             {
                 request.CompletedBy = user;
+                request.CompletedAt = DateTime.Now;
             }
 
             await _requestRepository.Save(request);

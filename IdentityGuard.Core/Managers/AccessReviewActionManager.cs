@@ -3,6 +3,7 @@ using IdentityGuard.Core.Managers.ActionProcessors;
 using IdentityGuard.Core.Repositories;
 using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace IdentityGuard.Core.Managers
         private readonly ApplicationService _applicationService;
         private readonly ServicePrincipalService _servicePrincipalService;
         private readonly IEnumerable<IActionProcessor> _processors;
+        private readonly Logger<AccessReviewActionManager> _logger;
 
         public AccessReviewActionManager(IAccessReviewRepository accessReviewRepository,
             RequestManager requestManager,
@@ -29,7 +31,8 @@ namespace IdentityGuard.Core.Managers
             GroupService groupService,
             ApplicationService applicationService,
             ServicePrincipalService servicePrincipalService,
-            IEnumerable<IActionProcessor> processors)
+            IEnumerable<IActionProcessor> processors,
+            Logger<AccessReviewActionManager> logger)
         {
             _accessReviewRepository = accessReviewRepository;
             _requestManager = requestManager;
@@ -39,6 +42,7 @@ namespace IdentityGuard.Core.Managers
             _applicationService = applicationService;
             _servicePrincipalService = servicePrincipalService;
             _processors = processors;
+            _logger = logger;
         }
 
         public async Task<AccessReview> ApplyChanges(string id, IEnumerable<AccessReviewActionRequest> requests, IEnumerable<ClaimsIdentity> currentUser)
@@ -64,8 +68,9 @@ namespace IdentityGuard.Core.Managers
 
                 requestStatus = RequestStatus.Complete;
             }
-            catch
+            catch(Exception exception)
             {
+                _logger.LogError(exception.Message, exception);
                 requestStatus = RequestStatus.Failed;
             }
             finally
