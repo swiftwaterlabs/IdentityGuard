@@ -17,6 +17,7 @@ namespace IdentityGuard.Worker.Tests.Functions
         [Fact]
         public async Task Request_ValidInputs_CreateReview()
         {
+            // Given
             var builder = new TestBuilder();
             var directory = builder.WithDirectory("my-directory");
             var application = builder.WithApplication(directory.Id, directory.Name, "my-app");
@@ -39,8 +40,10 @@ namespace IdentityGuard.Worker.Tests.Functions
             };
             var message = JsonConvert.SerializeObject(request);
 
+            // When
             await function.Request(message, builder.Context());
 
+            // Then
             Assert.Single(builder.Context.Data.AccessReviews);
             var actualReview = builder.Context.Data.AccessReviews.Values.First();
             AssertAccessReviewData(request, actualReview, directory,application);
@@ -73,7 +76,8 @@ namespace IdentityGuard.Worker.Tests.Functions
             Assert.True(actual.CreatedAt > DateTime.Today);
 
             Assert.Single(actual.AssignedTo);
-            
+            Assert.Equal(request.AssignedTo[0].DirectoryId, actual.AssignedTo[0].DirectoryId);
+            Assert.Equal(request.AssignedTo[0].Id, actual.AssignedTo[0].Id);
 
         }
 
