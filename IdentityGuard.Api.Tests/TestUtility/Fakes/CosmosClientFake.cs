@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using IdentityGuard.Api.Tests.TestUtility.TestContexts;
+using IdentityGuard.Tests.Shared.TestContexts;
 using IdentityGuard.Core.Models.Data;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Scripts;

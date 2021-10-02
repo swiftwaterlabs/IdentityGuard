@@ -1,4 +1,4 @@
-﻿namespace IdentityGuard.Api.Tests.TestUtility.TestContexts
+﻿namespace IdentityGuard.Tests.Shared.TestContexts
 {
     public class TestContext
     {

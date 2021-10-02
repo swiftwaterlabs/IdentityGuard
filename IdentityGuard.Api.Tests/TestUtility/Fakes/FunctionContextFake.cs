@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
-using IdentityGuard.Api.Tests.TestUtility.TestContexts;
+using IdentityGuard.Tests.Shared.TestContexts;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.DependencyInjection;

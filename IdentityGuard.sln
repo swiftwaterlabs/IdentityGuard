@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityGuard.Blazor.Ui", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityGuard.Worker", "IdentityGuard.Worker\IdentityGuard.Worker.csproj", "{5F4AE889-F20D-4595-B6BC-E65906DA1A74}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityGuard.Tests.Shared", "IdentityGuard.Tests.Shared\IdentityGuard.Tests.Shared.csproj", "{2C69BFDB-7305-4972-995A-CB4B8526BD7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,12 +63,17 @@ Global
 		{5F4AE889-F20D-4595-B6BC-E65906DA1A74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F4AE889-F20D-4595-B6BC-E65906DA1A74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F4AE889-F20D-4595-B6BC-E65906DA1A74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C69BFDB-7305-4972-995A-CB4B8526BD7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C69BFDB-7305-4972-995A-CB4B8526BD7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C69BFDB-7305-4972-995A-CB4B8526BD7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C69BFDB-7305-4972-995A-CB4B8526BD7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{03BF541C-1325-484B-AF66-5BE97B3E26C8} = {C4DA273C-AA35-4E4F-BA94-BA23B23A38E3}
+		{2C69BFDB-7305-4972-995A-CB4B8526BD7A} = {C4DA273C-AA35-4E4F-BA94-BA23B23A38E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32B983AB-3CDB-4321-B6C7-24F87821E537}

@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using IdentityGuard.Core.Models.Data;
 
-namespace IdentityGuard.Api.Tests.TestUtility.TestContexts
+namespace IdentityGuard.Tests.Shared.TestContexts
 {
     public class DataTestContext
     {
