@@ -22,7 +22,7 @@ namespace IdentityGuard.Worker.Functions
         {
             var request = JsonConvert.DeserializeObject<AccessReviewRequest>(message);
 
-            await _accessReviewManager.Request(request, new List<ClaimsIdentity>());
+            await _accessReviewManager.Request(request,ClaimsPrincipal.Current?.Identities);
         }
     }
 }

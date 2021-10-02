@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using IdentityGuard.Tests.Shared;
 using IdentityGuard.Tests.Shared.Extensions;
 using IdentityGuard.Core.Configuration;
+using IdentityGuard.Core.Factories;
 
 namespace IdentityGuard.Tests.Shared
 {
@@ -68,6 +69,7 @@ namespace IdentityGuard.Tests.Shared
             services.ReplaceTransient<CosmosClient, CosmosClientFake>();
             services.ReplaceTransient<SecretClient, SecretClientFake>();
             services.ReplaceTransient<ICosmosLinqQueryFactory, CosmosLinqQueryFactoryFake>();
+            services.ReplaceTransient<IGraphClientFactory, GraphClientFactoryFake>();
         }
 
         public T Get<T>()

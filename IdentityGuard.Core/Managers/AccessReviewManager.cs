@@ -7,6 +7,7 @@ using IdentityGuard.Shared.Models;
 using IdentityGuard.Core.Extensions;
 using System.Linq;
 using IdentityGuard.Core.Services;
+using Microsoft.Extensions.Logging;
 
 namespace IdentityGuard.Core.Managers
 {
@@ -18,13 +19,15 @@ namespace IdentityGuard.Core.Managers
         private readonly GroupService _groupService;
         private readonly DirectoryManager _directoryManager;
         private readonly RequestManager _requestManager;
+        private readonly ILogger<AccessReviewManager> _logger;
 
         public AccessReviewManager(IAccessReviewRepository accessReviewRepository,
             ApplicationService applicationService,
             UserService userService,
             GroupService groupService,
             DirectoryManager directoryManager,
-            RequestManager requestManager)
+            RequestManager requestManager,
+            ILogger<AccessReviewManager> logger)
         {
             _accessReviewRepository = accessReviewRepository;
             _applicationService = applicationService;
@@ -32,6 +35,7 @@ namespace IdentityGuard.Core.Managers
             _groupService = groupService;
             _directoryManager = directoryManager;
             _requestManager = requestManager;
+            _logger = logger;
         }
         public async Task<AccessReview> Request(AccessReviewRequest request, IEnumerable<ClaimsIdentity> currentUser)
         {
@@ -55,7 +59,8 @@ namespace IdentityGuard.Core.Managers
                     CreatedAt = DateTime.Now,
                     CreatedBy = requestingUser,
                     Status = AccessReviewStatus.New,
-                    CanManageObjects = directory.CanManageObjects
+                    CanManageObjects = directory.CanManageObjects,
+                    Actions = new List<AccessReviewAction>()
                 };
 
                 await AddDisplayName(accessReview);
@@ -67,9 +72,11 @@ namespace IdentityGuard.Core.Managers
 
                 return result;
             }
-            catch
+            catch (Exception exception)
             {
+                _logger.LogError("Error when requesting access review", exception);
                 status = RequestStatus.Failed;
+
                 throw;
             }
             finally

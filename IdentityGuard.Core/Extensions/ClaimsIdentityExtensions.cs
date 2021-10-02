@@ -10,6 +10,8 @@ namespace IdentityGuard.Core.Extensions
     {
         public static string GetUserId(this IEnumerable<ClaimsIdentity> identities)
         {
+            if (identities == null) return null;
+
             var userIds = identities
                 .SelectMany(i=>i.Claims)
                 .Where(c=>c.Type == "oid")
@@ -22,6 +24,8 @@ namespace IdentityGuard.Core.Extensions
 
         public static string GetUserDirectoryId(this IEnumerable<ClaimsIdentity> identities)
         {
+            if (identities == null) return null;
+
             var userIds = identities
                 .SelectMany(i => i.Claims)
                 .Where(c => c.Type == "tid")
@@ -34,6 +38,8 @@ namespace IdentityGuard.Core.Extensions
 
         public static string GetUserName(this IEnumerable<ClaimsIdentity> identities)
         {
+            if (identities == null) return null;
+
             var userIds = identities
                 .SelectMany(i => i.Claims)
                 .Where(c => c.Type == "name")

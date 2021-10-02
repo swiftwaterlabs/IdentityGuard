@@ -19,12 +19,13 @@ namespace IdentityGuard.Worker.Tests.Functions
         {
             var builder = new TestBuilder();
             var directory = builder.WithDirectory("my-directory");
+            var application = builder.WithApplication(directory.Id, directory.Name, "my-app");
 
             var function = builder.Get<AccessReviewFunctions>();
 
             var request = new AccessReviewRequest
             {
-                ObjectId = Guid.NewGuid().ToString(),
+                ObjectId = application.Id,
                 ObjectType = ObjectTypes.Application,
                 DirectoryId = directory.Id,
                 AssignedTo = new List<DirectoryObject>
@@ -42,7 +43,7 @@ namespace IdentityGuard.Worker.Tests.Functions
 
             Assert.Single(builder.Context.Data.AccessReviews);
             var actualReview = builder.Context.Data.AccessReviews.Values.First();
-            AssertAccessReviewData(request, actualReview, directory,null);
+            AssertAccessReviewData(request, actualReview, directory,application);
 
             Assert.Single(builder.Context.Data.Requests);
             var actualRequest = builder.Context.Data.Requests.Values.First();
@@ -52,7 +53,7 @@ namespace IdentityGuard.Worker.Tests.Functions
         private void AssertAccessReviewData(AccessReviewRequest request, 
             AccessReviewData actual,
             DirectoryData directory,
-            Application toReview)
+            Microsoft.Graph.Application toReview)
         {
             Assert.Equal(request.ObjectId, actual.ObjectId);
             Assert.Equal(request.ObjectType, actual.ObjectType);
@@ -60,7 +61,7 @@ namespace IdentityGuard.Worker.Tests.Functions
             Assert.Equal(request.DirectoryId, actual.DirectoryId);
             Assert.Equal(directory.Domain, actual.DirectoryName);
             Assert.Equal(directory.CanManageObjects, actual.CanManageObjects);
-            Assert.Equal(AccessReviewStatus.Complete, actual.Status);
+            Assert.Equal(AccessReviewStatus.New, actual.Status);
 
             Assert.NotNull(actual.Id);
             Assert.Empty(actual.Actions);

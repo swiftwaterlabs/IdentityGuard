@@ -13,6 +13,7 @@ namespace IdentityGuard.Tests.Shared.Extensions
             string tenantId = null,
             string domain = null,
             string graphUrl = "https://graph.microsoft.com",
+            string portalUrl = "https://portal.azure.com",
             DirectoryClientType clientType = DirectoryClientType.Application,
             string clientId = "client-id",
             bool isDefault = true
@@ -26,6 +27,7 @@ namespace IdentityGuard.Tests.Shared.Extensions
                 Name = name,
                 Domain = domain ?? Guid.NewGuid().ToString(),
                 GraphUrl = graphUrl,
+                PortalUrl = portalUrl,
                 ClientType = clientType,
                 ClientId = clientId,
                 IsDefault = isDefault
