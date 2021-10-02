@@ -18,9 +18,13 @@ namespace IdentityGuard.Api.Tests.TestUtility
 
         protected override void ConfigureFunctions(IServiceCollection services)
         {
+            services.AddTransient<AccessReviewFunctions>();
+            services.AddTransient<ApplicationFunctions>();
             services.AddTransient<AuthorizationFunction>();
+            services.AddTransient<GroupFunctions>();
             services.AddTransient<HealthFunction>();
             services.AddTransient<DirectoryFunctions>();
+            services.AddTransient<UserFunctions>();
         }
     }
 }
