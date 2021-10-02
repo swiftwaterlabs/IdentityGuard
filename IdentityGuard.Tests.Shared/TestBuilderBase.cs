@@ -13,12 +13,7 @@ using IdentityGuard.Core.Configuration;
 
 namespace IdentityGuard.Tests.Shared
 {
-    public interface ITestBuilder
-    {
-        TestContext Context { get; }
-    }
-
-    public class TestBuilderBase:ITestBuilder
+    public class TestBuilderBase
     {
         private static ServiceProvider _serviceProvider;
 

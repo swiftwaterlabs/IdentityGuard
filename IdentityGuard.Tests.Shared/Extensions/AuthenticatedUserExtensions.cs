@@ -6,7 +6,7 @@ namespace IdentityGuard.Tests.Shared.Extensions
 {
     public static class AuthenticatedUserExtensions
     {
-        public static void WithAuthenticatedUser(this ITestBuilder builder,
+        public static void WithAuthenticatedUser(this TestBuilderBase builder,
             string name,
             params string[] roles)
         {

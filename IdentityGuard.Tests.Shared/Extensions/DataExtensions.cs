@@ -8,7 +8,7 @@ namespace IdentityGuard.Tests.Shared.Extensions
 {
     public static class DataExtensions
     {
-        public static DirectoryData WithDirectory(this ITestBuilder root,
+        public static DirectoryData WithDirectory(this TestBuilderBase root,
             string name,
             string tenantId = null,
             string domain = null,
