@@ -1,11 +1,12 @@
 ﻿using System.Security.Claims;
+using IdentityGuard.Tests.Shared;
 using Microsoft.Extensions.Azure;
 
-namespace IdentityGuard.Api.Tests.TestUtility.Extensions
+namespace IdentityGuard.Tests.Shared.Extensions
 {
     public static class AuthenticatedUserExtensions
     {
-        public static void WithAuthenticatedUser(this TestBuilder builder,
+        public static void WithAuthenticatedUser(this ITestBuilder builder,
             string name,
             params string[] roles)
         {

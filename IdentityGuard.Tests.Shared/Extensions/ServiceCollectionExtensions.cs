@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace IdentityGuard.Api.Tests.TestUtility.Extensions
+namespace IdentityGuard.Tests.Shared.Extensions
 {
     public static class ServiceCollectionExtensions
     {

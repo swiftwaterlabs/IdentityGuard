@@ -2,19 +2,19 @@
 using Azure.Security.KeyVault.Secrets;
 using IdentityGuard.Api.Configuration;
 using IdentityGuard.Api.Functions;
-using IdentityGuard.Api.Tests.TestUtility.Extensions;
 using IdentityGuard.Tests.Shared.Fakes;
 using IdentityGuard.Tests.Shared.TestContexts;
 using IdentityGuard.Core.Services;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using IdentityGuard.Tests.Shared;
+using IdentityGuard.Tests.Shared.Extensions;
 
 namespace IdentityGuard.Api.Tests.TestUtility
 {
-    public class TestBuilder
+    public class TestBuilder:ITestBuilder
     {
         private static ServiceProvider _serviceProvider;
 
