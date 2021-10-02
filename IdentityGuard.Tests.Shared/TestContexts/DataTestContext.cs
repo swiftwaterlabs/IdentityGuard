@@ -7,6 +7,8 @@ namespace IdentityGuard.Tests.Shared.TestContexts
     public class DataTestContext
     {
         public ConcurrentDictionary<string, DirectoryData> Directories = new ConcurrentDictionary<string, DirectoryData>();
+        public ConcurrentDictionary<string, AccessReviewData> AccessReviews = new ConcurrentDictionary<string, AccessReviewData>();
+        public ConcurrentDictionary<string, RequestData> Requests = new ConcurrentDictionary<string, RequestData>();
     }
 
     public class AuthenticatedUserContext
