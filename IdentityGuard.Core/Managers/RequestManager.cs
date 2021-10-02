@@ -1,5 +1,6 @@
 ﻿using IdentityGuard.Core.Mappers;
 using IdentityGuard.Core.Repositories;
+using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace IdentityGuard.Core.Managers
             if(status == RequestStatus.Complete)
             {
                 request.CompletedBy = user;
-                request.CompletedAt = DateTime.Now;
+                request.CompletedAt = ClockService.Now;
             }
 
             await _requestRepository.Save(request);

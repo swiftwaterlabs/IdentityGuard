@@ -1,4 +1,5 @@
 ﻿using IdentityGuard.Core.Configuration;
+using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,7 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryId = toMap.DirectoryId,
                 ObjectId = toMap.ObjectId,
                 ObjectType = toMap.ObjectType,
-                RequestedAt = DateTime.Now,
+                RequestedAt = ClockService.Now,
                 RequestedBy = requestedBy,
                 CompletedBy = null,
                 CompletedAt = null,
@@ -83,7 +84,7 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryId = accessReview.DirectoryId,
                 ObjectId = accessReview.ObjectId,
                 ObjectType = accessReview.ObjectType,
-                RequestedAt = DateTime.Now,
+                RequestedAt = ClockService.Now,
                 RequestedBy = requestedBy,
                 CompletedBy = null,
                 CompletedAt = null,

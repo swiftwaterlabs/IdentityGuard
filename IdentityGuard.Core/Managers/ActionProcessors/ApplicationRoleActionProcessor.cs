@@ -93,7 +93,7 @@ namespace IdentityGuard.Core.Managers.ActionProcessors
                     ActionObjectId = assignment.Id,
                     ActionObjectDisplayName = applicationData.Roles.GetValueOrDefault(assignment.Role.Id)?.DisplayName,
                     ActionObjectType = assignment.AssignmentType,
-                    RequestedAt = DateTime.Now,
+                    RequestedAt = ClockService.Now,
                     RequestedBy = requestingUser,
                     Status = AccessReviewActionStatus.Complete
                 }

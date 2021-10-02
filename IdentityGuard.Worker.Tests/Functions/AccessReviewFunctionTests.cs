@@ -1,4 +1,5 @@
 ﻿using IdentityGuard.Core.Models.Data;
+using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
 using IdentityGuard.Tests.Shared.Extensions;
 using IdentityGuard.Worker.Functions;
@@ -73,7 +74,7 @@ namespace IdentityGuard.Worker.Tests.Functions
             Assert.Null(actual.CompletedBy);
 
             Assert.NotNull(actual.CreatedBy);
-            Assert.True(actual.CreatedAt > DateTime.Today);
+            Assert.Equal(actual.CreatedAt, ClockService.Now);
 
             Assert.Single(actual.AssignedTo);
             Assert.Equal(request.AssignedTo[0].DirectoryId, actual.AssignedTo[0].DirectoryId);
@@ -95,7 +96,7 @@ namespace IdentityGuard.Worker.Tests.Functions
             Assert.Null(actual.CompletedBy);
 
             Assert.NotNull(actual.RequestedBy);
-            Assert.True(actual.RequestedAt > DateTime.Today);
+            Assert.Equal(actual.RequestedAt,ClockService.Now);
         }
     }
 }

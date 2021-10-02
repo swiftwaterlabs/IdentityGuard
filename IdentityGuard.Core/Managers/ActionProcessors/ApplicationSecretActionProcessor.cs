@@ -44,7 +44,7 @@ namespace IdentityGuard.Core.Managers.ActionProcessors
                     ActionObjectId = secret.Id,
                     ActionObjectDisplayName = secret.DisplayName,
                     ActionObjectType = secret.Type,
-                    RequestedAt = DateTime.Now,
+                    RequestedAt = ClockService.Now,
                     RequestedBy = requestingUser,
                     Status = AccessReviewActionStatus.Complete
                 });

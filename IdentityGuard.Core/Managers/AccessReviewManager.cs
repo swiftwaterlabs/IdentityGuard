@@ -56,7 +56,7 @@ namespace IdentityGuard.Core.Managers
                     ObjectType = request.ObjectType,
                     DirectoryId = request.DirectoryId,
                     DirectoryName = directory?.Domain,
-                    CreatedAt = DateTime.Now,
+                    CreatedAt = ClockService.Now,
                     CreatedBy = requestingUser,
                     Status = AccessReviewStatus.New,
                     CanManageObjects = directory.CanManageObjects,
@@ -128,7 +128,7 @@ namespace IdentityGuard.Core.Managers
             if (!existing.IsUserAssignedToReview(user)) throw new UnauthorizedAccessException();
 
             existing.Status = AccessReviewStatus.Complete;
-            existing.CompletedAt = DateTime.Now;
+            existing.CompletedAt = ClockService.Now;
             existing.CompletedBy = user;
 
             return await _accessReviewRepository.Save(existing);
@@ -144,7 +144,7 @@ namespace IdentityGuard.Core.Managers
             if (!existing.IsUserAssignedToReview(user)) throw new UnauthorizedAccessException();
 
             existing.Status = AccessReviewStatus.Abandoned;
-            existing.CompletedAt = DateTime.Now;
+            existing.CompletedAt = ClockService.Now;
             existing.CompletedBy = user;
 
             return await _accessReviewRepository.Save(existing);

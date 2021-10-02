@@ -11,10 +11,11 @@ using IdentityGuard.Tests.Shared;
 using IdentityGuard.Tests.Shared.Extensions;
 using IdentityGuard.Core.Configuration;
 using IdentityGuard.Core.Factories;
+using System;
 
 namespace IdentityGuard.Tests.Shared
 {
-    public class TestBuilderBase
+    public class TestBuilderBase:IDisposable
     {
         private static ServiceProvider _serviceProvider;
 
@@ -36,6 +37,8 @@ namespace IdentityGuard.Tests.Shared
             ConfigureFakes(services);
 
             _serviceProvider = services.BuildServiceProvider();
+
+            ClockService.Freeze();
         }
 
         private static void ConfigureApplicationConfiguration(IServiceCollection services)
@@ -75,6 +78,11 @@ namespace IdentityGuard.Tests.Shared
         public T Get<T>()
         {
             return _serviceProvider.GetService<T>();
+        }
+
+        public void Dispose()
+        {
+            ClockService.Thaw();
         }
 
         public TestContext Context => _serviceProvider.GetService<TestContext>();
