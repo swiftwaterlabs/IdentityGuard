@@ -22,7 +22,7 @@ namespace IdentityGuard.Core.Managers
         private readonly ApplicationService _applicationService;
         private readonly ServicePrincipalService _servicePrincipalService;
         private readonly IEnumerable<IActionProcessor> _processors;
-        private readonly Logger<AccessReviewActionManager> _logger;
+        private readonly ILogger<AccessReviewActionManager> _logger;
 
         public AccessReviewActionManager(IAccessReviewRepository accessReviewRepository,
             RequestManager requestManager,
@@ -32,7 +32,7 @@ namespace IdentityGuard.Core.Managers
             ApplicationService applicationService,
             ServicePrincipalService servicePrincipalService,
             IEnumerable<IActionProcessor> processors,
-            Logger<AccessReviewActionManager> logger)
+            ILogger<AccessReviewActionManager> logger)
         {
             _accessReviewRepository = accessReviewRepository;
             _requestManager = requestManager;
