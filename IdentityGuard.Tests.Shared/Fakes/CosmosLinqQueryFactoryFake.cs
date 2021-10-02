@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using IdentityGuard.Core.Services;
 using Microsoft.Azure.Cosmos;
 
-namespace IdentityGuard.Api.Tests.TestUtility.Fakes
+namespace IdentityGuard.Tests.Shared.Fakes
 {
     public class CosmosLinqQueryFactoryFake : ICosmosLinqQueryFactory
     {

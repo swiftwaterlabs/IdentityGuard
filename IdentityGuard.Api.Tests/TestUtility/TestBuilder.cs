@@ -3,7 +3,7 @@ using Azure.Security.KeyVault.Secrets;
 using IdentityGuard.Api.Configuration;
 using IdentityGuard.Api.Functions;
 using IdentityGuard.Api.Tests.TestUtility.Extensions;
-using IdentityGuard.Api.Tests.TestUtility.Fakes;
+using IdentityGuard.Tests.Shared.Fakes;
 using IdentityGuard.Tests.Shared.TestContexts;
 using IdentityGuard.Core.Services;
 using Microsoft.Azure.Cosmos;

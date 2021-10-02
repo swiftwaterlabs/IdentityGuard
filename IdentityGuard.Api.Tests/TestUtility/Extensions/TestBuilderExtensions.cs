@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Net.Http;
-using IdentityGuard.Api.Tests.TestUtility.Fakes;
+using IdentityGuard.Tests.Shared.Fakes;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Newtonsoft.Json;

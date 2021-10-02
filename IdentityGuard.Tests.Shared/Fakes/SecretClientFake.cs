@@ -3,7 +3,7 @@ using System.Threading;
 using Azure;
 using Azure.Security.KeyVault.Secrets;
 
-namespace IdentityGuard.Api.Tests.TestUtility.Fakes
+namespace IdentityGuard.Tests.Shared.Fakes
 {
     public class SecretClientFake : SecretClient
     {

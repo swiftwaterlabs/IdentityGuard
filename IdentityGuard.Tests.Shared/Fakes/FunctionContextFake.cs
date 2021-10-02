@@ -11,7 +11,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
-namespace IdentityGuard.Api.Tests.TestUtility.Fakes
+namespace IdentityGuard.Tests.Shared.Fakes
 {
     public class FunctionContextFake:FunctionContext
     {

@@ -10,7 +10,7 @@ using IdentityGuard.Core.Models.Data;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Scripts;
 
-namespace IdentityGuard.Api.Tests.TestUtility.Fakes
+namespace IdentityGuard.Tests.Shared.Fakes
 {
     public class CosmosClientFake : CosmosClient
     {
