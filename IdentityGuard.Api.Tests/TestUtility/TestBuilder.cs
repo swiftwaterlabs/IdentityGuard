@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Azure.Security.KeyVault.Secrets;
 using IdentityGuard.Api.Configuration;
 using IdentityGuard.Api.Functions;
 using IdentityGuard.Api.Tests.TestUtility.Extensions;
@@ -66,6 +67,7 @@ namespace IdentityGuard.Api.Tests.TestUtility
         {
             services.AddSingleton<TestContext>();
             services.ReplaceTransient<CosmosClient, CosmosClientFake>();
+            services.ReplaceTransient<SecretClient, SecretClientFake>();
             services.ReplaceTransient<ICosmosLinqQueryFactory, CosmosLinqQueryFactoryFake>();
         }
 
