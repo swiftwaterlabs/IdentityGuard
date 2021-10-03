@@ -20,7 +20,9 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryName = toMap.DirectoryName,
                 Action = toMap.Action,
                 Query = toMap.Query,
-                Enabled = toMap.Enabled
+                Enabled = toMap.Enabled,
+                NextExecution = toMap.NextExecution,
+                LastExecuted = toMap.LastExecuted
             };
         }
 
@@ -38,7 +40,9 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryName = toMap.DirectoryName,
                 Action = toMap.Action,
                 Query = toMap.Query,
-                Enabled = toMap.Enabled
+                Enabled = toMap.Enabled,
+                NextExecution = toMap.NextExecution,
+                LastExecuted = toMap.LastExecuted
             };
         }
     }

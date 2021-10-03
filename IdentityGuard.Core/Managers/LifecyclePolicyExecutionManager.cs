@@ -50,6 +50,7 @@ namespace IdentityGuard.Core.Managers
         {
             var execution = new LifecyclePolicyExecution
             {
+                Id = Guid.NewGuid().ToString(),
                 PolicyId = toApply.Id,
                 Start = ClockService.Now,
                 Status = LifecyclePolicyStatus.InProgress,

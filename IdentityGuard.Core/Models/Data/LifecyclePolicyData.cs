@@ -1,5 +1,6 @@
 ﻿using IdentityGuard.Shared.Models;
 using Newtonsoft.Json;
+using System;
 
 namespace IdentityGuard.Core.Models.Data
 {
@@ -15,5 +16,7 @@ namespace IdentityGuard.Core.Models.Data
         public LifecyclePolicyAction Action { get; set; }
         public string Query { get; set; }
         public bool Enabled { get; set; }
+        public DateTime? LastExecuted { get; set; }
+        public DateTime? NextExecution { get; set; }
     }
 }
