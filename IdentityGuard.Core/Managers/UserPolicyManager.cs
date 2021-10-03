@@ -91,7 +91,7 @@ namespace IdentityGuard.Core.Managers
             var directory = await _directoryManager.GetById(toApply.DirectoryId);
 
             var resolvedQuery = toApply.Query.ResolveQueryParameters();
-            var users = await _userService.Query(directory, toApply.Query);
+            var users = await _userService.Query(directory, resolvedQuery);
 
             switch(toApply.Action)
             {
@@ -180,6 +180,17 @@ namespace IdentityGuard.Core.Managers
             {
                 await _requestManager.UpdateStatus(request.Id, status, null);
             }
+        }
+
+        public async Task<ICollection<User>> AuditPolicy(string id)
+        {
+            var toAudit = await _userPolicyRepository.GetById(id);
+            var directory = await _directoryManager.GetById(toAudit.DirectoryId);
+
+            var resolvedQuery = toAudit.Query.ResolveQueryParameters();
+            var users = await _userService.Query(directory, resolvedQuery);
+
+            return users;
         }
 
     }

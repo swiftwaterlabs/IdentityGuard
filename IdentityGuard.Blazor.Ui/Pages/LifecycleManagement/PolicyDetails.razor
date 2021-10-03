@@ -11,14 +11,16 @@
                     <CardHeaderActions>
                         @if (IsEditing)
                         {
-                            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Material.Outlined.Cancel" OnClick="Cancel" Class="ml-4">Cancel</MudButton>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Material.Outlined.Cancel" OnClick="Cancel" Class="mr-2">Cancel</MudButton>
                             <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Save" OnClick="Save">Save</MudButton>
                         }
                         else
                         {
-                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Edit" OnClick="Edit">Edit</MudButton>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Warning" StartIcon="@Icons.Material.Outlined.Science" OnClick="TestPolicy" Class="mr-2">Test</MudButton>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Edit" OnClick="Edit" Class="mr-2">Edit</MudButton>
                             <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="ShowDeleteDialog" Disabled="IsNew">Delete</MudButton>
                         }
+                        
                     </CardHeaderActions>
                 </MudCardHeader>
                 <MudCardContent>
@@ -80,6 +82,58 @@
             </MudCard>
     </Loadable>
     
+    @if (AreAffectedUsersShown)
+    {
+        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudGrid>
+                            <MudItem>
+                                <MudText Typo="Typo.h6">Test Results</MudText>
+                                <MudText Typo="Typo.subtitle2">Users that would be affected by this policy</MudText>
+                            </MudItem>
+                            <MudItem>
+                                <MudChip Variant="Variant.Outlined">@(AffectedUsers.Count)</MudChip>
+                            </MudItem>
+                        </MudGrid>
+                        
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Cancel" OnClick="HideAffectedUsers">Hide</MudButton>
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    @if(!string.IsNullOrEmpty(TestPolicyErrorMessage))
+                    {
+                        <MudAlert Severity="Severity.Error">@TestPolicyErrorMessage</MudAlert>
+                    }
+                    else if(@AffectedUsers.Any())
+                    {
+                        <MudTable Items="@AffectedUsers">
+                            <HeaderContent>
+                                <MudTh>Name</MudTh>
+                                <MudTh>Identifier</MudTh>
+                                <MudTh>Enabled</MudTh>
+                                <MudTh>Deleted At</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Name">@context.DisplayName</MudTd>
+                                <MudTd DataLabel="Identifier">@context.UniqueName</MudTd>
+                                <MudTd DataLabel="Enabled">
+                                    <MudCheckBox @bind-Checked="@context.Enabled" Variant="Variant.Outlined" Disabled="true" />
+                                </MudTd>
+                                <MudTd DataLabel="Deleted At">@context.DeletedAt</MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager PageSizeOptions="new int[]{10, 50, 100}" />
+                            </PagerContent>
+                        </MudTable>
+                    }
+                </MudCardContent>
+            </MudCard>
+    }
+
     <MudDialog @bind-IsVisible="IsDeleteDialogOpen">
         <TitleContent>
             <MudText Typo="Typo.h5"> Are you sure you would like to delete this policy?</MudText>

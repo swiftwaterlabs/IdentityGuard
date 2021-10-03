@@ -31,6 +31,8 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
 
         public bool IsWaiting { get; set; } = false;
 
+        public bool AreAffectedUsersShown { get; set; } = false;
+
         public bool IsNew { get; set; } = false;
 
         public bool IsEditing { get; set; } = false;
@@ -40,6 +42,10 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
         public UserPolicy Data { get; set; }
 
         public List<Directory> AvailableDirectories { get; set; }
+
+        public List<User> AffectedUsers { get; set; } = new();
+
+        public string TestPolicyErrorMessage { get; set; }
 
         protected override async Task OnParametersSetAsync()
         {
@@ -66,6 +72,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
 
         private async Task LoadData()
         {
+            HideAffectedUsers();
             IsLoading = true;
 
             if (IsNew)
@@ -84,6 +91,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
 
         public void Edit()
         {
+            HideAffectedUsers();
             IsEditing = true;
         }
 
@@ -136,6 +144,32 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
             IsWaiting = false;
 
             NavigationManager.NavigateTo(Paths.Policies);
+        }
+
+        public async Task TestPolicy()
+        {
+            IsWaiting = true;
+            try
+            {
+                TestPolicyErrorMessage = null;
+                AffectedUsers = await UserPolicyService.Audit(this.Id);
+            }
+            catch
+            {
+                TestPolicyErrorMessage = "Invalid Query / Error when executing";
+            }
+            IsWaiting = false;
+            ShowAffectedUsers();
+        }
+
+        public void ShowAffectedUsers()
+        {
+            AreAffectedUsersShown = true;
+        }
+
+        public void HideAffectedUsers()
+        {
+            AreAffectedUsersShown = false;
         }
     }
 }

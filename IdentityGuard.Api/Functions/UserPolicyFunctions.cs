@@ -94,5 +94,20 @@ namespace IdentityGuard.Api.Functions
 
             return await req.OkResponseAsync();
         }
+
+        [Function("userpolicy-audit")]
+        public async Task<HttpResponseData> Test(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "policy/user/{id}/audit")]
+            HttpRequestData req,
+            FunctionContext executionContext,
+            string id)
+        {
+
+            if (!_authorizationManager.IsAuthorized(AuthorizedActions.UserPolicyContribtor, req.GetRequestingUser())) return req.UnauthorizedResponse();
+
+            var data = await _userPolicyManager.AuditPolicy(id);
+
+            return await req.OkResponseAsync(data);
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace IdentityGuard.Core.Mappers
                 GivenName = toMap.GivenName,
                 SurName = toMap.Surname,
                 EmailAddress = toMap.Mail,
+                UniqueName = toMap.UserPrincipalName,
                 Type = toMap.UserType,
                 CreatedAt = toMap.CreatedDateTime.GetValueOrDefault().DateTime,
                 CreationType = toMap.CreationType,

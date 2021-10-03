@@ -12,6 +12,7 @@ namespace IdentityGuard.Shared.Models
 
         public bool Enabled { get; set; }
         public DateTime? DeletedAt { get; set; }
+        public string UniqueName { get; set; }
         public string GivenName { get; set; }
         public string SurName { get; set; }
         public string EmailAddress { get; set; }

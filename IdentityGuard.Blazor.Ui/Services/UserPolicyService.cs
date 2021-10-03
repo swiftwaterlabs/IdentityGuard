@@ -9,6 +9,7 @@ namespace IdentityGuard.Blazor.Ui.Services
     {
         Task<List<UserPolicy>> Get();
         Task<UserPolicy> Get(string id);
+        Task<List<User>> Audit(string id);
         Task<UserPolicy> Post(UserPolicy toSave);
         Task<UserPolicy> Put(UserPolicy toSave);
         Task Delete(string id);
@@ -21,6 +22,9 @@ namespace IdentityGuard.Blazor.Ui.Services
         public Task<List<UserPolicy>> Get() => Get<List<UserPolicy>>("api/policy/user");
 
         public Task<UserPolicy> Get(string id) => Get<UserPolicy>($"api/policy/user/{id}");
+
+        public Task<List<User>> Audit(string id) => Get<List<User>>($"api/policy/user/{id}/audit");
+
 
         public Task<UserPolicy> Post(UserPolicy toSave) => Post<UserPolicy, UserPolicy>($"api/policy/user",toSave);
 
