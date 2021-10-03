@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using IdentityGuard.Core.Managers;
 using Microsoft.Azure.Functions.Worker;
@@ -18,21 +17,5 @@ namespace IdentityGuard.Worker.Functions
         {
             return _userPolicyManager.ApplyAll();
         }
-    }
-
-    public class TimerInfo
-    {
-        public TimerScheduleStatus ScheduleStatus { get; set; }
-
-        public bool IsPastDue { get; set; }
-    }
-
-    public class TimerScheduleStatus
-    {
-        public DateTime Last { get; set; }
-
-        public DateTime Next { get; set; }
-
-        public DateTime LastUpdated { get; set; }
     }
 }
