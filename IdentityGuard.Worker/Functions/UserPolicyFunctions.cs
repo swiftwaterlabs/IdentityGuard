@@ -6,16 +6,16 @@ namespace IdentityGuard.Worker.Functions
 {
     public class UserPolicyFunctions
     {
-        private readonly LifecyclePolicyManager _userPolicyManager;
+        private readonly LifecyclePolicyExecutionManager _lifecyclePolicyExecutionManager;
 
-        public UserPolicyFunctions(LifecyclePolicyManager userPolicyManager)
+        public UserPolicyFunctions(LifecyclePolicyExecutionManager lifecyclePolicyExecutionManager)
         {
-            _userPolicyManager = userPolicyManager;
+            _lifecyclePolicyExecutionManager = lifecyclePolicyExecutionManager;
         }
         [Function("userpolicy-apply")]
         public Task Apply([TimerTrigger("0 */5 * * * *")] TimerInfo timer, FunctionContext context)
         {
-            return _userPolicyManager.ApplyAll(timer.ScheduleStatus.Next);
+            return _lifecyclePolicyExecutionManager.ApplyAll(timer.ScheduleStatus.Next);
         }
     }
 }

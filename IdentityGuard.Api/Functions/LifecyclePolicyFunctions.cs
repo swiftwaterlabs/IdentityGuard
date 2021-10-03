@@ -10,11 +10,15 @@ namespace IdentityGuard.Api.Functions
     public class LifecyclePolicyFunctions
     {
         private readonly LifecyclePolicyManager _lifecyclePolicyManager;
+        private readonly LifecyclePolicyExecutionManager _lifecyclePolicyExecutionManager;
         private readonly AuthorizationManager _authorizationManager;
 
-        public LifecyclePolicyFunctions(LifecyclePolicyManager lifecyclePolicyManager, AuthorizationManager authorizationManager)
+        public LifecyclePolicyFunctions(LifecyclePolicyManager lifecyclePolicyManager, 
+            LifecyclePolicyExecutionManager lifecyclePolicyExecutionManager,
+            AuthorizationManager authorizationManager)
         {
             _lifecyclePolicyManager = lifecyclePolicyManager;
+            _lifecyclePolicyExecutionManager = lifecyclePolicyExecutionManager;
             _authorizationManager = authorizationManager;
         }
 
@@ -105,7 +109,7 @@ namespace IdentityGuard.Api.Functions
 
             if (!_authorizationManager.IsAuthorized(AuthorizedActions.LifecyclePolicyContributor, req.GetRequestingUser())) return req.UnauthorizedResponse();
 
-            var data = await _lifecyclePolicyManager.AuditPolicy(id);
+            var data = await _lifecyclePolicyExecutionManager.AuditPolicy(id);
 
             return await req.OkResponseAsync(data);
         }

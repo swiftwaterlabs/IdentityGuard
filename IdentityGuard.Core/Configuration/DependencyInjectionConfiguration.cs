@@ -35,6 +35,7 @@ namespace IdentityGuard.Core.Configuration
             services.AddTransient<RequestManager>();
             services.AddTransient<GroupManager>();
             services.AddTransient<LifecyclePolicyManager>();
+            services.AddTransient<LifecyclePolicyExecutionManager>();
 
             // Processors
             services.AddTransient<IActionProcessor, OwnerActionProcessor>();
