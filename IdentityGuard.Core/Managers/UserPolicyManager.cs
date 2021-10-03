@@ -43,19 +43,29 @@ namespace IdentityGuard.Core.Managers
             return _userPolicyRepository.GetById(id);
         }
 
-        public Task<UserPolicy> Add(UserPolicy toAdd)
+        public async Task<UserPolicy> Add(UserPolicy toAdd)
         {
             toAdd.Id = Guid.NewGuid().ToString();
+            await ApplyDirectory(toAdd);
 
-            return _userPolicyRepository.Save(toAdd);
+            var result = await _userPolicyRepository.Save(toAdd);
+            return result;
         }
 
-        public Task<UserPolicy> Update(string id, UserPolicy toUpdate)
+        public async Task<UserPolicy> Update(string id, UserPolicy toUpdate)
         {
             toUpdate.Id = id;
+            await ApplyDirectory(toUpdate);
 
-            return _userPolicyRepository.Save(toUpdate);
+            var result = await _userPolicyRepository.Save(toUpdate);
+            return result;
         }
+
+        private async Task ApplyDirectory(UserPolicy toApply)
+        {
+            var directory = await _directoryManager.GetById(toApply.Id);
+            toApply.DirectoryName = directory?.Domain;
+        };
 
         public Task Delete(string id)
         {
