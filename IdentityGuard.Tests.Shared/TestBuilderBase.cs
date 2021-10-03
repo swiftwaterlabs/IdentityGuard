@@ -25,6 +25,7 @@ namespace IdentityGuard.Tests.Shared
         }
         private TestBuilderBase(IServiceCollection services)
         {
+            Context = new TestContext();
             Configure(services);
         }
 
@@ -66,9 +67,9 @@ namespace IdentityGuard.Tests.Shared
             
         }
 
-        private static void ConfigureFakes(IServiceCollection services)
+        private void ConfigureFakes(IServiceCollection services)
         {
-            services.AddSingleton<TestContext>();
+            services.AddSingleton<TestContext>(provider => { return this.Context; });
             services.ReplaceTransient<CosmosClient, CosmosClientFake>();
             services.ReplaceTransient<SecretClient, SecretClientFake>();
             services.ReplaceTransient<ICosmosLinqQueryFactory, CosmosLinqQueryFactoryFake>();
@@ -85,6 +86,6 @@ namespace IdentityGuard.Tests.Shared
             ClockService.Thaw();
         }
 
-        public TestContext Context => _serviceProvider.GetService<TestContext>();
+        public TestContext Context { get; private set; }
     }
 }
