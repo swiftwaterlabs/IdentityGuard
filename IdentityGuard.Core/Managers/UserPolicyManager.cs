@@ -21,18 +21,21 @@ namespace IdentityGuard.Core.Managers
         private readonly UserService _userService;
         private readonly RequestManager _requestManager;
         private readonly ILogger<UserPolicyManager> _logger;
+        private readonly ILifecyclePolicyExecutionRepository _lifecyclePolicyExecutionRepository;
 
         public UserPolicyManager(IUserPolicyRepository userPolicyRepository,
             DirectoryManager directoryManager,
             UserService userService,
             RequestManager requestManager,
-            ILogger<UserPolicyManager> logger)
+            ILogger<UserPolicyManager> logger,
+            ILifecyclePolicyExecutionRepository lifecyclePolicyExecutionRepository)
         {
             _userPolicyRepository = userPolicyRepository;
             _directoryManager = directoryManager;
             _userService = userService;
             _requestManager = requestManager;
             _logger = logger;
+            _lifecyclePolicyExecutionRepository = lifecyclePolicyExecutionRepository;
         }
 
         public Task<ICollection<UserPolicy>> Get()
@@ -74,41 +77,66 @@ namespace IdentityGuard.Core.Managers
             return _userPolicyRepository.Delete(id);
         }
 
-        public async Task ApplyAll()
+        public async Task ApplyAll(DateTime nextExecution)
         {
             var policies = await _userPolicyRepository
                 .Get();
 
             var applyTasks = policies
                 .Where(p => p.Enabled)
-                .Select(ApplyPolicy);
+                .Select(p=>ApplyPolicy(p,nextExecution));
 
             await Task.WhenAll(applyTasks);
         }
 
-        public async Task ApplyPolicy(UserPolicy toApply)
+        public async Task ApplyPolicy(UserPolicy toApply, DateTime nextExecution)
         {
-            var directory = await _directoryManager.GetById(toApply.DirectoryId);
-
-            var resolvedQuery = toApply.Query.ResolveQueryParameters();
-            var users = await _userService.Query(directory, resolvedQuery);
-
-            switch(toApply.Action)
+            var execution = new LifecyclePolicyExecution
             {
-                case UserPolicyAction.Delete:
+                PolicyId = toApply.Id,
+                Start = ClockService.Now,
+                Status = LifecyclePolicyStatus.InProgress,
+                Next = nextExecution
+            };
+            try
+            {
+                var directory = await _directoryManager.GetById(toApply.DirectoryId);
+
+                var resolvedQuery = toApply.Query.ResolveQueryParameters();
+                var users = await _userService.Query(directory, resolvedQuery);
+
+                execution.AffectedObjects = users.Count;
+
+                switch (toApply.Action)
                 {
-                    await DeleteUsers(directory, users);
-                    return;
+                    case UserPolicyAction.Delete:
+                        {
+                            await DeleteUsers(directory, users);
+                            break;
+                        }
+                    case UserPolicyAction.Disable:
+                        {
+                            await DisableUsers(directory, users);
+                            break;
+                        }
+                    default:
+                        {
+                            throw new ArgumentOutOfRangeException(nameof(toApply.Action), toApply.Action, "Unsupported action");
+                        }
                 }
-                case UserPolicyAction.Disable:
-                {
-                    await DisableUsers(directory, users);
-                    return;
-                }
-                default:
-                {
-                    throw new ArgumentOutOfRangeException(nameof(toApply.Action), toApply.Action, "Unsupported action");
-                }
+
+                execution.Status = LifecyclePolicyStatus.Complete;
+            }
+            catch(Exception exception)
+            {
+                _logger.LogError("Error when applying policy", exception);
+                execution.Status = LifecyclePolicyStatus.Failed;
+            }
+            finally
+            {
+                execution.End = ClockService.Now;
+
+                await _lifecyclePolicyExecutionRepository.Save(execution);
             }
         }
 

@@ -15,7 +15,7 @@ namespace IdentityGuard.Worker.Functions
         [Function("userpolicy-apply")]
         public Task Apply([TimerTrigger("0 */5 * * * *")] TimerInfo timer, FunctionContext context)
         {
-            return _userPolicyManager.ApplyAll();
+            return _userPolicyManager.ApplyAll(timer.ScheduleStatus.Next);
         }
     }
 }

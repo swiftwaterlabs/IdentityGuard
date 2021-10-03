@@ -16,6 +16,7 @@
         public  string AccessReviews = "AccessReviews";
         public  string Requests = "Requests";
         public  string UserPolicies = "UserPolicies";
+        public  string LifecyclePolicyExecutions = "LifecyclePolicyExecutions";
     }
 
 

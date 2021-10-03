@@ -56,6 +56,7 @@ namespace IdentityGuard.Core.Configuration
             services.AddTransient<RequestMapper>();
             services.AddTransient<GroupMapper>();
             services.AddTransient<UserPolicyMapper>();
+            services.AddTransient<LifecyclePolicyExecutionMapper>();
 
             // Repositories
             services.AddTransient<DirectoryRepository>();
@@ -63,6 +64,7 @@ namespace IdentityGuard.Core.Configuration
             services.AddTransient<IAccessReviewRepository, AccessReviewRepository>();
             services.AddTransient<IRequestRepository, RequestRepository>();
             services.AddTransient<IUserPolicyRepository, UserPolicyRepository>();
+            services.AddTransient<ILifecyclePolicyExecutionRepository, LifecyclePolicyExecutionRepository>();
 
             // Services
             services.AddTransient<ApplicationService>();

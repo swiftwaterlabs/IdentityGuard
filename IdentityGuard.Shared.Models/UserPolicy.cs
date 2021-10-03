@@ -13,6 +13,9 @@ namespace IdentityGuard.Shared.Models
         public UserPolicyAction Action { get; set; }
         public string Query { get; set; }
         public bool Enabled { get; set; }
+
+        public DateTime? LastExecuted { get; set; }
+        public DateTime? NextExecution { get; set; }
     }
 
     public enum UserPolicyAction
