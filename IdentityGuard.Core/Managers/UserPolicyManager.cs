@@ -63,9 +63,9 @@ namespace IdentityGuard.Core.Managers
 
         private async Task ApplyDirectory(UserPolicy toApply)
         {
-            var directory = await _directoryManager.GetById(toApply.Id);
+            var directory = await _directoryManager.GetById(toApply.DirectoryId);
             toApply.DirectoryName = directory?.Domain;
-        };
+        }
 
         public Task Delete(string id)
         {
