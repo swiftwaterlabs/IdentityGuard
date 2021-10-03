@@ -40,11 +40,16 @@ namespace IdentityGuard.Core.Services
             return user;
         }
 
-        public async Task<List<User>> SearchUser(Shared.Models.Directory directory, string name)
+        public Task<List<User>> SearchUser(Shared.Models.Directory directory, string name)
+        {
+            var filter = GetSearchFilter(name);
+            return Query(directory, filter);
+        }
+
+        public async Task<List<User>> Query(Shared.Models.Directory directory, string filter)
         {
             var client = await _graphClientFactory.CreateAsync(directory);
 
-            var filter = GetSearchFilter(name);
             var searchRequest = await client.Users
                 .Request()
                 .Filter(filter)
@@ -158,6 +163,31 @@ namespace IdentityGuard.Core.Services
                 .ToList();
 
             return result;
+        }
+
+        public async Task DisableUser(Directory directory, string id)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            var user = new Microsoft.Graph.User
+            {
+                Id = id,
+                AccountEnabled = false
+            };
+
+            await client.Users[id]
+                .Request()
+                .UpdateAsync(user);
+
+        }
+
+        public async Task DeleteUser(Directory directory, string id)
+        {
+            var client = await _graphClientFactory.CreateAsync(directory);
+
+            await client.Users[id]
+                .Request()
+                .DeleteAsync();
         }
     }
 }

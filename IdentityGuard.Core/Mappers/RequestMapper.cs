@@ -96,5 +96,43 @@ namespace IdentityGuard.Core.Mappers
                 }
             };
         }
+
+        public Shared.Models.Request Map(Shared.Models.Requests.ObjectDeleteRequest toMap,
+            RequestStatus status)
+        {
+            if (toMap == null) return null;
+
+            return new Shared.Models.Request
+            {
+                Id = Guid.NewGuid().ToString(),
+                Action = RequestType.ObjectDelete,
+                DirectoryId = toMap.DirectoryId,
+                ObjectId = toMap.ObjectId,
+                ObjectType = toMap.ObjectType,
+                RequestedAt = ClockService.Now,
+                CompletedBy = null,
+                CompletedAt = null,
+                Status = status,
+            };
+        }
+
+        public Shared.Models.Request Map(Shared.Models.Requests.ObjectDisableRequest toMap,
+            RequestStatus status)
+        {
+            if (toMap == null) return null;
+
+            return new Shared.Models.Request
+            {
+                Id = Guid.NewGuid().ToString(),
+                Action = RequestType.ObjectDisable,
+                DirectoryId = toMap.DirectoryId,
+                ObjectId = toMap.ObjectId,
+                ObjectType = toMap.ObjectType,
+                RequestedAt = ClockService.Now,
+                CompletedBy = null,
+                CompletedAt = null,
+                Status = status,
+            };
+        }
     }
 }

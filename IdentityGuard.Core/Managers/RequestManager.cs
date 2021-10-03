@@ -2,6 +2,7 @@
 using IdentityGuard.Core.Repositories;
 using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,6 +32,22 @@ namespace IdentityGuard.Core.Managers
         public Task<Request> Save(AccessReview accessReview, IEnumerable<AccessReviewActionRequest> accessRequest, RequestStatus status, DirectoryObject requestedBy)
         {
             var request = _requestMapper.Map(accessReview, accessRequest, status, requestedBy);
+            request.Status = status;
+
+            return _requestRepository.Save(request);
+        }
+
+        public Task<Request> Save(ObjectDisableRequest disableRequest, RequestStatus status)
+        {
+            var request = _requestMapper.Map(disableRequest, status);
+            request.Status = status;
+
+            return _requestRepository.Save(request);
+        }
+
+        public Task<Request> Save(ObjectDeleteRequest deleteRequest, RequestStatus status)
+        {
+            var request = _requestMapper.Map(deleteRequest, status);
             request.Status = status;
 
             return _requestRepository.Save(request);

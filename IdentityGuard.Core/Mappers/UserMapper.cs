@@ -1,4 +1,5 @@
 ﻿using IdentityGuard.Core.Extensions;
+using System;
 
 namespace IdentityGuard.Core.Mappers
 {
@@ -8,13 +9,16 @@ namespace IdentityGuard.Core.Mappers
         {
             if (toMap == null) return null;
 
+            
             return new Shared.Models.User
             {
                 Id = toMap.Id,
 
                 DirectoryId = directory.Id,
                 DirectoryName = directory.Domain,
-
+                
+                Enabled = toMap.AccountEnabled ?? false,
+                DeletedAt = toMap.DeletedDateTime == null ? (DateTime?)null : toMap.DeletedDateTime.Value.DateTime,
                 DisplayName = toMap.DisplayName,
                 GivenName = toMap.GivenName,
                 SurName = toMap.Surname,

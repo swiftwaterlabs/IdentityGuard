@@ -10,6 +10,8 @@ namespace IdentityGuard.Shared.Models
         public string DirectoryId { get; set; }
         public string DirectoryName { get; set; }
 
+        public bool Enabled { get; set; }
+        public DateTime? DeletedAt { get; set; }
         public string GivenName { get; set; }
         public string SurName { get; set; }
         public string EmailAddress { get; set; }
