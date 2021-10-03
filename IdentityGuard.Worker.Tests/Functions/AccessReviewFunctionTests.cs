@@ -1,6 +1,7 @@
 ﻿using IdentityGuard.Core.Models.Data;
 using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using IdentityGuard.Tests.Shared.Extensions;
 using IdentityGuard.Worker.Functions;
 using IdentityGuard.Worker.Tests.TestUtility;

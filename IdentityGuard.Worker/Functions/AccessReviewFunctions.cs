@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityGuard.Core.Managers;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using Microsoft.Azure.Functions.Worker;
 using Newtonsoft.Json;
 

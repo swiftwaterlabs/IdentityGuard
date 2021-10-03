@@ -4,6 +4,7 @@ using IdentityGuard.Api.Tests.TestUtility.Extensions;
 using IdentityGuard.Core.Models.Data;
 using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using IdentityGuard.Tests.Shared.Extensions;
 using System;
 using System.Collections.Generic;

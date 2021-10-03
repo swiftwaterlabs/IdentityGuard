@@ -1,6 +1,7 @@
 ﻿using IdentityGuard.Api.Extensions;
 using IdentityGuard.Core.Managers;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Collections.Generic;

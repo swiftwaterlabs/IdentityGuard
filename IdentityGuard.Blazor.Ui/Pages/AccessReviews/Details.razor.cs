@@ -1,6 +1,7 @@
 ﻿using IdentityGuard.Blazor.Ui.Models;
 using IdentityGuard.Blazor.Ui.Services;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System.Collections.Generic;

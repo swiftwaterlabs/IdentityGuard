@@ -133,9 +133,9 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
 
         }
 
-        private IdentityGuard.Shared.Models.AccessReviewRequest Map(DirectoryObject toMap)
+        private IdentityGuard.Shared.Models.Requests.AccessReviewRequest Map(DirectoryObject toMap)
         {
-            return new IdentityGuard.Shared.Models.AccessReviewRequest
+            return new IdentityGuard.Shared.Models.Requests.AccessReviewRequest
             {
                 ObjectId = toMap.Id,
                 DirectoryId = toMap.DirectoryId,
@@ -153,7 +153,7 @@ namespace IdentityGuard.Blazor.Ui.Components.AccessReviews
             };
         }
 
-        private Task RequestAccessReview(IdentityGuard.Shared.Models.AccessReviewRequest toRequest)
+        private Task RequestAccessReview(IdentityGuard.Shared.Models.Requests.AccessReviewRequest toRequest)
         {
             return AccessReviewService.Request(toRequest);
         }

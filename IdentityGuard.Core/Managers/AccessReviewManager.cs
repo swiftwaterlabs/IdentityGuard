@@ -8,6 +8,7 @@ using IdentityGuard.Core.Extensions;
 using System.Linq;
 using IdentityGuard.Core.Services;
 using Microsoft.Extensions.Logging;
+using IdentityGuard.Shared.Models.Requests;
 
 namespace IdentityGuard.Core.Managers
 {

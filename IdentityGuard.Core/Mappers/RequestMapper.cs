@@ -1,6 +1,7 @@
 ﻿using IdentityGuard.Core.Configuration;
 using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace IdentityGuard.Core.Mappers
             };
         }
 
-        public Shared.Models.Request Map(Shared.Models.AccessReviewRequest toMap, 
+        public Shared.Models.Request Map(Shared.Models.Requests.AccessReviewRequest toMap, 
             RequestStatus status, 
             DirectoryObject requestedBy)
         {
