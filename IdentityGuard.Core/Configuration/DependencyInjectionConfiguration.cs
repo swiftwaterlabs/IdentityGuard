@@ -34,7 +34,7 @@ namespace IdentityGuard.Core.Configuration
             services.AddTransient<AccessReviewActionManager>();
             services.AddTransient<RequestManager>();
             services.AddTransient<GroupManager>();
-            services.AddTransient<UserPolicyManager>();
+            services.AddTransient<LifecyclePolicyManager>();
 
             // Processors
             services.AddTransient<IActionProcessor, OwnerActionProcessor>();
@@ -55,7 +55,7 @@ namespace IdentityGuard.Core.Configuration
             services.AddTransient<AccessReviewMapper>();
             services.AddTransient<RequestMapper>();
             services.AddTransient<GroupMapper>();
-            services.AddTransient<UserPolicyMapper>();
+            services.AddTransient<LifecyclePolicyMapper>();
             services.AddTransient<LifecyclePolicyExecutionMapper>();
 
             // Repositories
@@ -63,7 +63,7 @@ namespace IdentityGuard.Core.Configuration
             services.AddScoped<IDirectoryRepository, CachedDirectoryRepository>();
             services.AddTransient<IAccessReviewRepository, AccessReviewRepository>();
             services.AddTransient<IRequestRepository, RequestRepository>();
-            services.AddTransient<IUserPolicyRepository, UserPolicyRepository>();
+            services.AddTransient<ILifecyclePolicyRepository, LifecyclePolicyRepository>();
             services.AddTransient<ILifecyclePolicyExecutionRepository, LifecyclePolicyExecutionRepository>();
 
             // Services

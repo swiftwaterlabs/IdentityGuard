@@ -44,7 +44,7 @@ namespace IdentityGuard.Blazor.Ui.Shared
             {
                 CanPerformAdminActions = await AuthorizationService.IsAuthorized(AuthorizedActions.ManageDirectories);
                 CanPerformAccessReviews = await AuthorizationService.IsAuthorized(AuthorizedActions.AccessReviewContributor);
-                CanManagePolicies = await AuthorizationService.IsAuthorized(AuthorizedActions.UserPolicyContribtor);
+                CanManagePolicies = await AuthorizationService.IsAuthorized(AuthorizedActions.LifecyclePolicyContributor);
                 IsConfiguredForAuthenticatedUser = true;
             }
 

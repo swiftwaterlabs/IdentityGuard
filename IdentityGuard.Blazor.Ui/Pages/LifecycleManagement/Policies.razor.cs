@@ -21,7 +21,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
 
         public bool IsLoading { get; set; } = false;
 
-        public List<UserPolicy> Data { get; set; } = new();
+        public List<LifecyclePolicy> Data { get; set; } = new();
 
         protected override Task OnInitializedAsync()
         {

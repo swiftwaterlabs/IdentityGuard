@@ -39,7 +39,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
 
         public bool IsDeleteDialogOpen { get; set; } = false;
 
-        public UserPolicy Data { get; set; }
+        public LifecyclePolicy Data { get; set; }
 
         public List<Directory> AvailableDirectories { get; set; }
 
@@ -77,7 +77,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
 
             if (IsNew)
             {
-                Data = new UserPolicy { Enabled = true };
+                Data = new LifecyclePolicy { Enabled = true };
             }
             else
             {

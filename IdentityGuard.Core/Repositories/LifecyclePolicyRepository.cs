@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace IdentityGuard.Core.Repositories
 {
-    public class UserPolicyRepository : IUserPolicyRepository
+    public class LifecyclePolicyRepository : ILifecyclePolicyRepository
     {
         private readonly CosmosDbService _cosmosDbService;
         private readonly ICosmosLinqQueryFactory _cosmosLinqQueryFactory;
-        private readonly UserPolicyMapper _userPolicyMapper;
+        private readonly LifecyclePolicyMapper _userPolicyMapper;
 
-        public UserPolicyRepository(CosmosDbService cosmosDbService, 
+        public LifecyclePolicyRepository(CosmosDbService cosmosDbService, 
             ICosmosLinqQueryFactory cosmosLinqQueryFactory,
-            UserPolicyMapper userPolicyMapper)
+            LifecyclePolicyMapper userPolicyMapper)
         {
             _cosmosDbService = cosmosDbService;
             _cosmosLinqQueryFactory = cosmosLinqQueryFactory;
@@ -25,33 +25,33 @@ namespace IdentityGuard.Core.Repositories
 
         public Task Delete(string id)
         {
-            return _cosmosDbService.Delete<UserPolicyData>(id, CosmosConfiguration.Containers.UserPolicies, CosmosConfiguration.DefaultPartitionKey);
+            return _cosmosDbService.Delete<LifecyclePolicyData>(id, CosmosConfiguration.Containers.LifecyclePolicies, CosmosConfiguration.DefaultPartitionKey);
         }
 
-        public Task<ICollection<UserPolicy>> Get()
+        public Task<ICollection<LifecyclePolicy>> Get()
         {
             var query = _cosmosDbService
-               .Query<UserPolicyData>(CosmosConfiguration.Containers.UserPolicies);
+               .Query<LifecyclePolicyData>(CosmosConfiguration.Containers.LifecyclePolicies);
 
             var result = _cosmosDbService.ExecuteRead(query, _userPolicyMapper.Map);
 
             return result;
         }
 
-        public async Task<UserPolicy> GetById(string id)
+        public async Task<LifecyclePolicy> GetById(string id)
         {
             var data = await _cosmosDbService
-               .Get<UserPolicyData>(id, CosmosConfiguration.Containers.UserPolicies, CosmosConfiguration.DefaultPartitionKey);
+               .Get<LifecyclePolicyData>(id, CosmosConfiguration.Containers.LifecyclePolicies, CosmosConfiguration.DefaultPartitionKey);
 
             var result = _userPolicyMapper.Map(data);
             return result;
         }
 
-        public async Task<UserPolicy> Save(UserPolicy toSave)
+        public async Task<LifecyclePolicy> Save(LifecyclePolicy toSave)
         {
             var data = _userPolicyMapper.Map(toSave);
             var result = await _cosmosDbService.Save(data,
-                CosmosConfiguration.Containers.UserPolicies);
+                CosmosConfiguration.Containers.LifecyclePolicies);
 
             var savedData = _userPolicyMapper.Map(result);
             return savedData;

@@ -20,7 +20,7 @@ namespace IdentityGuard.Core.Managers
             {AuthorizedActions.ManageGroups,new List<string>() },
             {AuthorizedActions.ManageApplications,new List<string>() },
             {AuthorizedActions.AccessReviewContributor,new List<string>() },
-            {AuthorizedActions.UserPolicyContribtor,new List<string>() },
+            {AuthorizedActions.LifecyclePolicyContributor,new List<string>() },
             {AuthorizedActions.ManageDirectories,new List<string>{ ApplicationRoles.DirectoryAdmin} }
         };
 

@@ -14,20 +14,20 @@ using System.Threading.Tasks;
 
 namespace IdentityGuard.Core.Managers
 {
-    public class UserPolicyManager
+    public class LifecyclePolicyManager
     {
-        private readonly IUserPolicyRepository _userPolicyRepository;
+        private readonly ILifecyclePolicyRepository _userPolicyRepository;
         private readonly DirectoryManager _directoryManager;
         private readonly UserService _userService;
         private readonly RequestManager _requestManager;
-        private readonly ILogger<UserPolicyManager> _logger;
+        private readonly ILogger<LifecyclePolicyManager> _logger;
         private readonly ILifecyclePolicyExecutionRepository _lifecyclePolicyExecutionRepository;
 
-        public UserPolicyManager(IUserPolicyRepository userPolicyRepository,
+        public LifecyclePolicyManager(ILifecyclePolicyRepository userPolicyRepository,
             DirectoryManager directoryManager,
             UserService userService,
             RequestManager requestManager,
-            ILogger<UserPolicyManager> logger,
+            ILogger<LifecyclePolicyManager> logger,
             ILifecyclePolicyExecutionRepository lifecyclePolicyExecutionRepository)
         {
             _userPolicyRepository = userPolicyRepository;
@@ -38,17 +38,17 @@ namespace IdentityGuard.Core.Managers
             _lifecyclePolicyExecutionRepository = lifecyclePolicyExecutionRepository;
         }
 
-        public Task<ICollection<UserPolicy>> Get()
+        public Task<ICollection<LifecyclePolicy>> Get()
         {
             return _userPolicyRepository.Get();
         }
 
-        public Task<UserPolicy> Get(string id)
+        public Task<LifecyclePolicy> Get(string id)
         {
             return _userPolicyRepository.GetById(id);
         }
 
-        public async Task<UserPolicy> Add(UserPolicy toAdd)
+        public async Task<LifecyclePolicy> Add(LifecyclePolicy toAdd)
         {
             toAdd.Id = Guid.NewGuid().ToString();
             await ApplyDirectory(toAdd);
@@ -57,7 +57,7 @@ namespace IdentityGuard.Core.Managers
             return result;
         }
 
-        public async Task<UserPolicy> Update(string id, UserPolicy toUpdate)
+        public async Task<LifecyclePolicy> Update(string id, LifecyclePolicy toUpdate)
         {
             toUpdate.Id = id;
             await ApplyDirectory(toUpdate);
@@ -66,7 +66,7 @@ namespace IdentityGuard.Core.Managers
             return result;
         }
 
-        private async Task ApplyDirectory(UserPolicy toApply)
+        private async Task ApplyDirectory(LifecyclePolicy toApply)
         {
             var directory = await _directoryManager.GetById(toApply.DirectoryId);
             toApply.DirectoryName = directory?.Domain;
@@ -89,7 +89,7 @@ namespace IdentityGuard.Core.Managers
             await Task.WhenAll(applyTasks);
         }
 
-        public async Task ApplyPolicy(UserPolicy toApply, DateTime nextExecution)
+        public async Task ApplyPolicy(LifecyclePolicy toApply, DateTime nextExecution)
         {
             var execution = new LifecyclePolicyExecution
             {
@@ -109,12 +109,12 @@ namespace IdentityGuard.Core.Managers
 
                 switch (toApply.Action)
                 {
-                    case UserPolicyAction.Delete:
+                    case LifecyclePolicyAction.Delete:
                         {
                             await DeleteUsers(directory, users);
                             break;
                         }
-                    case UserPolicyAction.Disable:
+                    case LifecyclePolicyAction.Disable:
                         {
                             await DisableUsers(directory, users);
                             break;

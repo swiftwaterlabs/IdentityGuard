@@ -7,11 +7,11 @@ namespace IdentityGuard.Blazor.Ui.Services
 {
     public interface IUserPolicyService
     {
-        Task<List<UserPolicy>> Get();
-        Task<UserPolicy> Get(string id);
+        Task<List<LifecyclePolicy>> Get();
+        Task<LifecyclePolicy> Get(string id);
         Task<List<User>> Audit(string id);
-        Task<UserPolicy> Post(UserPolicy toSave);
-        Task<UserPolicy> Put(UserPolicy toSave);
+        Task<LifecyclePolicy> Post(LifecyclePolicy toSave);
+        Task<LifecyclePolicy> Put(LifecyclePolicy toSave);
         Task Delete(string id);
     }
 
@@ -19,16 +19,16 @@ namespace IdentityGuard.Blazor.Ui.Services
     {
         public UserPolicyService(IHttpClientFactory httpClientFactory) : base(httpClientFactory) { }
 
-        public Task<List<UserPolicy>> Get() => Get<List<UserPolicy>>("api/policy/user");
+        public Task<List<LifecyclePolicy>> Get() => Get<List<LifecyclePolicy>>("api/policy/user");
 
-        public Task<UserPolicy> Get(string id) => Get<UserPolicy>($"api/policy/user/{id}");
+        public Task<LifecyclePolicy> Get(string id) => Get<LifecyclePolicy>($"api/policy/user/{id}");
 
         public Task<List<User>> Audit(string id) => Get<List<User>>($"api/policy/user/{id}/audit");
 
 
-        public Task<UserPolicy> Post(UserPolicy toSave) => Post<UserPolicy, UserPolicy>($"api/policy/user",toSave);
+        public Task<LifecyclePolicy> Post(LifecyclePolicy toSave) => Post<LifecyclePolicy, LifecyclePolicy>($"api/policy/user",toSave);
 
-        public Task<UserPolicy> Put(UserPolicy toSave) => Put<UserPolicy, UserPolicy>($"api/policy/user/{toSave.Id}", toSave);
+        public Task<LifecyclePolicy> Put(LifecyclePolicy toSave) => Put<LifecyclePolicy, LifecyclePolicy>($"api/policy/user/{toSave.Id}", toSave);
 
         public Task Delete(string id) => base.Delete($"api/policy/user/{id}");
     }

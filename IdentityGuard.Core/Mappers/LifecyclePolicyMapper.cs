@@ -5,16 +5,17 @@ using System.Text;
 
 namespace IdentityGuard.Core.Mappers
 {
-    public class UserPolicyMapper
+    public class LifecyclePolicyMapper
     {
-        public Shared.Models.UserPolicy Map(Models.Data.UserPolicyData toMap)
+        public Shared.Models.LifecyclePolicy Map(Models.Data.LifecyclePolicyData toMap)
         {
             if (toMap == null) return null;
 
-            return new Shared.Models.UserPolicy
+            return new Shared.Models.LifecyclePolicy
             {
                 Id = toMap.Id,
                 Name = toMap.Name,
+                ObjectType = toMap.ObjectType,
                 DirectoryId = toMap.DirectoryId,
                 DirectoryName = toMap.DirectoryName,
                 Action = toMap.Action,
@@ -23,15 +24,16 @@ namespace IdentityGuard.Core.Mappers
             };
         }
 
-        public Models.Data.UserPolicyData Map(Shared.Models.UserPolicy toMap)
+        public Models.Data.LifecyclePolicyData Map(Shared.Models.LifecyclePolicy toMap)
         {
             if (toMap == null) return null;
 
-            return new Models.Data.UserPolicyData
+            return new Models.Data.LifecyclePolicyData
             {
                 Id = toMap.Id,
                 Name = toMap.Name,
                 Area = CosmosConfiguration.DefaultPartitionKey,
+                ObjectType = toMap.ObjectType,
                 DirectoryId = toMap.DirectoryId,
                 DirectoryName = toMap.DirectoryName,
                 Action = toMap.Action,

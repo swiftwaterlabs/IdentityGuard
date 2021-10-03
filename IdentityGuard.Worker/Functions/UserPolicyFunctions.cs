@@ -6,9 +6,9 @@ namespace IdentityGuard.Worker.Functions
 {
     public class UserPolicyFunctions
     {
-        private readonly UserPolicyManager _userPolicyManager;
+        private readonly LifecyclePolicyManager _userPolicyManager;
 
-        public UserPolicyFunctions(UserPolicyManager userPolicyManager)
+        public UserPolicyFunctions(LifecyclePolicyManager userPolicyManager)
         {
             _userPolicyManager = userPolicyManager;
         }
