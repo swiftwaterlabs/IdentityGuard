@@ -14,7 +14,7 @@ namespace IdentityGuard.Worker.Functions
         }
 
         [Function("lifecyclepolicy-apply")]
-        public async Task Apply([TimerTrigger("0 */1 * * * *")] TimerInfo timer, FunctionContext context)
+        public async Task Apply([TimerTrigger("%lifecyclepolicy-cron%")] TimerInfo timer, FunctionContext context)
         {
             await _lifecyclePolicyExecutionManager.ApplyAll(timer.ScheduleStatus.Next);
         }
