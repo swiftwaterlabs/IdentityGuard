@@ -14,13 +14,13 @@ namespace IdentityGuard.Core.Managers
 {
     public class UserPolicyManager
     {
-        private readonly UserPolicyRepository _userPolicyRepository;
+        private readonly IUserPolicyRepository _userPolicyRepository;
         private readonly DirectoryManager _directoryManager;
         private readonly UserService _userService;
         private readonly RequestManager _requestManager;
         private readonly ILogger<UserPolicyManager> _logger;
 
-        public UserPolicyManager(UserPolicyRepository userPolicyRepository,
+        public UserPolicyManager(IUserPolicyRepository userPolicyRepository,
             DirectoryManager directoryManager,
             UserService userService,
             RequestManager requestManager,

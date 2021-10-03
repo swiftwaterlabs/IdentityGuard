@@ -9,6 +9,6 @@
         public const string UserAccessReviews ="user/access";
         public const string GroupAccessReviews ="group/access";
         public const string ApplicationAccessReviews ="application/access";
-        public const string Policies = "lifecycle/policies";
+        public const string Policies = "lifecycle/policy";
     }
 }
