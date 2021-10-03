@@ -46,6 +46,15 @@
                                 </MudRadioGroup>
   
                             </MudItem>
+                             <MudItem xs="12" md="12">
+                                 <MudInputLabel>Applies To</MudInputLabel>
+                                 <MudRadioGroup @bind-SelectedOption="@Data.ObjectType">
+                                     @foreach(var type in AvailableObjectTypes)
+                                    {
+                                        <MudRadio Option="@type">@type</MudRadio>
+                                    }
+                                </MudRadioGroup>
+                             </MudItem>
                             <MudItem xs="12" md="12">
                                 <MudTextField @bind-Value="@Data.Query" Label="Query" Placeholder="Filter criteria to identify users that the policy should be applied to" Variant="Variant.Outlined" />
                             </MudItem>
@@ -58,6 +67,10 @@
                     else
                     {
                 <MudList>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Applies To</MudText>
+                        <MudText Typo="Typo.body2">@Data.ObjectType</MudText>
+                    </MudListItem>
                     <MudListItem>
                         <MudText Typo="Typo.subtitle2">Directory</MudText>
                         <MudText Typo="Typo.body2">@Data.DirectoryName</MudText>

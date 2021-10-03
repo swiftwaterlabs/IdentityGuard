@@ -16,7 +16,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
         public AppState AppState { get; set; }
 
         [Inject]
-        public IUserPolicyService UserPolicyService { get; set; }
+        public ILifecyclePolicyService PolicyService { get; set; }
 
         [Inject] 
         public IDirectoryService DirectoryService { get; set; }
@@ -45,6 +45,11 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
 
         public List<User> AffectedUsers { get; set; } = new();
 
+        public List<string> AvailableObjectTypes = new List<string>
+        {
+            ObjectTypes.User
+        };
+
         public string TestPolicyErrorMessage { get; set; }
 
         protected override async Task OnParametersSetAsync()
@@ -64,6 +69,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
                 AppState.SetBreadcrumbs(
                    new BreadcrumbItem("Lifecycle Management", Paths.Policies),
                    new BreadcrumbItem("Policies", Paths.Policies),
+                   new BreadcrumbItem(Data?.ObjectType, Paths.Policies),
                    new BreadcrumbItem(Data?.Name, NavigationManager.Uri)
                    );
             }
@@ -77,11 +83,15 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
 
             if (IsNew)
             {
-                Data = new LifecyclePolicy { Enabled = true };
+                Data = new LifecyclePolicy 
+                { 
+                    Enabled = true, 
+                    ObjectType = AvailableObjectTypes.First() 
+                };
             }
             else
             {
-                Data = await UserPolicyService.Get(Id);
+                Data = await PolicyService.Get(Id);
             }
 
             AvailableDirectories = await DirectoryService.Get();
@@ -110,11 +120,11 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
             IsLoading = true;
             if (IsNew)
             {
-                await UserPolicyService.Post(Data);
+                await PolicyService.Post(Data);
             }
             else
             {
-                await UserPolicyService.Put(Data);
+                await PolicyService.Put(Data);
             }
 
             IsLoading = false;
@@ -139,7 +149,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
             IsWaiting = true;
 
             HideDeleteDialog();
-            await UserPolicyService.Delete(Id);
+            await PolicyService.Delete(Id);
 
             IsWaiting = false;
 
@@ -152,7 +162,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
             try
             {
                 TestPolicyErrorMessage = null;
-                AffectedUsers = await UserPolicyService.Audit(this.Id);
+                AffectedUsers = await PolicyService.Audit(this.Id);
             }
             catch
             {

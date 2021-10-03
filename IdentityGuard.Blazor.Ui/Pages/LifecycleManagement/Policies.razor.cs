@@ -14,7 +14,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
         public AppState AppState { get; set; }
 
         [Inject]
-        public IUserPolicyService UserPolicyService { get; set; }
+        public ILifecyclePolicyService PolicyService { get; set; }
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
@@ -35,7 +35,7 @@ namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
         protected override async Task OnParametersSetAsync()
         {
             IsLoading = true;
-            Data = await UserPolicyService.Get();
+            Data = await PolicyService.Get();
             IsLoading = false;
         }
 

@@ -20,7 +20,7 @@ namespace IdentityGuard.Api.Functions
 
         [Function("lifecyclepolicy-get")]
         public async Task<HttpResponseData> Get(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "policy/user")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "lifecycle/policy")]
             HttpRequestData req,
             FunctionContext executionContext)
         {
@@ -34,7 +34,7 @@ namespace IdentityGuard.Api.Functions
 
         [Function("lifecyclepolicy-getbyid")]
         public async Task<HttpResponseData> GetById(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "policy/user/{id}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "lifecycle/policy/{id}")]
             HttpRequestData req,
             FunctionContext executionContext,
             string id)
@@ -51,7 +51,7 @@ namespace IdentityGuard.Api.Functions
 
         [Function("lifecyclepolicy-post")]
         public async Task<HttpResponseData> Post(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "policy/user/")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "lifecycle/policy/")]
             HttpRequestData req,
             FunctionContext executionContext)
         {
@@ -65,7 +65,7 @@ namespace IdentityGuard.Api.Functions
 
         [Function("lifecyclepolicy-put")]
         public async Task<HttpResponseData> Put(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "policy/user/{id}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "lifecycle/policy/{id}")]
             HttpRequestData req,
             FunctionContext executionContext,
             string id)
@@ -82,7 +82,7 @@ namespace IdentityGuard.Api.Functions
 
         [Function("lifecyclepolicy-delete")]
         public async Task<HttpResponseData> Delete(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "policy/user/{id}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "lifecycle/policy/{id}")]
             HttpRequestData req,
             FunctionContext executionContext,
             string id)
@@ -97,7 +97,7 @@ namespace IdentityGuard.Api.Functions
 
         [Function("lifecyclepolicy-audit")]
         public async Task<HttpResponseData> Test(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "policy/user/{id}/audit")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "lifecycle/policy/{id}/audit")]
             HttpRequestData req,
             FunctionContext executionContext,
             string id)
