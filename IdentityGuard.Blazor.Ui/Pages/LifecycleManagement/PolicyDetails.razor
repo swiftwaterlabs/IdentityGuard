@@ -87,6 +87,14 @@
                         <MudText Typo="Typo.subtitle2">Enabled</MudText>
                         <MudText Typo="Typo.body2">@(Data.Enabled ? "Yes": "No")</MudText>
                     </MudListItem>
+                     <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Policy Last Executed</MudText>
+                        <MudText Typo="Typo.body2">@(Data.LastExecuted?.ToString() ?? "N/A")</MudText>
+                    </MudListItem>
+                     <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Policy Next Execution At</MudText>
+                        <MudText Typo="Typo.body2">@(Data.NextExecution?.ToString() ?? "N/A")</MudText>
+                    </MudListItem>
                     
                 </MudList>
                         

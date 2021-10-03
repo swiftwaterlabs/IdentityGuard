@@ -13,21 +13,21 @@ namespace IdentityGuard.Core.Managers
 {
     public class LifecyclePolicyExecutionManager
     {
-        private readonly ILifecyclePolicyRepository _userPolicyRepository;
+        private readonly ILifecyclePolicyRepository _lifecyclePolicyRepository;
         private readonly DirectoryManager _directoryManager;
         private readonly UserService _userService;
         private readonly RequestManager _requestManager;
         private readonly ILogger<LifecyclePolicyManager> _logger;
         private readonly ILifecyclePolicyExecutionRepository _lifecyclePolicyExecutionRepository;
 
-        public LifecyclePolicyExecutionManager(ILifecyclePolicyRepository userPolicyRepository,
+        public LifecyclePolicyExecutionManager(ILifecyclePolicyRepository lifecyclePolicyRepository,
             DirectoryManager directoryManager,
             UserService userService,
             RequestManager requestManager,
             ILogger<LifecyclePolicyManager> logger,
             ILifecyclePolicyExecutionRepository lifecyclePolicyExecutionRepository)
         {
-            _userPolicyRepository = userPolicyRepository;
+            _lifecyclePolicyRepository = lifecyclePolicyRepository;
             _directoryManager = directoryManager;
             _userService = userService;
             _requestManager = requestManager;
@@ -36,7 +36,7 @@ namespace IdentityGuard.Core.Managers
         }
         public async Task ApplyAll(DateTime nextExecution)
         {
-            var policies = await _userPolicyRepository
+            var policies = await _lifecyclePolicyRepository
                 .Get();
 
             var applyTasks = policies
@@ -94,6 +94,10 @@ namespace IdentityGuard.Core.Managers
                 execution.End = ClockService.Now;
 
                 await _lifecyclePolicyExecutionRepository.Save(execution);
+
+                toApply.LastExecuted = ClockService.Now;
+                toApply.NextExecution = nextExecution;
+                await _lifecyclePolicyRepository.Save(toApply);
             }
         }
 
@@ -169,7 +173,7 @@ namespace IdentityGuard.Core.Managers
 
         public async Task<ICollection<User>> AuditPolicy(string id)
         {
-            var toAudit = await _userPolicyRepository.GetById(id);
+            var toAudit = await _lifecyclePolicyRepository.GetById(id);
             var directory = await _directoryManager.GetById(toAudit.DirectoryId);
 
             var resolvedQuery = toAudit.Query.ResolveQueryParameters();
