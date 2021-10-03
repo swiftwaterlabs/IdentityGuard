@@ -4,10 +4,12 @@ env:
   API_PUBLISH_DIR: IdentityGuard.Api/bin/Release/net5.0/publish
   APP_INSIGHTS_ID: 05f8076a-1c7a-43b0-a86b-dd91c2067c9e
   UI_CLIENT_ID: c8e4d4d8-64ce-4515-b60b-985fd7eb6a3f
-  UI_FUNCTION_NAME: idguard-api-prd
+  API_FUNCTION_NAME: idguard-api-prd
   API_URL: https://idguard-api-prd.azurewebsites.net
   API_SCOPE: api://idguard-api-prd/user_impersonation
   UI_BLOB_NAME: idguardwebprd
+  WORKER_FUNCTION_NAME: idguard-worker-prd
+  WORKER_PUBLISH_DIR: IdentityGuard.Worker/bin/Release/net5.0/publish
 
 on:
   workflow_dispatch:
@@ -69,12 +71,19 @@ jobs:
       with:
         inlineScript: az storage blob upload-batch --account-name '${{ env.UI_BLOB_NAME }}' --auth-mode key -d '$web' -s ${{ env.UI_PUBLISH_DIR }}
 
-    - name: Deploy Azure Function
+    - name: Deploy API Azure Function
       uses: Azure/functions-action@v1
-      id: fa
+      id: api
       with:
-        app-name: ${{ env.UI_FUNCTION_NAME }}
+        app-name: ${{ env.API_FUNCTION_NAME }}
         package: ${{ env.API_PUBLISH_DIR }}
+
+    - name: Deploy Worker Azure Function
+      uses: Azure/functions-action@v1
+      id: worker
+      with:
+        app-name: ${{ env.WORKER_FUNCTION_NAME }}
+        package: ${{ env.WORKER_PUBLISH_DIR }}
 
     - name: Service Principal Logout
       run: az logout
