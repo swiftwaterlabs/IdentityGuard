@@ -94,9 +94,5 @@ namespace IdentityGuard.Blazor.Ui.Pages.Directories
             return LoadData();
         }
 
-        public void Back()
-        {
-            NavigationManager.NavigateTo("directory");
-        }
     }
 }

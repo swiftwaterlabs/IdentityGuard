@@ -30,5 +30,7 @@ namespace IdentityGuard.Shared.Models
     {
         public const string AccessReview = "AccessReview";
         public const string AccessReviewAction = "AccessReviewAction";
+        public const string ObjectDisable = "ObjectDisable";
+        public const string ObjectDelete = "ObjectDelete";
     }
 }

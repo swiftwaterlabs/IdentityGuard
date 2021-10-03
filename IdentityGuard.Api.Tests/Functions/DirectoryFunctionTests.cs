@@ -9,6 +9,7 @@ using IdentityGuard.Api.Tests.TestUtility.Extensions;
 using IdentityGuard.Core.Models;
 using IdentityGuard.Core.Models.Data;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Tests.Shared.Extensions;
 using Xunit;
 
 namespace IdentityGuard.Api.Tests.Functions

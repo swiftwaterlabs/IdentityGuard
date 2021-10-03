@@ -15,7 +15,7 @@
         public  string Directories = "Directories";
         public  string AccessReviews = "AccessReviews";
         public  string Requests = "Requests";
+        public  string LifecyclePolicies = "LifecyclePolicies";
+        public  string LifecyclePolicyExecutions = "LifecyclePolicyExecutions";
     }
-
-
 }

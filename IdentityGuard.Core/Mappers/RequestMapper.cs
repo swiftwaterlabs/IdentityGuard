@@ -1,5 +1,7 @@
 ﻿using IdentityGuard.Core.Configuration;
+using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +48,7 @@ namespace IdentityGuard.Core.Mappers
             };
         }
 
-        public Shared.Models.Request Map(Shared.Models.AccessReviewRequest toMap, 
+        public Shared.Models.Request Map(Shared.Models.Requests.AccessReviewRequest toMap, 
             RequestStatus status, 
             DirectoryObject requestedBy)
         {
@@ -59,7 +61,7 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryId = toMap.DirectoryId,
                 ObjectId = toMap.ObjectId,
                 ObjectType = toMap.ObjectType,
-                RequestedAt = DateTime.Now,
+                RequestedAt = ClockService.Now,
                 RequestedBy = requestedBy,
                 CompletedBy = null,
                 CompletedAt = null,
@@ -83,7 +85,7 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryId = accessReview.DirectoryId,
                 ObjectId = accessReview.ObjectId,
                 ObjectType = accessReview.ObjectType,
-                RequestedAt = DateTime.Now,
+                RequestedAt = ClockService.Now,
                 RequestedBy = requestedBy,
                 CompletedBy = null,
                 CompletedAt = null,
@@ -93,6 +95,44 @@ namespace IdentityGuard.Core.Mappers
                     {"RequestedActions",toMap},
                     {"AccessReviewId",accessReview.Id},
                 }
+            };
+        }
+
+        public Shared.Models.Request Map(Shared.Models.Requests.ObjectDeleteRequest toMap,
+            RequestStatus status)
+        {
+            if (toMap == null) return null;
+
+            return new Shared.Models.Request
+            {
+                Id = Guid.NewGuid().ToString(),
+                Action = RequestType.ObjectDelete,
+                DirectoryId = toMap.DirectoryId,
+                ObjectId = toMap.ObjectId,
+                ObjectType = toMap.ObjectType,
+                RequestedAt = ClockService.Now,
+                CompletedBy = null,
+                CompletedAt = null,
+                Status = status,
+            };
+        }
+
+        public Shared.Models.Request Map(Shared.Models.Requests.ObjectDisableRequest toMap,
+            RequestStatus status)
+        {
+            if (toMap == null) return null;
+
+            return new Shared.Models.Request
+            {
+                Id = Guid.NewGuid().ToString(),
+                Action = RequestType.ObjectDisable,
+                DirectoryId = toMap.DirectoryId,
+                ObjectId = toMap.ObjectId,
+                ObjectType = toMap.ObjectType,
+                RequestedAt = ClockService.Now,
+                CompletedBy = null,
+                CompletedAt = null,
+                Status = status,
             };
         }
     }

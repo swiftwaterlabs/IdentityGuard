@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IdentityGuard.Api\IdentityGuard.Api.csproj" />
+    <ProjectReference Include="..\IdentityGuard.Tests.Shared\IdentityGuard.Tests.Shared.csproj" />
   </ItemGroup>
 
 </Project>

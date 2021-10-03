@@ -1,5 +1,6 @@
 ﻿using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,7 +94,7 @@ namespace IdentityGuard.Core.Managers.ActionProcessors
                     ActionObjectId = assignment.Id,
                     ActionObjectDisplayName = applicationData.Roles.GetValueOrDefault(assignment.Role.Id)?.DisplayName,
                     ActionObjectType = assignment.AssignmentType,
-                    RequestedAt = DateTime.Now,
+                    RequestedAt = ClockService.Now,
                     RequestedBy = requestingUser,
                     Status = AccessReviewActionStatus.Complete
                 }

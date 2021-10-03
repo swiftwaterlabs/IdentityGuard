@@ -3,6 +3,7 @@ using IdentityGuard.Core.Managers.ActionProcessors;
 using IdentityGuard.Core.Repositories;
 using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;

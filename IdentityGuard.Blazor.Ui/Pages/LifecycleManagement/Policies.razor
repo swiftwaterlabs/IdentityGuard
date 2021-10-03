@@ -1,3 +1,36 @@
-﻿@page "/lifecycle/policies"
+﻿@page "/lifecycle/policy"
 
-<MudText Typo="Typo.h4">Coming Soon</MudText>
+@namespace IdentityGuard.Blazor.Ui.Pages.LifecycleManagement
+
+<MudContainer Class="mt-16">
+    <MudCard>
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.subtitle1">Lifecycle Policies</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add" aria-label="add" OnClick="ShowNew" Class="mb-2">Add Policy</MudButton>
+    
+            <MudTable Items="@Data" Loading="IsLoading">
+                <HeaderContent>
+                    <MudTh></MudTh>
+                    <MudTh>Applies To</MudTh>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Directory</MudTh>
+                    <MudTh>Enabled</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>
+                        <MudFab Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit" aria-label="edit" OnClick="@(()=>ShowEdit(context.Id))" />
+                    </MudTd>
+                    <MudTd DataLabel="Applies To">@context.ObjectType</MudTd>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Domain">@context.DirectoryName</MudTd>
+                    <MudTd DataLabel="Domain">@context.Enabled</MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudCardContent>
+    </MudCard>
+    
+</MudContainer>

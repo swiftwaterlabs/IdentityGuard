@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IdentityGuard.Shared.Models
+namespace IdentityGuard.Shared.Models.Requests
 {
     public class AccessReviewRequest
     {

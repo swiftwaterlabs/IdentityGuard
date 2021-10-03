@@ -5,12 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using IdentityGuard.Api.Tests.TestUtility.TestContexts;
+using IdentityGuard.Tests.Shared.TestContexts;
 using IdentityGuard.Core.Models.Data;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Scripts;
 
-namespace IdentityGuard.Api.Tests.TestUtility.Fakes
+namespace IdentityGuard.Tests.Shared.Fakes
 {
     public class CosmosClientFake : CosmosClient
     {
@@ -205,6 +205,8 @@ namespace IdentityGuard.Api.Tests.TestUtility.Fakes
             var typeToFind = typeof(T);
 
             if (typeToFind == typeof(DirectoryData)) return _context.Data.Directories as ConcurrentDictionary<string, T>;
+            if (typeToFind == typeof(AccessReviewData)) return _context.Data.AccessReviews as ConcurrentDictionary<string, T>;
+            if (typeToFind == typeof(RequestData)) return _context.Data.Requests as ConcurrentDictionary<string, T>;
             
             throw new ArgumentOutOfRangeException($"Unsupported Type: {typeToFind.Name}");
         }

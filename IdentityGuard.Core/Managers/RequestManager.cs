@@ -1,6 +1,8 @@
 ﻿using IdentityGuard.Core.Mappers;
 using IdentityGuard.Core.Repositories;
+using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -35,6 +37,22 @@ namespace IdentityGuard.Core.Managers
             return _requestRepository.Save(request);
         }
 
+        public Task<Request> Save(ObjectDisableRequest disableRequest, RequestStatus status)
+        {
+            var request = _requestMapper.Map(disableRequest, status);
+            request.Status = status;
+
+            return _requestRepository.Save(request);
+        }
+
+        public Task<Request> Save(ObjectDeleteRequest deleteRequest, RequestStatus status)
+        {
+            var request = _requestMapper.Map(deleteRequest, status);
+            request.Status = status;
+
+            return _requestRepository.Save(request);
+        }
+
         public async Task UpdateStatus(string id, RequestStatus status, DirectoryObject user)
         {
             var request = await _requestRepository.GetById(id);
@@ -44,7 +62,7 @@ namespace IdentityGuard.Core.Managers
             if(status == RequestStatus.Complete)
             {
                 request.CompletedBy = user;
-                request.CompletedAt = DateTime.Now;
+                request.CompletedAt = ClockService.Now;
             }
 
             await _requestRepository.Save(request);

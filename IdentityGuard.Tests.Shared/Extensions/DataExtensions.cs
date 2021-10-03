@@ -2,16 +2,18 @@
 using IdentityGuard.Core.Configuration;
 using IdentityGuard.Core.Models.Data;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Tests.Shared;
 
-namespace IdentityGuard.Api.Tests.TestUtility.Extensions
+namespace IdentityGuard.Tests.Shared.Extensions
 {
     public static class DataExtensions
     {
-        public static DirectoryData WithDirectory(this TestBuilder root,
+        public static DirectoryData WithDirectory(this TestBuilderBase root,
             string name,
             string tenantId = null,
             string domain = null,
             string graphUrl = "https://graph.microsoft.com",
+            string portalUrl = "https://portal.azure.com",
             DirectoryClientType clientType = DirectoryClientType.Application,
             string clientId = "client-id",
             bool isDefault = true
@@ -25,6 +27,7 @@ namespace IdentityGuard.Api.Tests.TestUtility.Extensions
                 Name = name,
                 Domain = domain ?? Guid.NewGuid().ToString(),
                 GraphUrl = graphUrl,
+                PortalUrl = portalUrl,
                 ClientType = clientType,
                 ClientId = clientId,
                 IsDefault = isDefault

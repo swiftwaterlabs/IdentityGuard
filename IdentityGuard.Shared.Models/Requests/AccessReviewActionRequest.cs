@@ -1,4 +1,4 @@
-﻿namespace IdentityGuard.Shared.Models
+﻿namespace IdentityGuard.Shared.Models.Requests
 {
     public class AccessReviewActionRequest
     {

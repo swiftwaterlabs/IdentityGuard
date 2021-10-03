@@ -7,6 +7,8 @@ using IdentityGuard.Shared.Models;
 using IdentityGuard.Core.Extensions;
 using System.Linq;
 using IdentityGuard.Core.Services;
+using Microsoft.Extensions.Logging;
+using IdentityGuard.Shared.Models.Requests;
 
 namespace IdentityGuard.Core.Managers
 {
@@ -18,13 +20,15 @@ namespace IdentityGuard.Core.Managers
         private readonly GroupService _groupService;
         private readonly DirectoryManager _directoryManager;
         private readonly RequestManager _requestManager;
+        private readonly ILogger<AccessReviewManager> _logger;
 
         public AccessReviewManager(IAccessReviewRepository accessReviewRepository,
             ApplicationService applicationService,
             UserService userService,
             GroupService groupService,
             DirectoryManager directoryManager,
-            RequestManager requestManager)
+            RequestManager requestManager,
+            ILogger<AccessReviewManager> logger)
         {
             _accessReviewRepository = accessReviewRepository;
             _applicationService = applicationService;
@@ -32,6 +36,7 @@ namespace IdentityGuard.Core.Managers
             _groupService = groupService;
             _directoryManager = directoryManager;
             _requestManager = requestManager;
+            _logger = logger;
         }
         public async Task<AccessReview> Request(AccessReviewRequest request, IEnumerable<ClaimsIdentity> currentUser)
         {
@@ -52,10 +57,11 @@ namespace IdentityGuard.Core.Managers
                     ObjectType = request.ObjectType,
                     DirectoryId = request.DirectoryId,
                     DirectoryName = directory?.Domain,
-                    CreatedAt = DateTime.Now,
+                    CreatedAt = ClockService.Now,
                     CreatedBy = requestingUser,
                     Status = AccessReviewStatus.New,
-                    CanManageObjects = directory.CanManageObjects
+                    CanManageObjects = directory.CanManageObjects,
+                    Actions = new List<AccessReviewAction>()
                 };
 
                 await AddDisplayName(accessReview);
@@ -67,9 +73,11 @@ namespace IdentityGuard.Core.Managers
 
                 return result;
             }
-            catch
+            catch (Exception exception)
             {
+                _logger.LogError("Error when requesting access review", exception);
                 status = RequestStatus.Failed;
+
                 throw;
             }
             finally
@@ -121,7 +129,7 @@ namespace IdentityGuard.Core.Managers
             if (!existing.IsUserAssignedToReview(user)) throw new UnauthorizedAccessException();
 
             existing.Status = AccessReviewStatus.Complete;
-            existing.CompletedAt = DateTime.Now;
+            existing.CompletedAt = ClockService.Now;
             existing.CompletedBy = user;
 
             return await _accessReviewRepository.Save(existing);
@@ -137,7 +145,7 @@ namespace IdentityGuard.Core.Managers
             if (!existing.IsUserAssignedToReview(user)) throw new UnauthorizedAccessException();
 
             existing.Status = AccessReviewStatus.Abandoned;
-            existing.CompletedAt = DateTime.Now;
+            existing.CompletedAt = ClockService.Now;
             existing.CompletedBy = user;
 
             return await _accessReviewRepository.Save(existing);

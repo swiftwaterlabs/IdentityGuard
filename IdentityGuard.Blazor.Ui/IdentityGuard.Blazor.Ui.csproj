@@ -29,4 +29,8 @@
     <ProjectReference Include="..\IdentityGuard.Shared.Models\IdentityGuard.Shared.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Policies\" />
+  </ItemGroup>
+
 </Project>

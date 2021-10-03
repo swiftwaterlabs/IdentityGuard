@@ -17,6 +17,7 @@ namespace IdentityGuard.Blazor.Ui.Shared
         public bool IsLoading { get; set; } = false;
         public bool CanPerformAdminActions { get; set; } = false;
         public bool CanPerformAccessReviews { get; set; } = false;
+        public bool CanManagePolicies { get; set; } = false;
 
         private bool IsConfiguredForAuthenticatedUser = false;
 
@@ -37,11 +38,13 @@ namespace IdentityGuard.Blazor.Ui.Shared
             {
                 CanPerformAdminActions = false;
                 CanPerformAccessReviews = false;
+                CanManagePolicies = false;
             }
             else
             {
                 CanPerformAdminActions = await AuthorizationService.IsAuthorized(AuthorizedActions.ManageDirectories);
                 CanPerformAccessReviews = await AuthorizationService.IsAuthorized(AuthorizedActions.AccessReviewContributor);
+                CanManagePolicies = await AuthorizationService.IsAuthorized(AuthorizedActions.LifecyclePolicyContributor);
                 IsConfiguredForAuthenticatedUser = true;
             }
 

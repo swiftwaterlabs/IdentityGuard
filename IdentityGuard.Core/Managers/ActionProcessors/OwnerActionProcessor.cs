@@ -1,5 +1,6 @@
 ﻿using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Shared.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,7 +99,7 @@ namespace IdentityGuard.Core.Managers.ActionProcessors
                     ActionObjectId = a.Id,
                     ActionObjectDisplayName = a.DisplayName,
                     ActionObjectType = a.Type,
-                    RequestedAt = DateTime.Now,
+                    RequestedAt = ClockService.Now,
                     RequestedBy = requestingUser,
                     Status = AccessReviewActionStatus.Complete
                 });
@@ -130,7 +131,7 @@ namespace IdentityGuard.Core.Managers.ActionProcessors
                     ActionObjectId = a.Id,
                     ActionObjectDisplayName = a.DisplayName,
                     ActionObjectType = a.Type,
-                    RequestedAt = DateTime.Now,
+                    RequestedAt = ClockService.Now,
                     RequestedBy = requestingUser,
                     Status = AccessReviewActionStatus.Complete
                 });
@@ -153,7 +154,7 @@ namespace IdentityGuard.Core.Managers.ActionProcessors
                     ParentObjectType = ObjectTypes.Group,
                     ParentObjectDisplayName = groupData.DisplayName,
                     ActionObjectId = a.ActionObjectId, 
-                    RequestedAt = DateTime.Now, 
+                    RequestedAt = ClockService.Now, 
                     RequestedBy = requestingUser, 
                     Status = AccessReviewActionStatus.Complete
                 });

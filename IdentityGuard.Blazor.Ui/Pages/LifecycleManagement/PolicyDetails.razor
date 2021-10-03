@@ -1,0 +1,171 @@
+﻿@page "/lifecycle/policy/{Id}"
+
+<MudContainer Class="mt-16">
+    <MudOverlay @bind-Visible="IsWaiting" DarkBackground="true" AutoClose="false"/>
+    <Loadable IsLoading="IsLoading">
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5">@Data.Name</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        @if (IsEditing)
+                        {
+                            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Material.Outlined.Cancel" OnClick="Cancel" Class="mr-2">Cancel</MudButton>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Save" OnClick="Save">Save</MudButton>
+                        }
+                        else
+                        {
+                            <MudButton Variant="Variant.Outlined" Color="Color.Warning" StartIcon="@Icons.Material.Outlined.Science" OnClick="TestPolicy" Class="mr-2" title="Show users affected by this policy">Test</MudButton>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Edit" OnClick="Edit" Class="mr-2">Edit</MudButton>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Material.Outlined.Delete" OnClick="ShowDeleteDialog" Disabled="IsNew">Delete</MudButton>
+                        }
+                        
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    @if (IsEditing)
+                    {
+                        <MudGrid>
+                            <MudItem xs="12" md="12">
+                                <MudTextField @bind-Value="@Data.Name" Label="Name" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="6" md="6">
+                                 <MudSelect Label="Directory" @bind-Value="@Data.DirectoryId" HelperText="String" Placeholder="Please Select"  Variant="Variant.Outlined">
+                                    @foreach(var directory in AvailableDirectories)
+                                    {
+                                        <MudSelectItem Value="@directory.Id">@directory.Domain</MudSelectItem>
+                                    }
+
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem  xs="6" md="6">
+                                 <MudRadioGroup @bind-SelectedOption="@Data.Action">
+                                    <MudRadio Option="@(IdentityGuard.Shared.Models.LifecyclePolicyAction.Disable)">Disable</MudRadio>
+                                    <MudRadio Option="@(IdentityGuard.Shared.Models.LifecyclePolicyAction.Delete)">Delete</MudRadio>
+                                </MudRadioGroup>
+  
+                            </MudItem>
+                             <MudItem xs="12" md="12">
+                                 <MudInputLabel>Applies To</MudInputLabel>
+                                 <MudRadioGroup @bind-SelectedOption="@Data.ObjectType">
+                                     @foreach(var type in AvailableObjectTypes)
+                                    {
+                                        <MudRadio Option="@type">@type</MudRadio>
+                                    }
+                                </MudRadioGroup>
+                             </MudItem>
+                            <MudItem xs="12" md="12">
+                                <MudTextField @bind-Value="@Data.Query" Label="Query" Placeholder="Filter criteria to identify users that the policy should be applied to" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="3" md="3">
+                                <MudCheckBox @bind-Checked="@Data.Enabled" Label="Enabled" Variant="Variant.Outlined" />
+                            </MudItem>
+                            
+                        </MudGrid>
+                    }
+                    else
+                    {
+                <MudList>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Applies To</MudText>
+                        <MudText Typo="Typo.body2">@Data.ObjectType</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Directory</MudText>
+                        <MudText Typo="Typo.body2">@Data.DirectoryName</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Action</MudText>
+                        <MudText Typo="Typo.body2">@Data.Action.ToString()</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Query</MudText>
+                        <MudText Typo="Typo.body2">@Data.Query</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Enabled</MudText>
+                        <MudText Typo="Typo.body2">@(Data.Enabled ? "Yes": "No")</MudText>
+                    </MudListItem>
+                     <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Policy Last Executed</MudText>
+                        <MudText Typo="Typo.body2">@(Data.LastExecuted?.ToString() ?? "N/A")</MudText>
+                    </MudListItem>
+                     <MudListItem>
+                        <MudText Typo="Typo.subtitle2">Policy Next Execution At</MudText>
+                        <MudText Typo="Typo.body2">@(Data.NextExecution?.ToString() ?? "N/A")</MudText>
+                    </MudListItem>
+                    
+                </MudList>
+                        
+                    }
+                </MudCardContent>
+            </MudCard>
+    </Loadable>
+    
+    @if (AreAffectedUsersShown)
+    {
+        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudGrid>
+                            <MudItem>
+                                <MudText Typo="Typo.h6">Test Results</MudText>
+                                <MudText Typo="Typo.subtitle2">Users that would be affected by this policy</MudText>
+                            </MudItem>
+                            <MudItem>
+                                <MudChip Variant="Variant.Outlined">@(AffectedUsers.Count)</MudChip>
+                            </MudItem>
+                        </MudGrid>
+                        
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Cancel" OnClick="HideAffectedUsers">Hide</MudButton>
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    @if(!string.IsNullOrEmpty(TestPolicyErrorMessage))
+                    {
+                        <MudAlert Severity="Severity.Error">@TestPolicyErrorMessage</MudAlert>
+                    }
+                    else if(@AffectedUsers.Any())
+                    {
+                        <MudTable Items="@AffectedUsers">
+                            <HeaderContent>
+                                <MudTh>Name</MudTh>
+                                <MudTh>Identifier</MudTh>
+                                <MudTh>Enabled</MudTh>
+                                <MudTh>Deleted At</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Name">@context.DisplayName</MudTd>
+                                <MudTd DataLabel="Identifier">@context.UniqueName</MudTd>
+                                <MudTd DataLabel="Enabled">
+                                    <MudCheckBox @bind-Checked="@context.Enabled" Variant="Variant.Outlined" Disabled="true" />
+                                </MudTd>
+                                <MudTd DataLabel="Deleted At">@context.DeletedAt</MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager PageSizeOptions="new int[]{10, 50, 100}" />
+                            </PagerContent>
+                        </MudTable>
+                    }
+                </MudCardContent>
+            </MudCard>
+    }
+
+    <MudDialog @bind-IsVisible="IsDeleteDialogOpen">
+        <TitleContent>
+            <MudText Typo="Typo.h5"> Are you sure you would like to delete this policy?</MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudText>Once deleted, this policy will no longer be applied.</MudText>
+        </DialogContent>
+        <DialogActions>
+             <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Tertiary" OnClick="HideDeleteDialog" Class="ml-4">Cancel</MudButton>
+             <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Delete" Color="Color.Error" OnClick="Delete" Class="ml-4">Delete</MudButton>
+        </DialogActions>
+    </MudDialog>
+
+</MudContainer>

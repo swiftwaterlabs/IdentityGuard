@@ -4,6 +4,7 @@ using IdentityGuard.Api.Functions;
 using IdentityGuard.Api.Tests.TestUtility;
 using IdentityGuard.Api.Tests.TestUtility.Extensions;
 using IdentityGuard.Shared.Models;
+using IdentityGuard.Tests.Shared.Extensions;
 using Xunit;
 
 namespace IdentityGuard.Api.Tests.Functions
