@@ -1,4 +1,5 @@
-﻿using IdentityGuard.Core.Mappers;
+﻿using IdentityGuard.Core.Extensions;
+using IdentityGuard.Core.Mappers;
 using IdentityGuard.Core.Repositories;
 using IdentityGuard.Core.Services;
 using IdentityGuard.Shared.Models;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace IdentityGuard.Core.Managers
@@ -88,6 +90,7 @@ namespace IdentityGuard.Core.Managers
         {
             var directory = await _directoryManager.GetById(toApply.DirectoryId);
 
+            var resolvedQuery = toApply.Query.ResolveQueryParameters();
             var users = await _userService.Query(directory, toApply.Query);
 
             switch(toApply.Action)
@@ -148,7 +151,7 @@ namespace IdentityGuard.Core.Managers
         private async Task DeleteUsers(Directory directory, IEnumerable<User> users)
         {
             var deleteTasks = users
-               .Select(u => DisableUser(directory, u));
+               .Select(u => DeleteUser(directory, u));
 
             await Task.WhenAll(deleteTasks);
         }
