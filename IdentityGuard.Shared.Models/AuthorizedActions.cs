@@ -8,5 +8,6 @@
         public const string ManageGroups = "ManageGroups";
         public const string ManageApplications = "ManageApplications";
         public const string AccessReviewContributor = "AccessReviewContributor";
+        public const string UserPolicyContribtor = "UserPolicyContribtor";
     }
 }
