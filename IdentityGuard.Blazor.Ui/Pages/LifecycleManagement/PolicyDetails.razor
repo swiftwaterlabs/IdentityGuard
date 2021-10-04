@@ -31,7 +31,7 @@
                                 <MudTextField @bind-Value="@Data.Name" Label="Name" Variant="Variant.Outlined" />
                             </MudItem>
                             <MudItem xs="6" md="6">
-                                 <MudSelect Label="Directory" @bind-Value="@Data.DirectoryId" HelperText="String" Placeholder="Please Select"  Variant="Variant.Outlined">
+                                 <MudSelect Label="Directory" @bind-Value="@Data.DirectoryId" Placeholder="Please Select"  Variant="Variant.Outlined">
                                     @foreach(var directory in AvailableDirectories)
                                     {
                                         <MudSelectItem Value="@directory.Id">@directory.Domain</MudSelectItem>
