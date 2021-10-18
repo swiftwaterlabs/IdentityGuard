@@ -31,14 +31,17 @@ namespace IdentityGuard.Core.Mappers
                 AppId = toMap.AppId,
                 Roles = Map(toMap.AppRoles),
                 Owners = ownerData,
-                Permissions = toMap.PublishedPermissionScopes?.Select(p => Map(toMap, p))?.ToDictionary(p=>p.Id) ?? new Dictionary<string,Shared.Models.ApplicationPermission>()
+                Permissions = toMap.PublishedPermissionScopes?.Select(p => Map(toMap, p))?.Where(s => s != null).ToDictionary(p=>p.Id) ?? new Dictionary<string,Shared.Models.ApplicationPermission>()
 
             };
         }
 
         private Dictionary<string, Role> Map(IEnumerable<Microsoft.Graph.AppRole> toMap)
         {
-            var rolesById = toMap?.Select(Map)?.ToDictionary(r => r.Id) ?? new Dictionary<string, Shared.Models.Role>();
+            var rolesById = toMap?
+                .Select(Map)?
+                .Where(s => s != null)
+                .ToDictionary(r => r.Id) ?? new Dictionary<string, Shared.Models.Role>();
 
             const string defaultRole = "00000000-0000-0000-0000-000000000000";
             if (!rolesById.ContainsKey(defaultRole))

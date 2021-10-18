@@ -120,7 +120,9 @@ namespace IdentityGuard.Core.Managers
         private async Task ApplyRoleNames(Directory directory, List<ApplicationRole> roleAssignments)
         {
             var servicePrincipals = await GetServicePrincipalsAssignedTo(directory, roleAssignments);
-            var servicePrincipalsById = servicePrincipals.ToDictionary(s => s.Id);
+            var servicePrincipalsById = servicePrincipals
+                .Where(s => s != null)
+                .ToDictionary(s => s.Id);
 
             Parallel.ForEach(roleAssignments, item => 
             {

@@ -31,7 +31,7 @@ namespace IdentityGuard.Core.Mappers
                 DirectoryId = directory.Id,
                 DirectoryName = directory.Domain,
                 AppId = toMap.AppId,
-                Roles = toMap.AppRoles?.Select(Map)?.ToDictionary(r=>r.Id) ?? new Dictionary<string,Shared.Models.Role>(),
+                Roles = toMap.AppRoles?.Select(Map)?.Where(s => s != null).ToDictionary(r=>r.Id) ?? new Dictionary<string,Shared.Models.Role>(),
                 ManagementUrl = toMap.GetPortalUrl(directory),
                 Secrets = passwordSecrets.Union(keySecrets).ToList(),
                 Owners = ownerData,
