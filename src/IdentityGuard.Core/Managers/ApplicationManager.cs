@@ -103,8 +103,9 @@ namespace IdentityGuard.Core.Managers
                 .Select(r => _servicePrincipalService.GetByAppId(directory, r));
 
             var permissionServicePrincipals = await Task.WhenAll(permissionServicePrincipalsTask);
-            var servicePrincipalsById = permissionServicePrincipals
-                .ToDictionary(p => p.AppId);
+            var servicePrincipalsById = permissionServicePrincipals?
+                .Where(p=>p!=null)
+                .ToDictionary(p => p.AppId) ?? new Dictionary<string, ServicePrincipal>();
 
             Parallel.ForEach(application.Permissions, permission => 
             { 
